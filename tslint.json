@@ -30,13 +30,13 @@
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
-      true,
+      false,
       120
     ],
     "member-access": false,
     "no-arg": true,
     "no-console": [
-      true,
+      false,
       "debug",
       "log",
       "time",
@@ -111,7 +111,7 @@
     "component-selector": [
       true,
       "element",
-      "ngx",
+      "app",
       "kebab-case"
     ],
     "ban": [

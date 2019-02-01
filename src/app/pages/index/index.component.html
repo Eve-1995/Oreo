@@ -1,1 +1,11 @@
-<h1>文章类别管理</h1>
+<nb-card>
+  <nb-card-header>
+    Classification Information
+  </nb-card-header>
+  <nb-card-body>
+    <button nbButton status="success" class="app-btn add-button" (click)="add()">Add</button>
+    <ng2-smart-table [attr.class]="'text-center'" [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)"
+      (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

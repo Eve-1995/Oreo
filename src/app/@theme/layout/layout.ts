@@ -3,7 +3,6 @@ import { delay, withLatestFrom, takeWhile } from 'rxjs/operators';
 import {
   NbMediaBreakpoint,
   NbMediaBreakpointsService,
-  NbMenuItem,
   NbMenuService,
   NbSidebarService,
   NbThemeService,
@@ -13,12 +12,12 @@ import { StateService } from '../../@core/utils';
 
 // TODO: move layouts into the framework
 @Component({
-  selector: 'ngx-layout',
+  selector: 'app-layout',
   styleUrls: ['./layout.scss'],
   template: `
       <nb-layout [center]="layout.id === 'center-column'" windowMode>
       <nb-layout-header fixed>
-        <ngx-header></ngx-header>
+        <app-header></app-header>
       </nb-layout-header>
 
       <nb-sidebar class="menu-sidebar"

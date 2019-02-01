@@ -1,10 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { NbSidebarService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
 
 @Component({
-  selector: 'ngx-header',
+  selector: 'app-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
