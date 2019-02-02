@@ -6,29 +6,37 @@ import { Classification } from './index.dto';
 export class IndexService {
   constructor(private httpClient: HttpClient) { }
   server = 'http://localhost:3000/';
-  getClassificationInfo() {
-    return this.httpClient.get(this.server + 'classification/findAndCount');
+  getClassificationInfo(): any {
+    return this.httpClient.get(`${this.server}classification/findAll`);
   }
-  updateClassificationName(id: number, name: string) {
+  updateClassificationName(id: number, name: string): any {
     const obj = new Classification();
     obj.id = id;
     obj.name = name;
-    return this.httpClient.put(this.server + 'classification/updateById', obj);
+    return this.httpClient.put(`${this.server}classification/updateById`, obj);
   }
-  deleteClassificationById(id: number) {
+  deleteClassificationById(id: number): any {
     const body = {
       params: {
         id: id.toString(),
       },
     };
-    return this.httpClient.delete(this.server + 'classification/deleteById', body);
+    return this.httpClient.delete(`${this.server}classification/deleteById`, body);
   }
-  addClassification(name: string) {
+  addClassification(name: string): any {
     const obj = new Classification();
     obj.name = name;
     obj.articleAmount = 0;
     obj.likeAmount = 0;
     obj.commentAmount = 0;
-    return this.httpClient.post(this.server + 'classification/create', obj);
+    return this.httpClient.post(`${this.server}classification/create`, obj);
+  }
+  findClassificationByName(name: string): any {
+    if (name !== '') {
+      return this.httpClient.get(`${this.server}classification/findByName/${name}`);
+    } else {
+      // 如果查找的关键字为空则查找全部数据
+      return this.httpClient.get(`${this.server}classification/findAll`);
+    }
   }
 }

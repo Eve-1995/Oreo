@@ -17,14 +17,18 @@ export class AppIndexComponent {
     private indexService: IndexService,
     private toastrService: NbToastrService) {
     indexService.getClassificationInfo().subscribe(value => {
-      const data = value[0];
-      this.source.load(data);
+      this.source.load(value);
       this.source.setPaging(1, 5);
     });
   }
+  key: string;
   source: LocalDataSource = new LocalDataSource();
   settings = {
-    hideSubHeader: true, // hide the [add function] row
+    actions: {
+      columnTitle: '操作',
+    },
+    hideSubHeader: true,
+    noDataMessage: '暂无数据',
     edit: {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
@@ -37,23 +41,23 @@ export class AppIndexComponent {
     },
     columns: {
       name: {
-        title: 'Type Name',
+        title: '类别名称',
         filter: false,
       },
       articleAmount: {
-        title: 'Article Amount',
-        filter: false,
+        title: '文章总数',
         editable: false,
+        filter: false,
       },
       likeAmount: {
-        title: 'Like Amount',
-        filter: false,
+        title: '点赞总数',
         editable: false,
+        filter: false,
       },
       commentAmount: {
-        title: 'Comment Amount',
-        filter: false,
+        title: '评论总数',
         editable: false,
+        filter: false,
       },
     },
   };
@@ -64,10 +68,10 @@ export class AppIndexComponent {
         this.indexService.deleteClassificationById(event.data.id).subscribe(result => {
           if (result) {
             event.confirm.resolve();
-            this.toastrService.show('', 'Delete Successful', { status: NbToastStatus.SUCCESS });
+            this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
           } else {
             event.confirm.reject();
-            this.toastrService.show('', 'Delete Failed', { status: NbToastStatus.WARNING });
+            this.toastrService.show('', '删除失败', { status: NbToastStatus.WARNING });
           }
         });
       }
@@ -76,10 +80,10 @@ export class AppIndexComponent {
   onEditConfirm(event): void {
     this.indexService.updateClassificationName(event.newData.id, event.newData.name).subscribe(value => {
       if (value) {
-        this.toastrService.show('', 'Update Successful', { status: NbToastStatus.SUCCESS });
+        this.toastrService.show('', '更新成功', { status: NbToastStatus.SUCCESS });
         event.confirm.resolve();
       } else {
-        this.toastrService.show('', 'Update Failed', { status: NbToastStatus.WARNING });
+        this.toastrService.show('', '更新失败', { status: NbToastStatus.WARNING });
         event.confirm.reject();
       }
     });
@@ -88,11 +92,15 @@ export class AppIndexComponent {
     this.dialogService.open(AppDialogNameComponent).onClose.subscribe(name => {
       if (name != null) {
         this.indexService.addClassification(name).subscribe(result => {
-          this.source.add(result);
-          this.source.refresh();
-          this.toastrService.show('', 'Add Successful', { status: NbToastStatus.SUCCESS });
+          this.find();
+          this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
         });
       }
+    });
+  }
+  find() {
+    this.indexService.findClassificationByName(this.key).subscribe(value => {
+      this.source.load(value);
     });
   }
 }

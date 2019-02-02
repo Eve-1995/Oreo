@@ -13,6 +13,8 @@ import { AppIndex2Component } from './index2/index2.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AppConfirmComponent } from './children/confirm/confirm.component';
 import { AppDialogNameComponent } from './index/dialog-name-prompt/dialog-name-prompt.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const NB_MODULES = [
   NbCardModule,
@@ -26,6 +28,8 @@ const CHILD_COMPONENT = [
   AppConfirmComponent,
   AppDialogNameComponent,
 ];
+
+const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
 const routes: Routes = [
   {
@@ -43,6 +47,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    BASE_MODULES,
     RouterModule.forChild(routes),
     NbToastrModule.forRoot(),
     ...NB_MODULES],
