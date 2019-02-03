@@ -6,21 +6,23 @@ import {
   NbDialogModule,
   NbButtonModule,
   NbInputModule,
+  NbSelectModule,
 } from '@nebular/theme';
 import { PagesComponent } from './pages.component';
-import { AppIndexComponent } from './index/index.component';
-import { AppIndex2Component } from './index2/index2.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AppConfirmComponent } from './children/confirm/confirm.component';
-import { AppDialogNameComponent } from './index/dialog-name-prompt/dialog-name-prompt.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppDialogNameComponent } from './classification/dialog-name-prompt/dialog-name-prompt.component';
+import { AppClassificationComponent } from './classification/classification.component';
+import { AppArticleComponent } from './article/article.component';
 
 const NB_MODULES = [
   NbCardModule,
   NbDialogModule,
   NbButtonModule,
   NbInputModule,
+  NbSelectModule,
   Ng2SmartTableModule, // not a part of NB,just for a convenience
 ];
 
@@ -36,10 +38,10 @@ const routes: Routes = [
     path: '',
     component: PagesComponent,
     children: [
-      { path: '', redirectTo: 'index', pathMatch: 'full' },
-      { path: 'index', component: AppIndexComponent },
-      { path: 'index2', component: AppIndex2Component },
-      { path: '**', redirectTo: 'index' },
+      { path: '', redirectTo: 'classification', pathMatch: 'full' },
+      { path: 'classification', component: AppClassificationComponent },
+      { path: 'article', component: AppArticleComponent },
+      { path: '**', redirectTo: 'classification' },
     ],
   },
 ];
@@ -53,8 +55,8 @@ const routes: Routes = [
     ...NB_MODULES],
   exports: [RouterModule],
   declarations: [
-    AppIndexComponent,
-    AppIndex2Component,
+    AppClassificationComponent,
+    AppArticleComponent,
     ...CHILD_COMPONENT,
   ],
   entryComponents: [

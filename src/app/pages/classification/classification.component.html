@@ -1,0 +1,13 @@
+<nb-card>
+  <nb-card-header>
+    类别概览
+  </nb-card-header>
+  <nb-card-body>
+    <input type="text" nbInput placeholder="搜索类别名称" (keyup)="find()" [(ngModel)]="key">
+    <button nbButton status="danger" class="CUD-button" (click)="delete()">删除</button>
+    <button nbButton status="warning" class="CUD-button" (click)="edit()">编辑</button>
+    <button nbButton status="success" class="CUD-button" (click)="add()">新增</button>
+    <ng2-smart-table [attr.class]="'text-center'" [settings]="settings" [source]="source" (userRowSelect)="onRowSelect($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

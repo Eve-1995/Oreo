@@ -1,0 +1,48 @@
+<nb-card>
+  <nb-card-header>
+    文章概览
+  </nb-card-header>
+  <nb-card-body>
+    <input type="text" nbInput placeholder="搜索文章名称" (keyup)="find()" [(ngModel)]="key">
+    <button nbButton status="danger" class="CUD-button" (click)="delete()">删除</button>
+    <button nbButton status="warning" class="CUD-button" (click)="edit(dialog)">编辑</button>
+    <button nbButton status="success" class="CUD-button" (click)="create(dialog)">新增</button>
+    <ng2-smart-table [attr.class]="'text-center'" [settings]="settings" [source]="source" (userRowSelect)="onRowSelect($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card [style.width.px]="600" [style.height.px]="500">
+    <nb-card-header>
+      <ng-container *ngIf="data.op==='create'">
+        新增
+      </ng-container>
+      <ng-container *ngIf="data.op==='edit'">
+        编辑
+      </ng-container>
+    </nb-card-header>
+    <nb-card-body>
+      <form>
+        <div class="form-group">
+          <label for="title">文章标题</label>
+          <input type="text" class="form-control" id="title" name="title" [(ngModel)]="selectedObj.name">
+        </div>
+        <div class="form-group">
+          <label for="content">文章内容(Markdown)</label>
+          <textarea rows="5" nbInput fullWidth class="form-control" id="content" name="content" [(ngModel)]="selectedObj.content"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="classification">文章类别</label>
+          <nb-select [(selected)]="selectedClassification" id="classification">
+            <nb-option [value]="item.id" *ngFor="let item of classificationGroup">{{item.name}}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" class="conform-button" (click)="ref.close('yes')">确定</button>
+      <button nbButton status="primary" class="conform-button" (click)="ref.close('no')">取消</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

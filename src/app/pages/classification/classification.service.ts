@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Classification } from './index.dto';
+import { Classification } from './classification.dto';
 
 @Injectable()
-export class IndexService {
+export class ClassificationService {
   constructor(private httpClient: HttpClient) { }
   server = 'http://localhost:3000/';
-  getClassificationInfo(): any {
-    return this.httpClient.get(`${this.server}classification/findAll`);
+  findBasicInfo(): any {
+    return this.httpClient.get(`${this.server}classification/findBasicInfo`);
   }
   updateClassificationName(id: number, name: string): any {
     const obj = new Classification();
@@ -15,7 +15,7 @@ export class IndexService {
     obj.name = name;
     return this.httpClient.put(`${this.server}classification/updateById`, obj);
   }
-  deleteClassificationById(id: number): any {
+  delete(id: number): any {
     const body = {
       params: {
         id: id.toString(),
@@ -23,20 +23,17 @@ export class IndexService {
     };
     return this.httpClient.delete(`${this.server}classification/deleteById`, body);
   }
-  addClassification(name: string): any {
+  create(name: string): any {
     const obj = new Classification();
     obj.name = name;
-    obj.articleAmount = 0;
-    obj.likeAmount = 0;
-    obj.commentAmount = 0;
     return this.httpClient.post(`${this.server}classification/create`, obj);
   }
-  findClassificationByName(name: string): any {
-    if (name !== '') {
+  findByName(name: string): any {
+    if (name !== '' && name !== undefined) {
       return this.httpClient.get(`${this.server}classification/findByName/${name}`);
     } else {
       // 如果查找的关键字为空则查找全部数据
-      return this.httpClient.get(`${this.server}classification/findAll`);
+      return this.httpClient.get(`${this.server}classification/findBasicInfo`);
     }
   }
 }
