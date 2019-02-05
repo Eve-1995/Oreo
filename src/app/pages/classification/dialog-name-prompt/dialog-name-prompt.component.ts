@@ -6,14 +6,13 @@ import { NbDialogRef } from '@nebular/theme';
   styleUrls: ['dialog-name-prompt.component.scss'],
 })
 export class AppDialogNameComponent {
-
   constructor(protected ref: NbDialogRef<AppDialogNameComponent>) {}
-
+  newName;
   cancel() {
     this.ref.close();
   }
 
-  submit(name) {
-    this.ref.close(name);
+  submit() {
+    this.ref.close(this.newName);
   }
 }

@@ -20,8 +20,10 @@ export class AppClassificationComponent {
     classificationService.findBasicInfo().subscribe(value => {
       this.source.load(value);
       this.source.setPaging(1, 5);
+      this.loading = false;
     });
   }
+  loading = true;
   key: string;
   source: LocalDataSource = new LocalDataSource();
   settings = {
@@ -50,14 +52,15 @@ export class AppClassificationComponent {
       },
     },
   };
-  selectedObj: Classification;
+  selectedObj = new Classification();
   onRowSelect(event) {
     this.selectedObj = event.data;
   }
 
-  add() {
+  create() {
     this.dialogService.open(AppDialogNameComponent).onClose.subscribe(name => {
       if (name != null) {
+        this.loading = true;
         this.classificationService.create(name).subscribe(() => {
           this.find();
           this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
@@ -66,38 +69,50 @@ export class AppClassificationComponent {
     });
   }
   delete(): void {
-    this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
-      if (value === 'yes') {
-        this.classificationService.delete(this.selectedObj.id).subscribe(result => {
-          if (result) {
-            this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
-            this.source.remove(this.selectedObj);
-          } else {
-            this.toastrService.show('', '删除失败', { status: NbToastStatus.WARNING });
-          }
-        });
-      }
-    });
+    if (this.selectedObj.id === undefined) {
+      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
+    } else {
+      this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
+        if (value === 'yes') {
+          this.classificationService.delete(this.selectedObj.id).subscribe(result => {
+            if (result) {
+              this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
+              this.find();
+              this.selectedObj = new Classification();
+            } else {
+              this.toastrService.show('', '删除失败', { status: NbToastStatus.WARNING });
+            }
+          });
+        }
+      });
+    }
   }
   edit(): void {
-    this.dialogService.open(AppDialogNameComponent).onClose.subscribe(name => {
-      if (name != null) {
-        this.classificationService.updateClassificationName(this.selectedObj.id, name).subscribe(value => {
-          if (value) {
-            this.toastrService.show('', '更新成功', { status: NbToastStatus.SUCCESS });
-            const temp = this.selectedObj;
-            temp.name = name;
-            this.source.update(this.selectedObj, temp);
-          } else {
-            this.toastrService.show('', '更新失败', { status: NbToastStatus.WARNING });
-          }
-        });
-      }
-    });
+    if (this.selectedObj.id === undefined) {
+      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
+    } else {
+      this.dialogService.open(AppDialogNameComponent).onClose.subscribe(name => {
+        if (name != null) {
+          this.loading = true;
+          this.classificationService.updateClassificationName(this.selectedObj.id, name).subscribe(value => {
+            if (value) {
+              this.toastrService.show('', '更新成功', { status: NbToastStatus.SUCCESS });
+              /* const temp = this.selectedObj;
+              temp.name = name; */
+              // this.source.update(this.selectedObj, temp);
+              this.find();
+            } else {
+              this.toastrService.show('', '更新失败', { status: NbToastStatus.WARNING });
+            }
+          });
+        }
+      });
+    }
   }
   find() {
     this.classificationService.findByName(this.key).subscribe(value => {
       this.source.load(value);
+      this.loading = false;
     });
   }
 }

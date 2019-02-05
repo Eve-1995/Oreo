@@ -12,6 +12,9 @@ export class ArticleService {
   getClassificationNames(): any {
     return this.httpClient.get(`${this.server}classification/findNames`);
   }
+  findClassificationForFilter(): any {
+    return this.httpClient.get(`${this.server}classification/findNamesForFilter`);
+  }
   create(obj: Article): any {
     if (obj.classification.id === -1) {
       obj.classification = undefined;
@@ -33,12 +36,10 @@ export class ArticleService {
     };
     return this.httpClient.delete(`${this.server}article/delete`, body);
   }
-  findByName(name: string): any {
-    if (name !== '' && name !== undefined) {
-      return this.httpClient.get(`${this.server}article/findByName/${name}`);
-    } else {
-      // 如果查找的关键字为空则查找全部数据
-      return this.httpClient.get(`${this.server}article/findBasicInfo`);
+  findByFilter(name: string, classificationId: number): any {
+    if (name === '') {
+      name = 'undefined';
     }
+    return this.httpClient.get(`${this.server}article/findByFilter/${classificationId}/${name}`);
   }
 }

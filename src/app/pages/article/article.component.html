@@ -2,11 +2,22 @@
   <nb-card-header>
     文章概览
   </nb-card-header>
-  <nb-card-body>
-    <input type="text" nbInput placeholder="搜索文章名称" (keyup)="find()" [(ngModel)]="key">
-    <button nbButton status="danger" class="CUD-button" (click)="delete()">删除</button>
-    <button nbButton status="warning" class="CUD-button" (click)="edit(dialog)">编辑</button>
-    <button nbButton status="success" class="CUD-button" (click)="create(dialog)">新增</button>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
+    <div class="row">
+      <div class="col-3">
+        <input type="text" nbInput placeholder="搜索文章名称" (keyup)="find()" [(ngModel)]="key">
+      </div>
+      <div class="col-3">
+        <nb-select [(selected)]="filterClassification" (selectedChange)="find()">
+          <nb-option [value]="item.id" *ngFor="let item of filterclassificationGroup">{{item.name}}</nb-option>
+        </nb-select>
+      </div>
+      <div class="col-6">
+        <button nbButton status="danger" class="CUD-button" (click)="delete()">删除</button>
+        <button nbButton status="warning" class="CUD-button" (click)="edit(dialog)">编辑</button>
+        <button nbButton status="success" class="CUD-button" (click)="create(dialog)">新增</button>
+      </div>
+    </div>
     <ng2-smart-table [attr.class]="'text-center'" [settings]="settings" [source]="source" (userRowSelect)="onRowSelect($event)">
     </ng2-smart-table>
   </nb-card-body>
@@ -23,14 +34,14 @@
       </ng-container>
     </nb-card-header>
     <nb-card-body>
-      <form>
+      <form #form="ngForm">
         <div class="form-group">
           <label for="title">文章标题</label>
-          <input type="text" class="form-control" id="title" name="title" [(ngModel)]="selectedObj.name">
+          <input required type="text" class="form-control" id="title" name="title" [(ngModel)]="selectedObj.name">
         </div>
         <div class="form-group">
           <label for="content">文章内容(Markdown)</label>
-          <textarea rows="5" nbInput fullWidth class="form-control" id="content" name="content" [(ngModel)]="selectedObj.content"></textarea>
+          <textarea required rows="5" nbInput fullWidth class="form-control" id="content" name="content" [(ngModel)]="selectedObj.content"></textarea>
         </div>
         <div class="form-group">
           <label for="classification">文章类别</label>
@@ -41,7 +52,7 @@
       </form>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="success" class="conform-button" (click)="ref.close('yes')">确定</button>
+      <button nbButton status="success" class="conform-button" (click)="ref.close('yes')" [disabled]="form.invalid||selectedClassification==null">确定</button>
       <button nbButton status="primary" class="conform-button" (click)="ref.close('no')">取消</button>
     </nb-card-footer>
   </nb-card>

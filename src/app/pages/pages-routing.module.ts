@@ -7,6 +7,7 @@ import {
   NbButtonModule,
   NbInputModule,
   NbSelectModule,
+  NbSpinnerModule,
 } from '@nebular/theme';
 import { PagesComponent } from './pages.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -23,6 +24,7 @@ const NB_MODULES = [
   NbButtonModule,
   NbInputModule,
   NbSelectModule,
+  NbSpinnerModule,
   Ng2SmartTableModule, // not a part of NB,just for a convenience
 ];
 
