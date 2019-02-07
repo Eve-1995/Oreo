@@ -9,7 +9,7 @@ import {
   NbSelectModule,
   NbSpinnerModule,
 } from '@nebular/theme';
-import { PagesComponent } from './pages.component';
+import { AdminComponent } from './admin.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AppConfirmComponent } from './children/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
@@ -38,7 +38,16 @@ const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 const routes: Routes = [
   {
     path: '',
-    component: PagesComponent,
+    component: AdminComponent,
+    children: [
+      { path: '', redirectTo: 'classification', pathMatch: 'full' },
+      { path: 'classification', component: AppClassificationComponent },
+      { path: 'article', component: AppArticleComponent },
+      { path: '**', redirectTo: 'classification' },
+    ],
+  }, {
+    path: '',
+    component: AdminComponent,
     children: [
       { path: '', redirectTo: 'classification', pathMatch: 'full' },
       { path: 'classification', component: AppClassificationComponent },
@@ -65,8 +74,8 @@ const routes: Routes = [
     ...CHILD_COMPONENT,
   ],
   providers: [
-  ...NbDialogModule.forRoot().providers,
+    ...NbDialogModule.forRoot().providers,
   ],
 })
-export class PagesRoutingModule {
+export class AdminRoutingModule {
 }

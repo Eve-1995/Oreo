@@ -1,0 +1,46 @@
+<h1 id="title" class="title">登陆</h1>
+<form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title">
+
+  <div class="form-control-group">
+    <label class="label" for="input-phone">手机:</label>
+    <input nbInput fullWidth [(ngModel)]="user.phone" #phone="ngModel" name="phone" id="input-phone" pattern="1[0-9]{10}"
+      placeholder="请输入11位手机号" autofocus [status]="phone.dirty ? (phone.invalid  ? 'danger' : 'success') : ''"
+      [attr.aria-invalid]="phone.invalid && phone.touched ? true : null" required>
+    <ng-container *ngIf="phone.invalid && phone.touched">
+      <p class="error-message" *ngIf="phone.errors?.required">
+        必填项!
+      </p>
+      <p class="error-message" *ngIf="phone.errors?.pattern">
+        手机号必须是11位.
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="form-control-group">
+    <label class="label" for="input-password">密码:</label>
+    <input nbInput fullWidth [(ngModel)]="user.password" #password="ngModel" name="password" type="password" id="input-password"
+      placeholder="请输入8~16位密码" [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''" required
+      [minlength]="6" [maxlength]="16" [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+    <ng-container *ngIf="password.invalid && password.touched ">
+      <p class="error-message" *ngIf="password.errors?.required">
+        必填项!
+      </p>
+      <p class="error-message" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+        密码至少需要6位,至多为16位.
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="form-control-group accept-group">
+    <nb-checkbox name="rememberMe" [(ngModel)]="user.rememberMe">记住我</nb-checkbox>
+    <a class="forgot-password" routerLink="../request-password">忘记密码?</a>
+  </div>
+
+  <button nbButton fullWidth status="success" [disabled]="submitted || !form.valid" [class.btn-pulse]="submitted">
+    登陆
+  </button>
+</form>
+
+<section class="another-action" aria-label="Register">
+  尚未拥有帐号? <a class="text-link" routerLink="../register">注册</a>
+</section>

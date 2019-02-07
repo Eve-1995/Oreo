@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-
-import { MENU_ITEMS } from './pages-menu';
+import { MENU_ITEMS } from './user-menu';
 
 @Component({
-  styleUrls: ['pages.component.scss'],
+  styleUrls: ['user.component.scss'],
   template: `
-    <app-layout>
+    <app-layout [navTitle]="navTitle">
       <nb-menu [items]="menu"></nb-menu>
       <router-outlet></router-outlet>
     </app-layout>
   `,
 })
-export class PagesComponent {
-
+export class UserComponent {
+  navTitle = '博客展览系统';
   menu = MENU_ITEMS;
 }

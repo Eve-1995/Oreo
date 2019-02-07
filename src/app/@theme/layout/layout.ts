@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { delay, withLatestFrom, takeWhile } from 'rxjs/operators';
 import {
   NbMediaBreakpoint,
@@ -9,15 +9,13 @@ import {
 } from '@nebular/theme';
 import { StateService } from '../../@core/utils';
 
-
-// TODO: move layouts into the framework
 @Component({
   selector: 'app-layout',
   styleUrls: ['./layout.scss'],
   template: `
       <nb-layout [center]="layout.id === 'center-column'" windowMode>
       <nb-layout-header fixed>
-        <app-header></app-header>
+        <app-header [title]="navTitle"></app-header>
       </nb-layout-header>
 
       <nb-sidebar class="menu-sidebar"
@@ -30,11 +28,15 @@ import { StateService } from '../../@core/utils';
       <nb-layout-column class="main-content">
         <ng-content select="router-outlet"></ng-content>
       </nb-layout-column>
+
+      <nb-layout-footer fixed>
+        <app-footer></app-footer>
+      </nb-layout-footer>
     </nb-layout>
   `,
 })
 export class LayoutComponent implements OnDestroy {
-
+  @Input() navTitle: string;
   layout: any = {};
   sidebar: any = {};
 

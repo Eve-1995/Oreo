@@ -16,10 +16,10 @@ import {
   NbChatModule,
 } from '@nebular/theme';
 
-
-import { HeaderComponent } from './components';
 import { LayoutComponent } from './layout';
 import { COSMIC_THEME } from './styles/theme.cosmic';
+import { AppHeaderComponent } from './layout/header/header.component';
+import { AppFooterComponent } from './layout/footer/footer.component';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
@@ -33,7 +33,8 @@ const NB_MODULES = [
 ];
 
 const COMPONENTS = [
-  HeaderComponent,
+  AppHeaderComponent,
+  AppFooterComponent,
   LayoutComponent,
 ];
 

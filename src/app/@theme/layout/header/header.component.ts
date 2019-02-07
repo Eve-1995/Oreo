@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NbSidebarService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
 
@@ -7,13 +7,14 @@ import { LayoutService } from '../../../@core/utils';
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit {
+export class AppHeaderComponent implements OnInit {
+  @Input() title: string;
   user: any;
 
   userMenu = [{ title: 'Log out' }];
 
   constructor(private sidebarService: NbSidebarService,
-              private layoutService: LayoutService) {
+    private layoutService: LayoutService) {
   }
 
   ngOnInit() {
