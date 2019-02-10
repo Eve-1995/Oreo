@@ -4,57 +4,18 @@ import { NbMenuItem } from '@nebular/theme';
  */
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: '/admin/classification',
-    link: '/admin/classification',
+    title: '/admin',
+    link: '/admin',
+    home: true,
+  },
+  {
+    title: '/auth',
+    link: '/auth',
+    home: true,
   },
   {
     title: '占位',
     link: '/user/article',
     hidden: true,
-  },
-  {
-    title: 'Angular',
-    children: [
-      {
-        title: '拦截器',
-        link: '/user/article',
-        queryParams: { id: 1 },
-      },
-      {
-        title: 'Http',
-        link: '/user/article',
-        queryParams: { id: 2 },
-      },
-      {
-        title: '指令',
-        link: '/user/article',
-        queryParams: { id: 3 },
-      },
-      {
-        title: '组件',
-        link: '/user/article',
-        queryParams: { id: 4 },
-      },
-    ],
-  },
-  {
-    title: 'Vue',
-    children: [
-      {
-        title: 'v-if',
-        link: '/user/article',
-        queryParams: { id: 5 },
-      },
-      {
-        title: 'v-bind',
-        link: '/user/article',
-        queryParams: { id: 6 },
-      },
-      {
-        title: 'v-todoList',
-        link: '/user/article',
-        queryParams: { id: 7 },
-      },
-    ],
   },
 ];

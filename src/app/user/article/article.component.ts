@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   templateUrl: './article.component.html',
@@ -7,10 +7,19 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppArticleComponent {
   constructor(
+    router: Router,
     activatedRoute: ActivatedRoute,
   ) {
     activatedRoute.queryParams.subscribe(queryParams => {
-      console.log(queryParams.id);
+      if (queryParams.id === undefined) {
+        router.navigate(['/user/article'], {
+          queryParams: {
+            id: 7,
+          },
+        });
+      } else {
+        console.log(queryParams.id);
+      }
     });
   }
 

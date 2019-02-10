@@ -9,6 +9,10 @@ export const routes: Routes = [
     component: NbAuthComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'login',
+      },
+      {
         path: 'login',
         component: AppLoginComponent,
       },
