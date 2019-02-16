@@ -9,7 +9,7 @@ export class AdminGuard implements CanActivateChild {
     if (roleInfo === 'admin') {
       return true;
     }
-    return this.router.createUrlTree(['/user/article'], { queryParams: { id: 1 } });
+    return this.router.createUrlTree(['/user/article']);
   }
 }
 
@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivateChild {
   canActivateChild() {
     const roleInfo = localStorage.getItem('roleInfo');
     if (roleInfo != null) {
-      return this.router.createUrlTree(['/user/article'], { queryParams: { id: 1 } });
+      return this.router.createUrlTree(['/user/article']);
     }
     return true;
   }

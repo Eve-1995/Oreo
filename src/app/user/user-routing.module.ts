@@ -3,12 +3,13 @@ import { NgModule } from '@angular/core';
 import { UserComponent } from './user.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NbListModule } from '@nebular/theme';
+import { NbListModule, NbCardModule } from '@nebular/theme';
 import { AppInfoComponent } from './info/info.component';
 import { AppArticleComponent } from './article/article.component';
 
 const NB_MODULES = [
   NbListModule,
+  NbCardModule,
 ];
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];

@@ -4,7 +4,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: '/user',
     link: '/user',
-    queryParams: { id: 1 },
   }, {
     title: '/auth',
     link: '/auth',
