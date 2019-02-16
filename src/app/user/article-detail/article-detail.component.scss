@@ -1,0 +1,36 @@
+@import '../../@theme/styles/themes';
+@include nb-install-component() {
+    .list-card {
+        nb-card-header {
+            p {
+                text-align: center;
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .info {
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: flex;
+                div {
+                    -webkit-box-flex: 1;
+                    -webkit-flex: 1;
+                    flex: 1;
+                    text-align: center;
+                }
+            }
+        }
+        /* ngx-md {
+            code {
+                display: none;
+                color: white !important;
+            }
+        } */
+        .md {
+            pre {
+                code {
+                    color: white !important;
+                }
+            }
+        }
+    }
+}

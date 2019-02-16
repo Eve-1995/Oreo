@@ -9,7 +9,7 @@ import { ArticleService } from './article.service';
 })
 export class AppArticleComponent {
   constructor(
-    router: Router,
+    private router: Router,
     activatedRoute: ActivatedRoute,
     service: ArticleService,
   ) {
@@ -34,4 +34,11 @@ export class AppArticleComponent {
   }
   name;
   items = [];
+  checkArticle(id: number) {
+    this.router.navigate(['/user/article-detail'], {
+      queryParams: {
+        id: id,
+      },
+    });
+  }
 }

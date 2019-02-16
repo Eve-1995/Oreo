@@ -1,11 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { UserComponent } from './user.component';
 import { CommonModule } from '@angular/common';
+import { NgxMdModule } from 'ngx-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NbListModule, NbCardModule } from '@nebular/theme';
+import { UserComponent } from './user.component';
 import { AppInfoComponent } from './info/info.component';
 import { AppArticleComponent } from './article/article.component';
+import { AppArticleDetailComponent } from './article-detail/article-detail.component';
 
 const NB_MODULES = [
   NbListModule,
@@ -22,6 +24,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'article', pathMatch: 'full' },
       { path: 'info', component: AppInfoComponent },
       { path: 'article', component: AppArticleComponent },
+      { path: 'article-detail', component: AppArticleDetailComponent },
       { path: '**', redirectTo: 'article' },
     ],
   },
@@ -32,12 +35,14 @@ const routes: Routes = [
   imports: [
     BASE_MODULES,
     RouterModule.forChild(routes),
+    NgxMdModule.forRoot(),
     ...NB_MODULES,
   ],
   exports: [RouterModule],
   declarations: [
     AppInfoComponent,
     AppArticleComponent,
+    AppArticleDetailComponent,
   ],
 })
 export class UserRoutingModule {

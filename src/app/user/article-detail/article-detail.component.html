@@ -1,0 +1,15 @@
+<nb-card class="list-card">
+  <nb-card-header>
+    <p>{{articleDetail.name}}</p>
+    <section class="info">
+      <div>创建时间:{{articleDetail.createTime | date:"yyyy-MM-dd"}}</div>
+      <div>修改时间:{{articleDetail.updateTime | date:"yyyy-MM-dd"}}</div>
+      <div>点赞数:{{articleDetail.likeAmount}}</div>
+      <div>评论数:{{articleDetail.commentAmount}}</div>
+      <div>收藏数:{{articleDetail.collectNumber}}</div>
+    </section>
+  </nb-card-header>
+  <nb-card-body>
+    <ngx-md [data]="articleDetail.content" class="md"></ngx-md>
+  </nb-card-body>
+</nb-card>

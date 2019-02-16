@@ -1,17 +1,17 @@
 <nb-card class="list-card">
-  <nb-card-header>{{name}}</nb-card-header>
-  <nb-card-body>
-    <nb-list>
-      <nb-list-item *ngFor="let item of items">
-        {{ item.name }}
-        <span class="info">
-          <i class="far fa-heart" aria-hidden="true"></i>{{ item.likeAmount }}
-          <i class="far fa-comment" aria-hidden="true"></i>{{ item.commentAmount }}
-        </span>
-      </nb-list-item>
-      <nb-list-item *ngIf="items.length==0">
-        暂无数据
-      </nb-list-item>
-    </nb-list>
-  </nb-card-body>
-</nb-card>
+    <nb-card-header>{{name}}</nb-card-header>
+    <nb-card-body>
+      <nb-list>
+        <nb-list-item *ngFor="let item of items" (click)="checkArticle(item.id)">
+          {{ item.name }}
+          <span class="info">
+            <i class="far fa-heart" aria-hidden="true"></i>{{ item.likeAmount }}
+            <i class="far fa-comment" aria-hidden="true"></i>{{ item.commentAmount }}
+          </span>
+        </nb-list-item>
+        <nb-list-item *ngIf="items.length==0">
+          暂无数据
+        </nb-list-item>
+      </nb-list>
+    </nb-card-body>
+  </nb-card>

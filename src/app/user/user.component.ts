@@ -16,16 +16,19 @@ import { AppGlobalService } from '../others/global.service';
 export class UserComponent {
   constructor(
     appGlobalService: AppGlobalService,
-    nBmenuService: NbMenuService,
+    private nBmenuService: NbMenuService,
     private httpClient: HttpClient) {
     if (!appGlobalService.haveAddedMenu) {
       this.getMenu().subscribe(value => {
-        value.forEach(item => {
+        value.forEach((item, index) => {
           nBmenuService.addItems([{
             title: item.name,
             link: '/user/article',
             queryParams: { id: item.id },
           }], 'user-menu');
+          if (index === value.length - 1) {
+            this.addLastItem();
+          }
         });
       });
       appGlobalService.haveAddedMenu = true;
@@ -33,6 +36,17 @@ export class UserComponent {
   }
   getMenu(): any {
     return this.httpClient.get('http://localhost:3000/classification/findClassifications');
+  }
+  /**
+   *fix:当切换模块时,会导致之前添加的最后一个元素重新添加.
+   *reason:尚不清楚.
+   *solution:只能手动将最后一个元素设置为隐藏,以保证用户体验.
+   */
+  addLastItem() {
+    this.nBmenuService.addItems([{
+      title: undefined,
+      hidden: true,
+    }], 'user-menu');
   }
   navTitle = '博客展览系统';
   menu = MENU_ITEMS;
