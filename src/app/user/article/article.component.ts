@@ -25,8 +25,8 @@ export class AppArticleComponent {
       } else {
         service.findArticlesByClassificationId(queryParams.id).subscribe(value => {
           if (value != null) {
-            this.items = value.data;
-            this.name = value.name;
+            this.items = value.data.articles;
+            this.name = value.data.name;
           }
         });
       }

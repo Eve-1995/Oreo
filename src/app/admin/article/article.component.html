@@ -1,59 +1,54 @@
 <nb-card>
-  <nb-card-header>
-    文章概览
-  </nb-card-header>
-  <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
-    <div class="row">
-      <div class="col-3">
-        <input type="text" nbInput placeholder="搜索文章名称" (keyup)="find()" [(ngModel)]="key">
-      </div>
-      <div class="col-3">
-        <nb-select [(selected)]="filterClassification" (selectedChange)="find()">
-          <nb-option [value]="item.id" *ngFor="let item of filterclassificationGroup">{{item.name}}</nb-option>
-        </nb-select>
-      </div>
-      <div class="col-6">
-        <button nbButton status="danger" class="CUD-button" (click)="delete()">删除</button>
-        <button nbButton status="warning" class="CUD-button" (click)="edit(dialog)">编辑</button>
-        <button nbButton status="success" class="CUD-button" (click)="create(dialog)">新增</button>
-      </div>
-    </div>
-    <ng2-smart-table [attr.class]="'text-center'" [settings]="settings" [source]="source" (userRowSelect)="onRowSelect($event)">
-    </ng2-smart-table>
-  </nb-card-body>
-</nb-card>
-
-<ng-template #dialog let-data let-ref="dialogRef">
-  <nb-card [style.width.px]="600" [style.height.px]="500">
     <nb-card-header>
-      <ng-container *ngIf="data.op==='create'">
-        新增
-      </ng-container>
-      <ng-container *ngIf="data.op==='edit'">
-        编辑
-      </ng-container>
+      文章概览
     </nb-card-header>
-    <nb-card-body>
-      <form #form="ngForm">
-        <div class="form-group">
-          <label for="title">文章标题</label>
-          <input required type="text" class="form-control" id="title" name="title" [(ngModel)]="selectedObj.name">
+    <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
+      <form class="form-inline filter">
+        <div class="filter-input">
+          <input type="text" nbInput placeholder="搜索文章名称" (keyup)="fetchTableList()" [(ngModel)]="filterName" name="filterName">
         </div>
-        <div class="form-group">
-          <label for="content">文章内容(Markdown)</label>
-          <textarea required rows="5" nbInput fullWidth class="form-control" id="content" name="content" [(ngModel)]="selectedObj.content"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="classification">文章类别</label>
-          <nb-select [(selected)]="selectedClassification" id="classification">
-            <nb-option [value]="item.id" *ngFor="let item of classificationGroup">{{item.name}}</nb-option>
-          </nb-select>
+        <div class="filter-button-group">
+          <button nbButton status="success" (click)="create(dialog)">新增</button>
+          <button nbButton status="warning" (click)="edit(dialog)">编辑</button>
+          <button nbButton status="danger" (click)="delete()">删除</button>
         </div>
       </form>
+      <ng2-smart-table [attr.class]="'text-center'" [settings]="settings" [source]="source" (userRowSelect)="onRowSelect($event)">
+      </ng2-smart-table>
     </nb-card-body>
-    <nb-card-footer>
-      <button nbButton status="success" class="conform-button" (click)="ref.close('yes')" [disabled]="form.invalid||selectedClassification==null">确定</button>
-      <button nbButton status="primary" class="conform-button" (click)="ref.close('no')">取消</button>
-    </nb-card-footer>
   </nb-card>
-</ng-template>
+
+  <ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card [style.width.px]="600" [style.height.px]="500">
+      <nb-card-header>
+        <ng-container *ngIf="data.operation==='create'">
+          新增
+        </ng-container>
+        <ng-container *ngIf="data.operation==='edit'">
+          编辑
+        </ng-container>
+      </nb-card-header>
+      <nb-card-body>
+        <form #form="ngForm">
+          <div class="form-group">
+            <label for="title">文章标题</label>
+            <input required type="text" class="form-control" id="title" name="title" [(ngModel)]="selectedObj.name">
+          </div>
+          <div class="form-group">
+            <label for="content">文章内容(Markdown)</label>
+            <textarea required rows="5" nbInput fullWidth class="form-control" id="content" name="content" [(ngModel)]="selectedObj.content"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="classification">文章类别</label>
+            <nb-select multiple [(selected)]="selectedObj.classificationIds" id="classification">
+              <nb-option [value]="item.id" *ngFor="let item of classificationGroup">{{item.name}}</nb-option>
+            </nb-select>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer class="dialog-button-group">
+        <button nbButton status="primary" (click)="ref.close('no')">取消</button>
+        <button nbButton status="success" (click)="ref.close('yes')" [disabled]="form.invalid">确定</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>

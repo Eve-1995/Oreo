@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 export class AppArticleDetailService {
   constructor(private httpClient: HttpClient) { }
   server = 'http://localhost:3000/';
-  findArticleById(id: number): any {
-    return this.httpClient.get(`${this.server}article/findArticleById/${id}`);
+  findDetailById(id: number): any {
+    return this.httpClient.get(`${this.server}article/findDetailById/${id}`);
   }
 }

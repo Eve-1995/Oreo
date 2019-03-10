@@ -1,0 +1,9 @@
+// global font size
+html {
+    font-size: 14px;
+}
+
+// nb-select 在无选项时高度较低，设置为统一高度
+nb-select button {
+    height: 38.5px;
+}

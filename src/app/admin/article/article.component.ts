@@ -4,7 +4,7 @@ import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { AppConfirmComponent } from '../children/confirm/confirm.component';
 import { ArticleService } from './article.service';
-import { Article } from './article.dto';
+import { ArticleClassificationDto } from './article.dto';
 import { Classification } from '../classification/classification.dto';
 
 @Component({
@@ -17,7 +17,7 @@ export class AppArticleComponent {
     private dialogService: NbDialogService,
     private articleService: ArticleService,
     private toastrService: NbToastrService) {
-    articleService.findBasicInfo().subscribe(value => {
+    articleService.findBasicInfoList().subscribe(value => {
       this.source.load(value);
       this.source.setPaging(1, 5);
       this.loading = false;
@@ -25,19 +25,11 @@ export class AppArticleComponent {
     articleService.getClassificationNames().subscribe(value => {
       this.classificationGroup = value;
     });
-    articleService.findClassificationForFilter().subscribe(value => {
-      this.filterclassificationGroup = value;
-      setTimeout(() => {
-        this.filterClassification = -2;
-      }, 0);
-    });
   }
   loading = true;
-  filterClassification;
-  filterclassificationGroup: Classification[];
-  selectedClassification;
+  editOrCreateClassification = [];
   classificationGroup: Classification[];
-  key: string;
+  filterName: string;
   source: LocalDataSource = new LocalDataSource();
   settings = {
     actions: false,
@@ -60,33 +52,47 @@ export class AppArticleComponent {
       },
     },
   };
-  selectedObj = new Article();
+  selectedObj = new ArticleClassificationDto();
   onRowSelect(event) {
     this.selectedObj = event.data;
   }
-
   edit(dialog: TemplateRef<any>) {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
-      if (this.selectedObj.classification != null) {
-        this.selectedClassification = this.selectedObj.classification.id;
-      } else {
-        this.selectedClassification = -1;
-      }
+      this.articleService.findBasicInfo(this.selectedObj.id).subscribe(value => {
+        this.selectedObj = value;
+        /**
+        *fix:无法使用this.selectedObj.classifications填充编辑时的选中下拉框
+        *reason:ArticleClassificationDto这个类是Article包含多个Classification的模型，其classifications是对象集合，而下拉框控件API要求绑定的是number[]，所以无法绑定
+        *solution:添加classificationIds:number[]字段，专门用于绑定下拉字段，手动填充数据，而因记录详情是从服务器获取后覆盖的，而导致该字段会被覆盖，需要手动初始化
+        */
+        this.selectedObj.classificationIds = [];
+        this.selectedObj.classifications.forEach(item => {
+          this.selectedObj.classificationIds.push(item.id);
+        });
+      });
       this.dialogService.open(dialog, {
         context: {
-          op: 'edit',
+          operation: 'edit',
         },
       }).onClose.subscribe(value => {
         if (value === 'yes') {
-          this.loading = true;
-          const temp = new Classification();
-          temp.id = this.selectedClassification;
-          this.selectedObj.classification = temp;
-          this.articleService.update(this.selectedObj).subscribe(() => {
-            this.find();
-            this.toastrService.show('', '更新成功', { status: NbToastStatus.SUCCESS });
+          /**
+          *fix:编辑文章归类时，数据库多对多关系只多不少
+          *reason:下拉框绑定的是classificationIds,而ORM映射的是classifications。所以，实际类别的确没变化
+          *solution:双重for循环校验以同步两个字段的数据
+          */
+          const arr = [];
+          this.selectedObj.classifications.forEach(item1 => {
+            this.selectedObj.classificationIds.forEach(item2 => {
+              if (item2 === item1.id) arr.push(item1);
+            });
+          });
+          this.selectedObj.classifications = arr;
+          this.articleService.save(this.selectedObj).subscribe(() => {
+            this.fetchTableList();
+            this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
           });
         }
       });
@@ -94,25 +100,15 @@ export class AppArticleComponent {
   }
 
   create(dialog: TemplateRef<any>) {
-    this.selectedObj.id = undefined;
-    this.selectedObj.name = undefined;
-    this.selectedObj.content = undefined;
-    this.selectedObj.likeAmount = undefined;
-    this.selectedObj.commentAmount = undefined;
-    this.selectedObj.classification = undefined;
-    this.selectedClassification = undefined;
+    this.selectedObj = new ArticleClassificationDto();
     this.dialogService.open(dialog, {
       context: {
-        op: 'create',
+        operation: 'create',
       },
     }).onClose.subscribe(value => {
       if (value === 'yes') {
-        this.loading = true;
-        const demo = new Classification();
-        demo.id = this.selectedClassification;
-        this.selectedObj.classification = demo;
-        this.articleService.create(this.selectedObj).subscribe(() => {
-          this.find();
+        this.articleService.save(this.selectedObj).subscribe(() => {
+          this.fetchTableList();
           this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
         });
       }
@@ -124,22 +120,17 @@ export class AppArticleComponent {
     } else {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
-          this.loading = true;
           this.articleService.delete(this.selectedObj.id).subscribe(result => {
-            if (result) {
-              this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
-              this.find();
-              this.selectedObj = new Article();
-            } else {
-              this.toastrService.show('', '删除失败', { status: NbToastStatus.WARNING });
-            }
+            this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
+            this.fetchTableList();
           });
         }
       });
     }
   }
-  find() {
-    this.articleService.findByFilter(this.key, this.filterClassification).subscribe(value => {
+  fetchTableList() {
+    this.loading = true;
+    this.articleService.findByFilter(this.filterName).subscribe(value => {
       this.source.load(value);
       this.loading = false;
     });

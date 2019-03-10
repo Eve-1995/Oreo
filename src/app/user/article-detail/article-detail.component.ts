@@ -15,7 +15,7 @@ export class AppArticleDetailComponent {
   ) {
     activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.id !== undefined) {
-        service.findArticleById(queryParams.id).subscribe(value => {
+        service.findDetailById(queryParams.id).subscribe(value => {
           this.articleDetail = value;
         });
       }

@@ -6,5 +6,19 @@ export class Article {
   content: string;
   likeAmount: number;
   commentAmount: number;
-  classification: Classification;
+}
+
+export class ArticleClassificationDto {
+  constructor() {
+    this.id = undefined;
+    this.name = undefined;
+    this.content = undefined;
+    this.classifications = [];
+    this.classificationIds = [];
+  }
+  id: number;
+  name: string;
+  content: string;
+  classifications: Classification[];
+  classificationIds: number[];
 }
