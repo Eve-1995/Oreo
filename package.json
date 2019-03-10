@@ -1,13 +1,10 @@
 {
-  "name": "ngx-admin",
-  "version": "3.1.0",
+  "name": "Oreo",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akveo/ngx-admin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/akveo/ngx-admin/issues"
+    "url": "git+https://github.com/Eve-1995/oreo-front-end"
   },
   "browserslist": [
     "> 1%",
