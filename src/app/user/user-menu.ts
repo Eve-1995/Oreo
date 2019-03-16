@@ -6,18 +6,31 @@ import { NbMenuItem } from '@nebular/theme';
  */
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: '/admin',
+    title: '菜单区',
+    group: true,
+  },
+  {
+    title: 'admin module',
     link: '/admin',
     home: true,
   },
   {
-    title: '/auth',
-    link: '/auth',
+    title: 'login',
+    link: '/auth/login',
+    home: true,
+  },
+  {
+    title: 'register',
+    link: '/auth/register',
     home: true,
   },
   {
     title: '占位',
     link: '/user/article',
     hidden: true,
+  },
+  {
+    title: '文章分类',
+    group: true,
   },
 ];

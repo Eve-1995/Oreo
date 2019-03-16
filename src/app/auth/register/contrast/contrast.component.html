@@ -1,0 +1,9 @@
+<nb-card [style.width.px]="600" [style.height.px]="500">
+  <nb-card-header>Oreo隐私权保护声明</nb-card-header>
+  <nb-card-body>
+    <ngx-md [data]="value" class="md"></ngx-md>
+  </nb-card-body>
+  <nb-card-footer class="dialog-button-group">
+    <button nbButton status="primary" (click)="ref.close()">关闭</button>
+  </nb-card-footer>
+</nb-card>
