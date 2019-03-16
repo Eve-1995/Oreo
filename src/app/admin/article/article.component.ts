@@ -121,6 +121,7 @@ export class AppArticleComponent {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
           this.articleService.delete(this.selectedObj.id).subscribe(result => {
+            this.selectedObj = new ArticleClassificationDto();
             this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
             this.fetchTableList();
           });

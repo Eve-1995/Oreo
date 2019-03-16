@@ -74,6 +74,7 @@ export class AppClassificationComponent {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
           this.classificationService.delete(this.selectedObj.id).subscribe(result => {
+            this.selectedObj = new Classification();
             this.fetchTableList();
             this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
           });

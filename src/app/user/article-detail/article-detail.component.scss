@@ -1,16 +1,24 @@
 .list-card {
-  nb-card-header {
-      p {
-          text-align: center;
-          font-size: 24px;
-          font-weight: 600;
-      }
-      .list-card-info {
-          display: -webkit-box;
-          display: -webkit-flex;
-          display: flex;
-          justify-content: space-around;
-          flex-wrap: wrap;
-      }
-  }
+    nb-card-header {
+        p {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .list-card-info {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+    }
+}
+
+::ng-deep ngx-md {
+    pre {
+        code {
+            color: white;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NbSidebarService } from '@nebular/theme';
+import { NbSidebarService, NbMenuService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +12,26 @@ export class AppHeaderComponent implements OnInit {
   @Input() title: string;
   user: any;
 
-  userMenu = [{ title: 'Log out' }];
+  userMenu = [{ title: '登出' }];
 
-  constructor(private sidebarService: NbSidebarService,
-    private layoutService: LayoutService) {
+  constructor(
+    private sidebarService: NbSidebarService,
+    private layoutService: LayoutService,
+    private menuService: NbMenuService,
+    private router: Router,
+  ) { }
+
+  onContecxtItemSelection(title) {
+    if (title === '登出') {
+      localStorage.removeItem('roleInfo');
+      this.router.navigate(['/user/article']);
+    }
   }
-
-  ngOnInit() {
+  ngOnInit(): void {
+    this.menuService.onItemClick()
+      .subscribe((event) => {
+        this.onContecxtItemSelection(event.item.title);
+      });
   }
 
   toggleSidebar(): boolean {
