@@ -1,3 +1,51 @@
 <nb-card>
-  个人资料
+  <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
+    <div class="row show-grid">
+      <div class="col-12 col-sm-6 col-md-8">
+        <form (ngSubmit)="save()" #form="ngForm" aria-labelledby="title">
+          <div class="form-control-group">
+            <label class="label" for="input-realname">真实姓名:</label>
+            <input nbInput fullWidth [(ngModel)]="user.realname" name="realname" type="text" id="input-realname"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-liveCity">现居城市:</label>
+            <input nbInput fullWidth [(ngModel)]="user.liveCity" name="liveCity" type="text" id="input-liveCity"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-hometown">家乡:</label>
+            <input nbInput fullWidth [(ngModel)]="user.hometown" name="hometown" type="text" id="input-hometown"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-univercity">毕业院校:</label>
+            <input nbInput fullWidth [(ngModel)]="user.univercity" name="univercity" type="text" id="input-univercity"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-eduacation">学历:</label>
+            <input nbInput fullWidth [(ngModel)]="user.eduacation" name="eduacation" type="text" id="input-eduacation"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-company">公司:</label>
+            <input nbInput fullWidth [(ngModel)]="user.company" name="company" type="text" id="input-company"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-birth">出生日期:</label>
+            <input nbInput fullWidth [(ngModel)]="user.birth" name="birth" type="text" id="input-birth"
+              [maxlength]="32">
+          </div>
+          <button nbButton fullWidth status="success" [disabled]="submitted" [class.btn-pulse]="submitted">
+            更新
+          </button>
+        </form>
+      </div>
+      <div class="col-6 col-md-4">
+        <!-- <div>.col-6 .col-md-4</div> -->
+      </div>
+    </div>
+  </nb-card-body>
 </nb-card>

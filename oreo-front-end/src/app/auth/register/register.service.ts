@@ -7,7 +7,7 @@ import { ResponseDTO } from '../../others/response.dto';
 export class RegistService {
   constructor(private httpClient: HttpClient) { }
   server = 'http://localhost:3000/';
-  regist(user: User): ResponseDTO | any {
+  save(user: User): ResponseDTO | any {
     return this.httpClient.post(`${this.server}user/save`, user);
   }
 }

@@ -6,21 +6,21 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: '个人资料',
     icon: 'nb-bar-chart',
-    link: '/admin/classification',
+    link: '/user/profile',
   },
   {
-    title: '重置密码',
+    title: '修改密码',
     icon: 'nb-bar-chart',
-    link: '/admin/article',
+    link: '/user/reset-password',
   },
   {
     title: '我的收藏',
     icon: 'nb-bar-chart',
-    link: '/admin/article',
+    link: '/user/collection',
   },
   {
     title: '我的评论',
     icon: 'nb-bar-chart',
-    link: '/admin/article',
+    link: '/user/comment',
   },
 ];

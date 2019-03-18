@@ -21,7 +21,7 @@ export class AppRegisterComponent {
   moreInfo = false;
   register(): void {
     this.submitted = true;
-    this.service.regist(this.user).subscribe((v: ResponseDTO) => {
+    this.service.save(this.user).subscribe((v: ResponseDTO) => {
       if (v.code === 200) {
         this.toastrService.success('', v.message);
         this.router.navigate(['/auth/login']);

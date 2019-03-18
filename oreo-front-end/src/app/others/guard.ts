@@ -6,7 +6,7 @@ export class AdminGuard implements CanActivateChild {
   constructor(private router: Router) { }
   canActivateChild() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if (userInfo && userInfo.role === 'admin') {
+    if (userInfo && userInfo.level === 1) {
       return true;
     }
     return this.router.createUrlTree(['/visit/article']);
@@ -18,7 +18,7 @@ export class UserGuard implements CanActivateChild {
   constructor(private router: Router) { }
   canActivateChild() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if (userInfo && userInfo.role === 'user') {
+    if (userInfo && userInfo.level === 0) {
       return true;
     }
     return this.router.createUrlTree(['/visit/article']);

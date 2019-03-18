@@ -7,10 +7,16 @@ import { NbToastrModule, NbDialogModule, NbCardModule, NbButtonModule, NbInputMo
 import { UserComponent } from './user.component';
 import { UserRoutingModule } from './user-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
+import { AppResetPasswordComponent } from './reset-password/reset-password.component';
+import { AppCollectionComponent } from './collection/collection.component';
+import { AppCommentComponent } from './comment/comment.component';
 
 const PAGE_COMPONENT = [
   UserComponent,
   AppProfileComponent,
+  AppResetPasswordComponent,
+  AppCollectionComponent,
+  AppCommentComponent,
 ];
 
 const CHILD_COMPONENT = [

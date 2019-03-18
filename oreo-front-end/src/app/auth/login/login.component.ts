@@ -23,9 +23,9 @@ export class AppLoginComponent {
       if (v.code === 200) {
         this.toastrService.success('', v.message);
         localStorage.setItem('userInfo', JSON.stringify(v.data));
-        if (v.data.role === 'user') {
+        if (v.data.level === 0) {
           this.router.navigate(['/visit/article']);
-        } else if (v.data.role === 'admin') {
+        } else if (v.data.level === 1) {
           this.router.navigate(['/admin/classification']);
         }
       } else {
