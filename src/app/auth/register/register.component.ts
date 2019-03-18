@@ -23,10 +23,10 @@ export class AppRegisterComponent {
     this.submitted = true;
     this.service.register(this.user).subscribe((v: ResponseDTO) => {
       if (v.code === 200) {
-        this.toastrService.success(v.message);
+        this.toastrService.success('', v.message);
         this.router.navigate(['/auth/login']);
       } else {
-        this.toastrService.warning(v.message);
+        this.toastrService.warning('', v.message);
         this.submitted = false;
       }
     });
