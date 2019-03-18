@@ -9,7 +9,19 @@ export class AdminGuard implements CanActivateChild {
     if (userInfo && userInfo.role === 'admin') {
       return true;
     }
-    return this.router.createUrlTree(['/user/article']);
+    return this.router.createUrlTree(['/visit/article']);
+  }
+}
+
+@Injectable()
+export class UserGuard implements CanActivateChild {
+  constructor(private router: Router) { }
+  canActivateChild() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (userInfo && userInfo.role === 'user') {
+      return true;
+    }
+    return this.router.createUrlTree(['/visit/article']);
   }
 }
 
@@ -19,7 +31,7 @@ export class AuthGuard implements CanActivateChild {
   canActivateChild() {
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo != null) {
-      return this.router.createUrlTree(['/user/article']);
+      return this.router.createUrlTree(['/visit/article']);
     }
     return true;
   }

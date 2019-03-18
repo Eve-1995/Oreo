@@ -1,36 +1,26 @@
 import { NbMenuItem } from '@nebular/theme';
-/**
- * fix:第一个url始终高亮.
- * reason:在此处,我将菜单组件用来作为文章类别的展示,URL都是一样的,只是参数不同,所以其实全部菜单都是同一个页面,默认第一个高亮.
- * solution:增加一个隐藏的菜单进行占位.
- */
+import { pre_items } from '../others/menu';
+
 export const MENU_ITEMS: NbMenuItem[] = [
+  ...pre_items,
   {
-    title: '菜单区',
-    group: true,
+    title: '个人资料',
+    icon: 'nb-bar-chart',
+    link: '/admin/classification',
   },
   {
-    title: 'admin module',
-    link: '/admin',
-    home: true,
+    title: '重置密码',
+    icon: 'nb-bar-chart',
+    link: '/admin/article',
   },
   {
-    title: 'login',
-    link: '/auth/login',
-    home: true,
+    title: '我的收藏',
+    icon: 'nb-bar-chart',
+    link: '/admin/article',
   },
   {
-    title: 'register',
-    link: '/auth/register',
-    home: true,
-  },
-  {
-    title: '占位',
-    link: '/user/article',
-    hidden: true,
-  },
-  {
-    title: '文章分类',
-    group: true,
+    title: '我的评论',
+    icon: 'nb-bar-chart',
+    link: '/admin/article',
   },
 ];

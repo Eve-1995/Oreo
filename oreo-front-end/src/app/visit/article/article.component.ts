@@ -16,7 +16,7 @@ export class AppArticleComponent {
     activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.id === undefined) {
         service.findFirstMenu().subscribe(value => {
-          router.navigate(['/user/article'], {
+          router.navigate(['/visit/article'], {
             queryParams: {
               id: value.id,
             },
@@ -35,7 +35,7 @@ export class AppArticleComponent {
   name;
   items = [];
   checkArticle(id: number) {
-    this.router.navigate(['/user/article-detail'], {
+    this.router.navigate(['/visit/article-detail'], {
       queryParams: {
         id: id,
       },

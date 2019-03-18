@@ -1,28 +1,8 @@
 import { NbMenuItem } from '@nebular/theme';
+import { pre_items } from '../others/menu';
 
 export const MENU_ITEMS: NbMenuItem[] = [
-  {
-    title: '菜单区',
-    group: true,
-  },
-  {
-    title: 'user module',
-    link: '/user',
-  },
-  {
-    title: 'login',
-    link: '/auth/login',
-    home: true,
-  },
-  {
-    title: 'register',
-    link: '/auth/register',
-    home: true,
-  },
-  {
-    title: '管理分类',
-    group: true,
-  },
+  ...pre_items,
   {
     title: '类别管理',
     icon: 'nb-bar-chart',

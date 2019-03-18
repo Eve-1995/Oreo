@@ -20,13 +20,18 @@ export class AppHeaderComponent implements OnInit {
   @Input() title: string;
   userInfo: any;
 
-  userMenu = [{ title: '登出' }];
+  userMenu = [{ title: '个人中心' }, { title: '登出' }];
 
   onContecxtItemSelection(title) {
-    if (title === '登出') {
-      localStorage.removeItem('userInfo');
-      this.userInfo = null;
-      this.router.navigate(['/user/article']);
+    switch (title) {
+      case '登出':
+        localStorage.removeItem('userInfo');
+        this.userInfo = null;
+        this.router.navigate(['/visit/article']);
+        break;
+      case '个人中心':
+        this.router.navigate(['/user/profile']);
+        break;
     }
   }
   ngOnInit(): void {

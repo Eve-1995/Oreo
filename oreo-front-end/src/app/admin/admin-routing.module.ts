@@ -45,16 +45,7 @@ const routes: Routes = [
       { path: 'article', component: AppArticleComponent },
       { path: '**', redirectTo: 'classification' },
     ],
-  }, {
-    path: '',
-    component: AdminComponent,
-    children: [
-      { path: '', redirectTo: 'classification', pathMatch: 'full' },
-      { path: 'classification', component: AppClassificationComponent },
-      { path: 'article', component: AppArticleComponent },
-      { path: '**', redirectTo: 'classification' },
-    ],
-  },
+  }
 ];
 
 

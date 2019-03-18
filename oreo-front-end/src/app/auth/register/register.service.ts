@@ -4,10 +4,10 @@ import { User } from '../user.dto';
 import { ResponseDTO } from '../../others/response.dto';
 
 @Injectable()
-export class RegisterService {
+export class RegistService {
   constructor(private httpClient: HttpClient) { }
   server = 'http://localhost:3000/';
-  register(user: User): ResponseDTO | any {
+  regist(user: User): ResponseDTO | any {
     return this.httpClient.post(`${this.server}user/save`, user);
   }
 }

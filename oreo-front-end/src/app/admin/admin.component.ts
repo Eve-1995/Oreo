@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { MENU_ITEMS } from './admin-menu';
 
 @Component({
