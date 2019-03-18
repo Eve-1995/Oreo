@@ -9,21 +9,23 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
 })
 export class AppHeaderComponent implements OnInit {
-  @Input() title: string;
-  user: any;
-
-  userMenu = [{ title: '登出' }];
-
   constructor(
     private sidebarService: NbSidebarService,
     private layoutService: LayoutService,
     private menuService: NbMenuService,
     private router: Router,
-  ) { }
+  ) {
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  }
+  @Input() title: string;
+  userInfo: any;
+
+  userMenu = [{ title: '登出' }];
 
   onContecxtItemSelection(title) {
     if (title === '登出') {
-      localStorage.removeItem('roleInfo');
+      localStorage.removeItem('userInfo');
+      this.userInfo = null;
       this.router.navigate(['/user/article']);
     }
   }

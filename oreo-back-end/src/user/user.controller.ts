@@ -36,11 +36,13 @@ export class UserController {
         result.message = `验证成功!欢迎你,${v.nickname}`
         if (v.level === 0) {
           result.data = {
-            role: 'user'
+            role: 'user',
+            nickname: v.nickname
           }
         } else if (v.level === 1) {
           result.data = {
-            role: 'admin'
+            role: 'admin',
+            nickname: v.nickname
           }
         }
       }

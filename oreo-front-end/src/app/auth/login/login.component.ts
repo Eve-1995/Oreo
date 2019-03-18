@@ -22,7 +22,7 @@ export class AppLoginComponent {
     this.service.login(this.user).subscribe((v: ResponseDTO) => {
       if (v.code === 200) {
         this.toastrService.success('', v.message);
-        localStorage.setItem('roleInfo', v.data.role);
+        localStorage.setItem('userInfo', JSON.stringify(v.data));
         if (v.data.role === 'user') {
           this.router.navigate(['/user/article']);
         } else if (v.data.role === 'admin') {
