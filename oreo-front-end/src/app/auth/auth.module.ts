@@ -9,6 +9,7 @@ import { AppLoginComponent } from './login/login.component';
 import { AppRegisterComponent } from './register/register.component';
 import { AppContrastComponent } from './register/contrast/contrast.component';
 import { NgxMdModule } from 'ngx-md';
+import { httpInterceptorProviders } from '../others/interceptor';
 
 const PAGE_COMPONENT = [
   AppLoginComponent,
@@ -49,8 +50,9 @@ const BASE_MODULES = [CommonModule, FormsModule, RouterModule];
     ...CHILD_COMPONENT,
   ],
   providers: [
+    httpInterceptorProviders,
     ...NbDialogModule.forRoot().providers,
-  ],
+  ]
 })
 export class AuthModule {
 }

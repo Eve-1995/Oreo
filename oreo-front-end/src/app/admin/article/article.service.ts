@@ -5,15 +5,14 @@ import { ArticleClassificationDto } from './article.dto';
 @Injectable()
 export class ArticleService {
   constructor(private httpClient: HttpClient) { }
-  server = 'http://localhost:3000/';
   findBasicInfoList(): any {
-    return this.httpClient.get(`${this.server}article/findBasicInfoList`);
+    return this.httpClient.get(`article/findBasicInfoList`);
   }
   getClassificationNames(): any {
-    return this.httpClient.get(`${this.server}classification/findNames`);
+    return this.httpClient.get(`classification/findNames`);
   }
   save(obj: ArticleClassificationDto): any {
-    return this.httpClient.post(`${this.server}article/save`, obj);
+    return this.httpClient.post(`article/save`, obj);
   }
   delete(id: number): any {
     const body = {
@@ -21,15 +20,15 @@ export class ArticleService {
         id: id.toString(),
       },
     };
-    return this.httpClient.delete(`${this.server}article/delete`, body);
+    return this.httpClient.delete(`article/delete`, body);
   }
   findByFilter(name: string): any {
     if (typeof (name) === 'undefined') name = '';
     const params = { name };
-    return this.httpClient.get(`${this.server}article/findByFilter`, { params });
+    return this.httpClient.get(`article/findByFilter`, { params });
   }
   findBasicInfo(id: any): any {
     const params = { id };
-    return this.httpClient.get(`${this.server}article/findBasicInfo`, { params });
+    return this.httpClient.get(`article/findBasicInfo`, { params });
   }
 }

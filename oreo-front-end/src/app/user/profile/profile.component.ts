@@ -11,7 +11,7 @@ import { NbToastrService } from '@nebular/theme';
 export class AppProfileComponent implements OnInit {
   constructor(
     private service: ProfileService,
-    private toastrService: NbToastrService,
+    private toastrService: NbToastrService
   ) { }
 
   loading = true;
@@ -20,8 +20,11 @@ export class AppProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.toastrService.success('', null);
     const user = JSON.parse(localStorage.getItem('userInfo'));
     this.service.getUser(user.id).subscribe(v => {
+      console.log('v');
+      console.log(v);
       this.user = v.data;
       localStorage.setItem('userInfo', JSON.stringify(this.user));
       this.loading = false;
@@ -32,10 +35,7 @@ export class AppProfileComponent implements OnInit {
     this.submitted = true;
     this.service.save(this.user).subscribe((v: ResponseDTO) => {
       if (v.code === 200) {
-        this.toastrService.success('', v.message);
         this.ngOnInit();
-      } else {
-        this.toastrService.warning('', v.message);
       }
       this.submitted = false;
     });

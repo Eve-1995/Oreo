@@ -35,7 +35,7 @@ export class VisitComponent {
     }
   }
   getMenu(): any {
-    return this.httpClient.get('http://localhost:3000/classification/findClassifications');
+    return this.httpClient.get('classification/findClassifications');
   }
   /**
    *fix:当切换模块时,会导致之前添加的最后一个元素重新添加.

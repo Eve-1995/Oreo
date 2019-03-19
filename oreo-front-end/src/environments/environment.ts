@@ -10,4 +10,5 @@
 
 export const environment = {
   production: false,
+  base_api: 'http://localhost:3000/' // 测试服务器地址
 };
