@@ -23,8 +23,6 @@ export class AppProfileComponent implements OnInit {
     this.toastrService.success('', null);
     const user = JSON.parse(localStorage.getItem('userInfo'));
     this.service.getUser(user.id).subscribe(v => {
-      console.log('v');
-      console.log(v);
       this.user = v.data;
       localStorage.setItem('userInfo', JSON.stringify(this.user));
       this.loading = false;

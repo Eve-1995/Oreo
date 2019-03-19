@@ -22,8 +22,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes),],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserRoutingModule {
-}
+export class UserRoutingModule { }
+
+export const userRoutedComponents = [
+  UserComponent,
+  AppProfileComponent,
+  AppResetPasswordComponent,
+  AppCollectionComponent,
+  AppCommentComponent
+];

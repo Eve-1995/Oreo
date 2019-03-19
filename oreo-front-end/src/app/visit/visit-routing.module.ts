@@ -1,20 +1,9 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgxMdModule } from 'ngx-md';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NbListModule, NbCardModule } from '@nebular/theme';
 import { VisitComponent } from './visit.component';
 import { AppInfoComponent } from './info/info.component';
 import { AppArticleComponent } from './article/article.component';
 import { AppArticleDetailComponent } from './article-detail/article-detail.component';
-
-const NB_MODULES = [
-  NbListModule,
-  NbCardModule,
-];
-
-const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
 const routes: Routes = [
   {
@@ -30,20 +19,15 @@ const routes: Routes = [
   },
 ];
 
-
 @NgModule({
-  imports: [
-    BASE_MODULES,
-    RouterModule.forChild(routes),
-    NgxMdModule.forRoot(),
-    ...NB_MODULES,
-  ],
+  imports: [RouterModule.forChild(routes),],
   exports: [RouterModule],
-  declarations: [
-    AppInfoComponent,
-    AppArticleComponent,
-    AppArticleDetailComponent,
-  ],
 })
-export class VisitRoutingModule {
-}
+export class VisitRoutingModule { }
+
+export const visitiRoutedComponents = [
+  VisitComponent,
+  AppInfoComponent,
+  AppArticleComponent,
+  AppArticleDetailComponent,
+];

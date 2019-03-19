@@ -11,7 +11,12 @@ a {
     cursor: pointer !important;
 }
 
-// nb-select 在无选项时高度较低，设置为统一高度
+// 下拉框在无选项时与有选项时高度不同，设置为统一高度
 nb-select button {
     height: 38.5px;
+}
+
+// 去除侧边栏点击时的虚线
+::ng-deep nb-menu a {
+    outline: none;
 }

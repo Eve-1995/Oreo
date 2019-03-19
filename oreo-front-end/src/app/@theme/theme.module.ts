@@ -14,24 +14,73 @@ import {
   NbWindowModule,
   NbToastrModule,
   NbChatModule,
+  NbCardModule,
+  NbTabsetModule,
+  NbRouteTabsetModule,
+  NbSearchModule,
+  NbCheckboxModule,
+  NbPopoverModule,
+  NbProgressBarModule,
+  NbCalendarModule,
+  NbCalendarRangeModule,
+  NbStepperModule,
+  NbButtonModule,
+  NbListModule,
+  NbInputModule,
+  NbAccordionModule,
+  NbAlertModule,
+  NbSpinnerModule,
+  NbRadioModule,
+  NbSelectModule,
+  NbTooltipModule,
+  NbCalendarKitModule,
 } from '@nebular/theme';
 
 import { LayoutComponent } from './layout';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import { AppHeaderComponent } from './layout/header/header.component';
 import { AppFooterComponent } from './layout/footer/footer.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMdModule } from 'ngx-md';
+import { httpInterceptorProviders } from '../others/interceptor';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
-
+// NB第三方组件
 const NB_MODULES = [
-  NbActionsModule,
-  NbUserModule,
-  NbContextMenuModule,
+  NbCardModule,
   NbLayoutModule,
-  NbSidebarModule,
+  NbTabsetModule,
+  NbRouteTabsetModule,
   NbMenuModule,
+  NbUserModule,
+  NbActionsModule,
+  NbSearchModule,
+  NbSidebarModule,
+  NbCheckboxModule,
+  NbPopoverModule,
+  NbContextMenuModule,
+  NgbModule,
+  NbProgressBarModule,
+  NbCalendarModule,
+  NbCalendarRangeModule,
+  NbStepperModule,
+  NbButtonModule,
+  NbListModule,
+  NbToastrModule,
+  NbInputModule,
+  NbAccordionModule,
+  NbDatepickerModule,
+  NbDialogModule,
+  NbWindowModule,
+  NbAlertModule,
+  NbSpinnerModule,
+  NbRadioModule,
+  NbSelectModule,
+  NbChatModule,
+  NbTooltipModule,
+  NbCalendarKitModule,
 ];
-
+// 布局文件
 const COMPONENTS = [
   AppHeaderComponent,
   AppFooterComponent,
@@ -39,21 +88,14 @@ const COMPONENTS = [
 ];
 
 const NB_THEME_PROVIDERS = [
-  ...NbThemeModule.forRoot(
-    {
-      name: 'cosmic',
-    },
-    [COSMIC_THEME],
-  ).providers,
+  NgxMdModule.forRoot().providers,
+  ...NbThemeModule.forRoot({ name: 'cosmic' }, [COSMIC_THEME]).providers,
   ...NbSidebarModule.forRoot().providers,
   ...NbMenuModule.forRoot().providers,
   ...NbDatepickerModule.forRoot().providers,
   ...NbDialogModule.forRoot().providers,
   ...NbWindowModule.forRoot().providers,
-  ...NbToastrModule.forRoot().providers,
-  ...NbChatModule.forRoot({
-    messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
-  }).providers,
+  ...NbToastrModule.forRoot().providers
 ];
 
 @NgModule({
@@ -65,7 +107,10 @@ export class ThemeModule {
   static forRoot(): ModuleWithProviders {
     return <ModuleWithProviders>{
       ngModule: ThemeModule,
-      providers: [...NB_THEME_PROVIDERS],
+      providers: [
+        httpInterceptorProviders, // 全局拦截器
+        ...NB_THEME_PROVIDERS
+      ],
     };
   }
 }

@@ -15,6 +15,8 @@ export class AppInterceptor implements HttpInterceptor {
     const newReq = req.clone({
       url: this.server + req.url
     });
+    console.log('into interceptor!');
+
     return next.handle(newReq).pipe(
       tap(e => {
         if (e instanceof HttpResponse) {

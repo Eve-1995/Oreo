@@ -1,23 +1,20 @@
 import { NgModule } from '@angular/core';
-
 import { ThemeModule } from '../@theme/theme.module';
-import { VisitComponent } from './visit.component';
-import { VisitRoutingModule } from './visit-routing.module';
-import { NbToastrModule } from '@nebular/theme/components/toastr/toastr.module';
+import { VisitRoutingModule, visitiRoutedComponents } from './visit-routing.module';
+import { NgxMdModule } from 'ngx-md';
 import { httpInterceptorProviders } from '../others/interceptor';
 
 @NgModule({
   imports: [
+    NgxMdModule.forRoot(),
     VisitRoutingModule,
     ThemeModule,
-    NbToastrModule.forRoot()
   ],
   declarations: [
-    VisitComponent
+    ...visitiRoutedComponents
   ],
   providers: [
     httpInterceptorProviders
-  ],
+  ]
 })
-export class VisitModule {
-}
+export class VisitModule { }

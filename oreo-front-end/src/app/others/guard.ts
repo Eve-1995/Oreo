@@ -18,7 +18,7 @@ export class UserGuard implements CanActivateChild {
   constructor(private router: Router) { }
   canActivateChild() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if (userInfo && userInfo.level === 0) {
+    if (userInfo) {
       return true;
     }
     return this.router.createUrlTree(['/visit/article']);
