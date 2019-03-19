@@ -68,4 +68,9 @@ export class UserController {
     })
     return result;
   }
+  @Get('testMessage')
+  async testMessage(@Query() query): Promise<any> {
+    const result: ResponseDTO = { code: 200, message: '200啦兄dei', data: null }
+    return result;
+  }
 }
