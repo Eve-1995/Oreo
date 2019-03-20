@@ -8,11 +8,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'nb-bar-chart',
     link: '/user/profile',
   },
-  {
-    title: '修改密码',
-    icon: 'nb-bar-chart',
-    link: '/user/reset-password',
-  },
+  // {
+  //   title: '修改密码',
+  //   icon: 'nb-bar-chart',
+  //   link: '/user/reset-password',
+  // },
   {
     title: '我的收藏',
     icon: 'nb-bar-chart',

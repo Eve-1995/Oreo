@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { ResponseDTO } from '../../others/response.dto';
-import { Observable } from 'rxjs';
 import { AppGlobalService } from '../../others/global.service';
+import { NbDialogService } from '@nebular/theme';
+import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -13,6 +14,7 @@ export class AppProfileComponent implements OnInit {
   constructor(
     private service: ProfileService,
     private globalService: AppGlobalService,
+    private dialogService: NbDialogService,
   ) { }
 
   personalLoading = true;
@@ -48,13 +50,17 @@ export class AppProfileComponent implements OnInit {
   }
 
   accountSave() {
-    this.accountSubmitted = true;
-    this.accountLoading = true;
-    this.service.save(this.user).subscribe((v: ResponseDTO) => {
-      if (v.code === 200) {
-        this.ngOnInit();
+    this.dialogService.open(AppConfirmComponent, { context: { content: '手机号与邮箱一旦设定将无法再修改,确定要更新吗?' } }).onClose.subscribe(value => {
+      if (value === 'yes') {
+        this.accountSubmitted = true;
+        this.accountLoading = true;
+        this.service.save(this.user).subscribe((v: ResponseDTO) => {
+          if (v.code === 200) {
+            this.ngOnInit();
+          }
+          this.accountSubmitted = false;
+        });
       }
-      this.accountSubmitted = false;
     });
   }
 }
