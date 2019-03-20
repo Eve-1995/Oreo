@@ -9,6 +9,6 @@ import { ThemeModule } from '../@theme/theme.module';
   ],
   declarations: [
     ...userRoutedComponents
-  ],
+  ]
 })
 export class UserModule { }

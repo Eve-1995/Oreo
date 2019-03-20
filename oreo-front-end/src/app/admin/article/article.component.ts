@@ -2,10 +2,10 @@ import { Component, TemplateRef } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
-import { AppConfirmComponent } from '../children/confirm/confirm.component';
 import { ArticleService } from './article.service';
 import { ArticleClassificationDto } from './article.dto';
 import { Classification } from '../classification/classification.dto';
+import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
 
 @Component({
   templateUrl: './article.component.html',

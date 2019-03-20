@@ -20,3 +20,11 @@ nb-select button {
 ::ng-deep nb-menu a {
     outline: none;
 }
+// dialog底部按钮组统一样式
+.dialog-button-group {
+    display: flex;
+    justify-content: flex-end;
+    button {
+        margin-left: 10px;
+    }
+}

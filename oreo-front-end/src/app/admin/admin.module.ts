@@ -5,11 +5,9 @@ import { AdminRoutingModule, adminRoutedComponents } from './admin-routing.modul
 import { AppDialogNameComponent } from './classification/dialog-name-prompt/dialog-name-prompt.component';
 import { httpInterceptorProviders } from '../others/interceptor';
 import { NbDialogModule } from '@nebular/theme';
-import { AppConfirmComponent } from './children/confirm/confirm.component';
 
 const CHILD_COMPONENT = [
-  AppDialogNameComponent,
-  AppConfirmComponent
+  AppDialogNameComponent
 ];
 
 @NgModule({

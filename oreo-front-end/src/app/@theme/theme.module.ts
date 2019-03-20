@@ -1,6 +1,4 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NbActionsModule,
   NbLayoutModule,
@@ -41,11 +39,13 @@ import { COSMIC_THEME } from './styles/theme.cosmic';
 import { AppHeaderComponent } from './layout/header/header.component';
 import { AppFooterComponent } from './layout/footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxMdModule } from 'ngx-md';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from '../others/interceptor';
+import { NgxMdModule } from 'ngx-md';
+import { AppConfirmComponent } from './global-components/confirm/confirm.component';
 
-const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
-// NB第三方组件
+// Nebular组件
 const NB_MODULES = [
   NbCardModule,
   NbLayoutModule,
@@ -86,6 +86,12 @@ const COMPONENTS = [
   AppFooterComponent,
   LayoutComponent,
 ];
+// 全局子组件
+const CHILD_COMPONENTS = [
+  AppConfirmComponent
+];
+
+const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
 const NB_THEME_PROVIDERS = [
   NgxMdModule.forRoot().providers,
@@ -99,16 +105,17 @@ const NB_THEME_PROVIDERS = [
 ];
 
 @NgModule({
-  imports: [...BASE_MODULES, ...NB_MODULES],
-  exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS],
-  declarations: [...COMPONENTS],
+  imports: [...NB_MODULES, ...BASE_MODULES],
+  exports: [...NB_MODULES, ...BASE_MODULES, ...COMPONENTS, ...CHILD_COMPONENTS],
+  declarations: [...COMPONENTS, ...CHILD_COMPONENTS],
+  entryComponents: [...CHILD_COMPONENTS]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {
     return <ModuleWithProviders>{
       ngModule: ThemeModule,
       providers: [
-        httpInterceptorProviders, // 全局拦截器
+        httpInterceptorProviders,
         ...NB_THEME_PROVIDERS
       ],
     };
