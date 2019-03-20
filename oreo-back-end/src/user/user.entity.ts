@@ -25,13 +25,9 @@ export class User {
     password: string;
 
     @Column({
-        default: 0,// 0表游客,1表管理员
+        default: 0,// 0:普通用户,1:管理员
     })
     level: number;
-
-    @ManyToMany(type => Article, article => article.users)
-    @JoinTable()
-    articles: Article[];
 
     @Column({
         nullable: true
@@ -73,4 +69,8 @@ export class User {
         nullable: true
     })
     eduacation: string;
+
+    @ManyToMany(type => Article, article => article.users)
+    @JoinTable()
+    articles: Article[];
 }

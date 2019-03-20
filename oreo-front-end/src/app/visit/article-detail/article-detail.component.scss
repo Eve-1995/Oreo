@@ -22,3 +22,22 @@
         }
     }
 }
+
+app-svg {
+    margin-top: 4px;
+    margin-right: 5px;
+}
+
+::ng-deep nb-actions .action {
+    margin-top: 1px;
+}
+
+.article-around {
+    display: flex;
+    justify-content: space-between;
+    width: 93.5%;
+    margin: 0 auto;
+    margin-bottom: 0px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}

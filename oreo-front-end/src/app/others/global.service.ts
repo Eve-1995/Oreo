@@ -18,4 +18,7 @@ export class AppGlobalService {
   refreshUserInfo(nickname: string) {
     this.watchUserInfo.next(nickname);
   }
+  getUserInfo() {
+    return JSON.parse(localStorage.getItem('userInfo'));
+  }
 }

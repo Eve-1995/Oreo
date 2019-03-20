@@ -5,11 +5,14 @@ import { ResponseDTO } from 'src/others/response.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly service: UserService) { }
+  constructor(private readonly service: UserService,
+  ) { }
+
   @Get('findBasicInfo')
   async findBasicInfo(): Promise<User[]> {
     return this.service.findBasicInfo();
   }
+
   @Post('save')
   async save(@Body() dto: User): Promise<ResponseDTO> {
     const result: ResponseDTO = { code: null, message: null, data: null }
@@ -66,6 +69,41 @@ export class UserController {
       result.data = v
       if (v === undefined) {
         result.data = null;
+      }
+    })
+    return result;
+  }
+
+  @Post('collect')
+  async collect(@Body() dto: { id: number, articleId: number }): Promise<ResponseDTO> {
+    const result: ResponseDTO = { code: null, message: null, data: null }
+    await this.service.collect(dto).then(v => {
+      if (v) {
+        result.code = 200
+        result.message = '收藏成功'
+      } else {
+        result.code = 201
+        result.message = '取消成功'
+      }
+    }).catch(e => {
+      console.log(e);
+    })
+    return result
+  }
+
+  @Get('actionStatus')
+  async actionStatus(@Query() query): Promise<any> {
+    const result: ResponseDTO = { code: null, message: null, data: null }
+    await this.service.hasCollect({ id: query.id, articleId: query.articleId }).then(v => {
+      result.code = 200
+      if (v) {
+        result.data = {
+          hasCollect: true
+        }
+      } else {
+        result.data = {
+          hasCollect: false
+        }
       }
     })
     return result;

@@ -44,6 +44,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from '../others/interceptor';
 import { NgxMdModule } from 'ngx-md';
 import { AppConfirmComponent } from './global-components/confirm/confirm.component';
+import { AppSvgComponent } from './global-components/svg/svg.component';
 
 // Nebular组件
 const NB_MODULES = [
@@ -88,7 +89,8 @@ const COMPONENTS = [
 ];
 // 全局子组件
 const CHILD_COMPONENTS = [
-  AppConfirmComponent
+  AppConfirmComponent,
+  AppSvgComponent,
 ];
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];

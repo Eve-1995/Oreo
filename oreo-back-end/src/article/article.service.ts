@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult, Like } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { Article } from './article.entity';
 import { Classification } from 'src/classification/classification.entity';
-import { ArticleClassificationDto } from './dto/article-classification.dto';
-import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class ArticleService {
@@ -12,20 +10,19 @@ export class ArticleService {
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>,
     @InjectRepository(Classification)
-    private readonly classificationRepository: Repository<Classification> ) {
+    private readonly classificationRepository: Repository<Classification>) {
   }
   /**
    * 新增文章信息
    * @param article 文章的实体
    */
-  async save(dto: ArticleClassificationDto): Promise<any> {
-    let article = await this.articleRepository.save(dto);
-    const classifications = await this.classificationRepository.findByIds(dto.classificationIds, { relations: ['articles'] });
-    for (const classification of classifications) {
-      if (!Array.isArray(classification.articles)) classification.articles = [];
-      classification.articles.push(article);
-      await this.classificationRepository.save(classification);
-    }
+  async save(dto: Article): Promise<any> {
+    let temp = await this.articleRepository.save(dto)
+    let article = await this.articleRepository.findOne(temp.id, { relations: ['classifications'] })
+    dto.classifications.forEach(v => {
+      article.classifications.push(v);
+    })
+    await this.articleRepository.save(article);
   }
   /**
    * 查找文章的基本信息列表
@@ -86,5 +83,5 @@ export class ArticleService {
       where: { id }
     })
   }
-  
+
 }

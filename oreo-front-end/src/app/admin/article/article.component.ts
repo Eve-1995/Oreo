@@ -84,10 +84,8 @@ export class AppArticleComponent {
           *solution:双重for循环校验以同步两个字段的数据
           */
           const arr = [];
-          this.selectedObj.classifications.forEach(item1 => {
-            this.selectedObj.classificationIds.forEach(item2 => {
-              if (item2 === item1.id) arr.push(item1);
-            });
+          this.selectedObj.classificationIds.forEach(item => {
+            arr.push({ id: item });
           });
           this.selectedObj.classifications = arr;
           this.articleService.save(this.selectedObj).subscribe(() => {
@@ -107,6 +105,11 @@ export class AppArticleComponent {
       },
     }).onClose.subscribe(value => {
       if (value === 'yes') {
+        const arr = [];
+        this.selectedObj.classificationIds.forEach(item => {
+          arr.push({ id: item });
+        });
+        this.selectedObj.classifications = arr;
         this.articleService.save(this.selectedObj).subscribe(() => {
           this.fetchTableList();
           this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });

@@ -7,7 +7,9 @@ import { NbToastrService } from '@nebular/theme';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
-  constructor(private toastrService: NbToastrService) { }
+  constructor(
+    private toastrService: NbToastrService,
+  ) { }
   server = environment.base_api;
 
   intercept(req: HttpRequest<any>, next: HttpHandler):
@@ -18,10 +20,11 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(newReq).pipe(
       tap(e => {
         if (e instanceof HttpResponse) {
-          if (e.body.code && e.body.message) {
-            if (e.body.code === 200) {
+          if (e.body && e.body.code && e.body.message) {
+            if (e.body.code === 200 || e.body.code === 201) {
               this.toastrService.success('', e.body.message);
             } else {
+              // 想在这里拒绝掉
               this.toastrService.warning('', e.body.message);
             }
           }

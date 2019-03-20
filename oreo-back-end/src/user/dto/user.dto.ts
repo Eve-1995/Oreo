@@ -8,7 +8,6 @@ export interface User {
     phone: string;
     password: string;
     level: number;
-    articles: Article[];
     realname: string;
     email: string;
     liveCity: string;
@@ -17,4 +16,5 @@ export interface User {
     company: string;
     univercity: string;
     eduacation: string;
+    articles: Article[];
 }
