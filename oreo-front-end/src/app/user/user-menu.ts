@@ -4,7 +4,7 @@ import { pre_items } from '../others/menu';
 export const MENU_ITEMS: NbMenuItem[] = [
   ...pre_items,
   {
-    title: '个人资料',
+    title: '资料设置',
     icon: 'nb-bar-chart',
     link: '/user/profile',
   },

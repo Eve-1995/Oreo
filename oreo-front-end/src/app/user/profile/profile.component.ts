@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { ResponseDTO } from '../../others/response.dto';
-import { NbToastrService } from '@nebular/theme';
+import { Observable } from 'rxjs';
+import { AppGlobalService } from '../../others/global.service';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -11,31 +12,49 @@ import { NbToastrService } from '@nebular/theme';
 export class AppProfileComponent implements OnInit {
   constructor(
     private service: ProfileService,
-    private toastrService: NbToastrService
+    private globalService: AppGlobalService,
   ) { }
 
-  loading = true;
+  personalLoading = true;
+  accountLoading = true;
   user: any = {};
-  submitted: boolean = false;
+  personalSubmitted: boolean = false;
+  accountSubmitted: boolean = false;
+  phoneBoolean = false;
+  emailBoolean = false;
 
   ngOnInit(): void {
-    this.loading = true;
-    this.toastrService.success('', null);
     const user = JSON.parse(localStorage.getItem('userInfo'));
     this.service.getUser(user.id).subscribe(v => {
       this.user = v.data;
+      this.phoneBoolean = !!this.user.phone;
+      this.emailBoolean = !!this.user.email;
       localStorage.setItem('userInfo', JSON.stringify(this.user));
-      this.loading = false;
+      this.personalLoading = false;
+      this.accountLoading = false;
+      this.globalService.refreshUserInfo(this.user.nickname);
     });
   }
 
-  save() {
-    this.submitted = true;
+  personalSave() {
+    this.personalSubmitted = true;
+    this.personalLoading = true;
     this.service.save(this.user).subscribe((v: ResponseDTO) => {
       if (v.code === 200) {
         this.ngOnInit();
       }
-      this.submitted = false;
+      this.personalSubmitted = false;
+    });
+  }
+
+  accountSave() {
+    this.accountSubmitted = true;
+    this.accountLoading = true;
+    this.service.save(this.user).subscribe((v: ResponseDTO) => {
+      if (v.code === 200) {
+        this.ngOnInit();
+      }
+      this.accountSubmitted = false;
     });
   }
 }

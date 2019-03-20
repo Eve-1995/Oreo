@@ -1,8 +1,9 @@
-<nb-card>
-  <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
-    <div class="row show-grid">
-      <div class="col-12 col-sm-6 col-md-8">
-        <form (ngSubmit)="save()" #form="ngForm" aria-labelledby="title">
+<div class="row">
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>个人资料</nb-card-header>
+      <nb-card-body [nbSpinner]="personalLoading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
+        <form (ngSubmit)="personalSave()" #form="ngForm" aria-labelledby="title">
           <div class="form-control-group">
             <label class="label" for="input-realname">真实姓名:</label>
             <input nbInput fullWidth [(ngModel)]="user.realname" name="realname" type="text" id="input-realname"
@@ -38,14 +39,43 @@
             <input nbInput fullWidth [(ngModel)]="user.birth" name="birth" type="text" id="input-birth"
               [maxlength]="32">
           </div>
-          <button nbButton fullWidth status="success" [disabled]="submitted" [class.btn-pulse]="submitted">
+          <button nbButton fullWidth status="success" [disabled]="personalSubmitted" [class.btn-pulse]="personalSubmitted">
             更新
           </button>
         </form>
-      </div>
-      <div class="col-6 col-md-4">
-        <!-- <div>.col-6 .col-md-4</div> -->
-      </div>
-    </div>
-  </nb-card-body>
-</nb-card>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>账号资料</nb-card-header>
+      <nb-card-body [nbSpinner]="accountLoading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
+        <form (ngSubmit)="accountSave()" #form="ngForm" aria-labelledby="title">
+          <div class="form-control-group">
+            <label class="label" for="input-nickname">昵称:</label>
+            <input nbInput fullWidth [(ngModel)]="user.nickname" name="nickname" type="text" id="input-nickname"
+              [maxlength]="32">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-phone">手机号
+              <svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="question-circle" aria-hidden="true" nbTooltip="一旦设定将无法修改!" nbTooltipPlacement="top" nbTooltipStatus="danger"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0 1 30.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1 0 80 0 40 40 0 1 0-80 0z"></path></svg>:
+            </label>
+            <input nbInput fullWidth [(ngModel)]="user.phone" name="phone" type="text" id="input-phone" [maxlength]="32"
+              [disabled]="phoneBoolean">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-email">邮箱
+              <svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="question-circle" aria-hidden="true" nbTooltip="一旦设定将无法修改!" nbTooltipPlacement="top" nbTooltipStatus="danger"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0 1 30.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1 0 80 0 40 40 0 1 0-80 0z"></path></svg>:
+            </label>
+            <input nbInput fullWidth [(ngModel)]="user.email" name="email" type="text" id="input-email" [maxlength]="32"
+              [disabled]="emailBoolean">
+          </div>
+          <button nbButton fullWidth status="success" [disabled]="accountSubmitted" [class.btn-pulse]="accountSubmitted">
+            更新
+          </button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

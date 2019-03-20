@@ -15,12 +15,10 @@ export class AppInterceptor implements HttpInterceptor {
     const newReq = req.clone({
       url: this.server + req.url
     });
-    console.log('into interceptor!');
-
     return next.handle(newReq).pipe(
       tap(e => {
         if (e instanceof HttpResponse) {
-          if (e.body.code) {
+          if (e.body.code && e.body.message) {
             if (e.body.code === 200) {
               this.toastrService.success('', e.body.message);
             } else {

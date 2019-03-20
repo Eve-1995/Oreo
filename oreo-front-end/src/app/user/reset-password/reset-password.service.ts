@@ -5,7 +5,4 @@ import { ResponseDTO } from '../../others/response.dto';
 @Injectable()
 export class ResetPasswordService {
   constructor(private httpClient: HttpClient) { }
-  testMessage(): ResponseDTO | any {
-    return this.httpClient.get(`user/testMessage`);
-  }
 }

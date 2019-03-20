@@ -1,9 +1,9 @@
 <nb-card>
-  <nb-card-header>请确认</nb-card-header>
+  <nb-card-header>{{title}}</nb-card-header>
   <nb-card-body>
-    该操作将彻底删除数据且不可恢复,请慎重考虑!
+    {{content}}
   </nb-card-body>
-  <nb-card-footer>
+  <nb-card-footer class="dialog-button-group">
     <button nbButton status="danget" (click)="cancel()">取消</button>
     <button nbButton status="success" (click)="submit()">确定</button>
   </nb-card-footer>

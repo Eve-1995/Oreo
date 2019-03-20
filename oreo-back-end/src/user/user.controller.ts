@@ -31,7 +31,9 @@ export class UserController {
     let result: ResponseDTO = { code: null, message: null, data: null }
     await this.save(dto).then((v: ResponseDTO) => {
       result = v;
-      result.message = '修改成功'
+      if (v.code === 200) {
+        result.message = '修改成功'
+      }
     })
     return result
   }
@@ -66,11 +68,6 @@ export class UserController {
         result.data = null;
       }
     })
-    return result;
-  }
-  @Get('testMessage')
-  async testMessage(@Query() query): Promise<any> {
-    const result: ResponseDTO = { code: 200, message: '200啦兄dei', data: null }
     return result;
   }
 }

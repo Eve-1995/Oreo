@@ -9,16 +9,7 @@ import { NbToastrService } from '@nebular/theme';
 })
 export class AppResetPasswordComponent {
   constructor(
-    private service: ResetPasswordService,
-    private toastrService: NbToastrService
+    private service: ResetPasswordService
   ) {
-    this.service.testMessage().subscribe(v => {
-
-    });
-  }
-  testMessage() {
-    this.service.testMessage().subscribe(v => {
-      this.toastrService.success('', v.message);
-    });
   }
 }

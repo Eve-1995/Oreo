@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NbSidebarService, NbMenuService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
 import { Router } from '@angular/router';
+import { AppGlobalService } from '../../../others/global.service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ export class AppHeaderComponent implements OnInit {
     private sidebarService: NbSidebarService,
     private layoutService: LayoutService,
     private menuService: NbMenuService,
+    private globalService: AppGlobalService,
     private router: Router,
   ) {
     this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -35,10 +37,12 @@ export class AppHeaderComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.menuService.onItemClick()
-      .subscribe((event) => {
-        this.onContecxtItemSelection(event.item.title);
-      });
+    this.menuService.onItemClick().subscribe((event) => {
+      this.onContecxtItemSelection(event.item.title);
+    });
+    this.globalService.watchUserInfo.subscribe(v => {
+      this.userInfo.nickname = v;
+    });
   }
 
   toggleSidebar(): boolean {

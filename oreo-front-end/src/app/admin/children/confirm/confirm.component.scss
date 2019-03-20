@@ -1,8 +1,1 @@
-@import '../../../@theme/styles/themes';
-
-@include nb-install-component() {
-  .btn-success {
-    float: right;
-    margin-left: 1rem;
-  }
-}
+@import '../../../admin/admin.module';
