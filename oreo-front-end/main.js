@@ -12,7 +12,7 @@ dev = args.some(function (val) { return val === '--dev'; });
 console.log(dev);
 // 设置调试环境和运行环境 的渲染进程路径
 const winURL = dev ? 'http://localhost:4200' :
-  `file://${__dirname}/dist/index.html`;
+  `file://${__dirname}/dist/index_electron.html`;
 
 let win
 
