@@ -9,7 +9,7 @@ import { ContrastService } from './contrast.service';
 })
 export class AppContrastComponent {
   constructor(
-    protected ref: NbDialogRef<AppContrastComponent>,
+    public ref: NbDialogRef<AppContrastComponent>,
     private service: ContrastService,
   ) {
     this.value = this.service.getContrast();

@@ -5,6 +5,7 @@
 
 # dependencies
 /node_modules
+/electron-lib/installer
 
 # IDEs and editors
 /.idea
