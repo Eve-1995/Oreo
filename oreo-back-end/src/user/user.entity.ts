@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Article } from 'src/article/article.entity';
+import { Comment } from 'src/comment/comment.entity';
 
 @Entity()
 export class User {
@@ -73,4 +74,7 @@ export class User {
     @ManyToMany(type => Article, article => article.users)
     @JoinTable()
     articles: Article[];
+
+    @OneToMany(type => Comment, comment => comment.user)
+    comments: Comment[];
 }

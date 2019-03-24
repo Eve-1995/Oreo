@@ -28,16 +28,44 @@ app-svg {
     margin-right: 5px;
 }
 
-::ng-deep nb-actions .action {
-    margin-top: 1px;
+::ng-deep nb-actions {
+    .action {
+        margin-top: 1px;
+    }
+    nb-action {
+        border-left: none !important;
+    }
 }
 
-.article-around {
-    display: flex;
-    justify-content: space-between;
-    width: 93.5%;
-    margin: 0 auto;
-    margin-bottom: 0px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+::ng-deep nb-card-footer {
+    .send {
+        margin-left: -13px;
+    }
+    .comment {
+        display: flex;
+        padding: 0.75rem 1.125rem;
+        margin-top: -18px;
+        .content {
+            flex-grow: 1;
+            .content-actions {
+                .content-actions-time {
+                    color: #777;
+                }
+            }
+            .content-reply {
+                .content-repky-items {
+                    display: flex;
+                    .content-repky-items-content {
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.hide {
+    width: 100%;
+    height: 100%;
+    background: #777;
 }

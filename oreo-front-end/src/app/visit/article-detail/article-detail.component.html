@@ -12,34 +12,83 @@
   <nb-card-body>
     <ngx-md [data]="articleDetail.content" class="md"></ngx-md>
   </nb-card-body>
-  <div class="article-around">
-    <div class="item hover">上一篇:四代火影VS柱间,金色闪光能否取得胜利?</div>
-    <div class="item hover">下一篇:论二战对美国经济崛起的影响</div>
-  </div>
+  <nb-actions size="large">
+    <nb-action class="hover" (cbOnSuccess)="copied()" ngxClipboard [cbContent]="copyContent">
+      <app-svg [type]="'share'"></app-svg>
+      <span class="action">分享</span>
+    </nb-action>
+    <nb-action class="hover" (click)="collect()">
+      <ng-container *ngIf="!hasCollection">
+        <app-svg [type]="'collect-hollow'"></app-svg>
+        <span class="action">收藏</span>
+      </ng-container>
+      <ng-container *ngIf="hasCollection">
+        <app-svg [type]="'collect-solid'"></app-svg>
+        <span class="action">已收藏</span>
+      </ng-container>
+    </nb-action>
+  </nb-actions>
   <nb-card-footer>
-    <nb-actions size="large">
-      <nb-action class="hover">
-        <app-svg [type]="'greate-hollow'"></app-svg>
-        <span class="action">点赞</span>
-      </nb-action>
-      <nb-action class="hover">
-        <app-svg [type]="'comment'"></app-svg>
-        <span class="action">评论</span>
-      </nb-action>
-      <nb-action class="hover" (cbOnSuccess)="copied()" ngxClipboard [cbContent]="copyContent">
-        <app-svg [type]="'share'"></app-svg>
-        <span class="action">分享</span>
-      </nb-action>
-      <nb-action class="hover" (click)="collect()">
-        <ng-container *ngIf="!hasCollection">
-          <app-svg [type]="'collect-hollow'"></app-svg>
-          <span class="action">收藏</span>
-        </ng-container>
-        <ng-container *ngIf="hasCollection">
-          <app-svg [type]="'collect-solid'"></app-svg>
-          <span class="action">已收藏</span>
-        </ng-container>
-      </nb-action>
-    </nb-actions>
+    <div class="row comment" *ngFor="let item of comments">
+      <span class="username">
+        {{item.fromUser}}
+      </span>
+      :
+      <div class="content">
+        {{item.content}}
+        <div class="content-actions">
+          <span class="content-actions-time">
+            {{item.createTime | date:"yyyy-MM-dd"}}
+          </span>
+          <a href="javascript:;" (click)="doReply(dialog,item.fromUser,item.id,item.id)">回复</a>
+        </div>
+        <div class="content-reply">
+          <div class="content-repky-items" *ngFor="let replyItem of item.children">
+            <div class="content-repky-items-nickname">
+              <span>
+                {{replyItem.fromUser}}
+              </span>
+              回复
+              <span>
+                {{replyItem.toUser}}
+              </span>
+              :
+            </div>
+            <div class="content-repky-items-content">
+              {{replyItem.content}}
+              <div class="content-actions">
+                <span class="content-actions-time">
+                  {{replyItem.createTime | date:"yyyy-MM-dd"}}
+                </span>
+                <a href="javascript:;"
+                  (click)="doReply(dialog,replyItem.fromUser,replyItem.id,replyItem.rootCommentId)">回复</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div [ngClass]="{'col-11': focus,'col-12': !focus}">
+        <input nbInput fullWidth placeholder="say something..." [(ngModel)]="commentContent" (focus)="focus = true"
+          (blur)="onBlur()" (keyup.enter)="doComment()">
+      </div>
+      <div class="col-1 send" *ngIf="focus == true">
+        <button nbButton status="success" (click)="doComment()">评论</button>
+      </div>
+    </div>
   </nb-card-footer>
 </nb-card>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card [style.width.px]="475" [style.height.px]="254">
+    <nb-card-header>回复 {{data.fromUser}} :</nb-card-header>
+    <nb-card-body>
+      <textarea rows="2" nbInput fullWidth class="form-control" name="replyContent"
+        [(ngModel)]="replyContent"></textarea>
+    </nb-card-body>
+    <nb-card-footer class="dialog-button-group">
+      <button nbButton (click)="ref.close()">取消</button>
+      <button nbButton (click)="ref.close('yes')" [disabled]="replyContent.trim()==''">评论</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

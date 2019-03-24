@@ -2,14 +2,13 @@
 import { Get, Controller, Param, Post, Body, Delete, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
-import { ArticleClassificationDto } from './dto/article-classification.dto';
 @Controller('article')
 export class ArticleController {
   constructor(
     private readonly service: ArticleService) { }
 
   @Post('save')
-  async save(@Body() dto: ArticleClassificationDto): Promise<Article> {
+  async save(@Body() dto: Article): Promise<Article> {
     return this.service.save(dto);
   }
 

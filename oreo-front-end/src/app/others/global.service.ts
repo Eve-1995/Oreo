@@ -18,6 +18,10 @@ export class AppGlobalService {
   refreshUserInfo(nickname: string) {
     this.watchUserInfo.next(nickname);
   }
+  watchMask = new Subject();
+  refreshMaskState(state: boolean) {
+    this.watchMask.next(state);
+  }
   getUserInfo() {
     return JSON.parse(localStorage.getItem('userInfo'));
   }

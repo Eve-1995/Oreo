@@ -21,7 +21,7 @@ export class UserGuard implements CanActivateChild {
     if (userInfo) {
       return true;
     }
-    return this.router.createUrlTree(['/visit/article']);
+    return this.router.createUrlTree(['/auth/login']);
   }
 }
 

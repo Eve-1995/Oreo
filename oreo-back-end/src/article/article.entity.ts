@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinTable, ManyToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Classification } from 'src/classification/classification.entity';
 import { User } from 'src/user/user.entity';
+import { Comment } from 'src/comment/comment.entity';
 
 @Entity()
 export class Article {
@@ -36,4 +37,7 @@ export class Article {
 
     @ManyToMany(type => User, user => user.articles)
     users: User[];
+
+    @OneToMany(type => Comment, comment => comment.article)
+    comments: Comment[];
 }

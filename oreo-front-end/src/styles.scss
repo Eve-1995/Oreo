@@ -1,9 +1,12 @@
 button {
-  text-transform: none !important;
-  outline: none !important;
+    text-transform: none !important;
+    outline: none !important;
 }
 
 button:hover {
-  cursor: pointer !important;
+    cursor: pointer !important;
 }
 
+::ng-deep nb-layout-header {
+    z-index: 1;
+}
