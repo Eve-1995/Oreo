@@ -2,11 +2,22 @@
   <nb-card-header>请输入</nb-card-header>
   <nb-card-body>
     <form #form="ngForm">
-      <input nbInput required [(ngModel)]="newName" name="newName">
+      <input
+        nbInput
+        required
+        name="newName"
+        [(ngModel)]="newName"
+        (keyup.enter)="submit()">
     </form>
   </nb-card-body>
-  <nb-card-footer>
+  <nb-card-footer class="dialog-button-group">
     <button nbButton (click)="cancel()">取消</button>
-    <button nbButton status="success" (click)="submit()" [disabled]="form.invalid">确认</button>
+    <button
+      nbButton
+      status="success"
+      [disabled]="form.invalid"
+      (click)="submit()">
+      确认
+    </button>
   </nb-card-footer>
 </nb-card>
