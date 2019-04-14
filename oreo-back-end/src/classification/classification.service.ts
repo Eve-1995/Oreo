@@ -13,6 +13,10 @@ export class ClassificationService {
     return this.classificationRepository.save(classification);
   }
 
+  async findDetail(id: number): Promise<Classification> {
+    return this.classificationRepository.findOne(id);
+  }
+
   async delete(id: number): Promise<DeleteResult> {
     return await this.classificationRepository.delete(id);
   }

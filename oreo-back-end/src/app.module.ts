@@ -17,7 +17,7 @@ import { CommentModule } from './comment/comment.module';
       // logging: ["query"],
       port: 3306,
       username: 'root',
-      password: 'password',
+      password: '12345',
       database: 'blog2',
       entities: ['src/**/**.entity{.ts,.js}'],
       synchronize: true,

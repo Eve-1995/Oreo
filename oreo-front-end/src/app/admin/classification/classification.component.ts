@@ -4,7 +4,7 @@ import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { AppDialogNameComponent } from './dialog-name-prompt/dialog-name-prompt.component';
 import { ClassificationService } from './classification.service';
-import { Classification } from './classification.dto';
+import { Classification, CreateClassification } from './classification.dto';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
 
 @Component({
@@ -58,11 +58,10 @@ export class AppClassificationComponent {
   }
 
   create() {
-    this.dialogService.open(AppDialogNameComponent).onClose.subscribe(name => {
-      if (name != null) {
-        this.classificationService.save({ name }).subscribe(() => {
+    this.dialogService.open(AppDialogNameComponent, { context: { operation: 'create' }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: CreateClassification) => {
+      if (v !== undefined) {
+        this.classificationService.save({ name: v.name, keywords: v.keywords }).subscribe(() => {
           this.fetchTableList();
-          this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
         });
       }
     });
@@ -86,16 +85,14 @@ export class AppClassificationComponent {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
-      this.dialogService.open(AppDialogNameComponent).onClose.subscribe(name => {
-        if (name != null) {
-          const obj = new Classification();
-          obj.id = this.selectedObj.id;
-          obj.name = name;
-          this.classificationService.save(obj).subscribe(value => {
-            this.fetchTableList();
-            this.toastrService.show('', '更新成功', { status: NbToastStatus.SUCCESS });
-          });
-        }
+      this.classificationService.findDetail(this.selectedObj.id).subscribe(value => {
+        this.dialogService.open(AppDialogNameComponent, { context: { operation: 'edit', data: value }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: CreateClassification) => {
+          if (v !== undefined) {
+            this.classificationService.save({ id: v.id, name: v.name, keywords: v.keywords }).subscribe(() => {
+              this.fetchTableList();
+            });
+          }
+        });
       });
     }
   }

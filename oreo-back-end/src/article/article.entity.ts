@@ -22,15 +22,14 @@ export class Article {
     })
     content: string;
 
-    @Column({
-        default: 0,
-    })
+    @Column({default: 0})
     likeAmount: number;
 
-    @Column({
-        default: 0,
-    })
+    @Column({default: 0})
     commentAmount: number;
+
+    @Column({default: ''})
+    keywords: string;
 
     @ManyToMany(type => Classification, classification => classification.articles)
     classifications: Classification[];

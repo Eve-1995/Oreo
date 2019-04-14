@@ -39,6 +39,7 @@ export class AppArticleComponent {
       name: {
         title: '文章名称',
         filter: false,
+        width: '30%'
       },
       likeAmount: {
         title: '点赞总数',

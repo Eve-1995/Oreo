@@ -3,4 +3,11 @@ export class Classification {
     name?: string;
     createTime?: Date;
     updateTime?: Date;
+    keywords?: string;
+}
+
+export interface CreateClassification {
+    id?: number;
+    name: string;
+    keywords?: string;
 }

@@ -101,7 +101,7 @@ export class AppArticleDetailComponent {
   replyContent = '';
   doReply(dialog: TemplateRef<any>, fromUser: string, parentCommentId: number, rootCommentId: number) {
     this.globalService.refreshMaskState(true);
-    this.dialogService.open(dialog, { context: { fromUser }, hasBackdrop: false }).onClose.subscribe(v => {
+    this.dialogService.open(dialog, { context: { fromUser }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe(v => {
       if (v === 'yes') {
         this.service.saveComment(this.replyContent, this.user.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
           this.getComments();

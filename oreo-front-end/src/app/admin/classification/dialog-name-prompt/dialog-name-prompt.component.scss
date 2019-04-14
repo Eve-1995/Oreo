@@ -1,0 +1,19 @@
+.keywords-container{
+    margin-top: 7px;
+    .keywords {
+        display: inline-block;
+        color: #017e66;
+        background-color: #e7f2ed;
+        font-size: 13px;
+        text-align: center;
+        margin-right: .5rem;
+        padding: 0 6px;
+        height: 22px;
+        line-height: 22px;
+        margin-bottom: 5px;
+    
+        .remove {
+            margin-left: 6px;
+        }
+    }
+}

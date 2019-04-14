@@ -2,14 +2,23 @@
 import { Get, Controller, Post, Body, Delete, Put, Query } from '@nestjs/common';
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
+import { ResponseDTO } from 'src/others/response.dto';
 
 @Controller('classification')
 export class ClassificationController {
   constructor(private readonly service: ClassificationService) { }
 
   @Post('save')
-  async save(@Body() dto: Classification): Promise<Classification> {
-    return this.service.save(dto);
+  async save(@Body() dto: Classification): Promise<ResponseDTO> {
+    const result: ResponseDTO = { code: null, message: null, data: null }
+    await this.service.save(dto).then(v => {
+      result.code = 200
+      result.message = '添加成功'
+    }).catch(() => {
+      result.code = 500
+      result.message = '添加失败'
+    });
+    return result;
   }
 
   @Delete('deleteById')
@@ -33,6 +42,11 @@ export class ClassificationController {
   @Get('findBasicInfoList')
   async findBasicInfoList(): Promise<Classification[]> {
     return this.service.findBasicInfoList();
+  }
+
+  @Get('findDetail')
+  async findDetail(@Query() query): Promise<any> {
+    return this.service.findDetail(query.id);
   }
 
   // 用于表格编辑或新增时的下拉数据
@@ -63,7 +77,7 @@ export class ClassificationController {
   }
 
   @Get('findFirst')
-  async findFirst(): Promise<{id:number}> {
+  async findFirst(): Promise<{ id: number }> {
     const data = await this.service.findFirst();
     return data[0];
   }
