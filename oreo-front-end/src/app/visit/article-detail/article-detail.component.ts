@@ -5,6 +5,7 @@ import { ArticleDetailDTO } from './dto/article-detail.dto';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { AppGlobalService } from '../../others/global.service';
 import { ResponseDTO } from '../../others/response.dto';
+import { AppArticleDetailReplyComponent } from './article-detail-reply.component';
 
 @Component({
   templateUrl: './article-detail.component.html',
@@ -98,18 +99,27 @@ export class AppArticleDetailComponent {
       });
     }
   }
-  replyContent = '';
-  doReply(dialog: TemplateRef<any>, fromUser: string, parentCommentId: number, rootCommentId: number) {
+  keyUpHandler(event: KeyboardEvent) {
+    if (event.keyCode === 13 && event.ctrlKey) {
+      this.doComment();
+    }
+  }
+  ReplyKeyUpHandler(event: KeyboardEvent) {
+    if (event.keyCode === 13 && event.ctrlKey) {
+      this.doComment();
+    }
+  }
+
+  doReply(fromUser: string, parentCommentId: number, rootCommentId: number) {
     this.globalService.refreshMaskState(true);
-    this.dialogService.open(dialog, { context: { fromUser }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe(v => {
-      if (v === 'yes') {
-        this.service.saveComment(this.replyContent, this.user.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
+    this.dialogService.open(AppArticleDetailReplyComponent, { context: { fromUser }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: { replyContent: string }) => {
+      if (v !== undefined) {
+        this.service.saveComment(v.replyContent, this.user.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
           this.getComments();
         });
       }
-      this.replyContent = '';
+      // this.replyContent = '';
       this.globalService.refreshMaskState(false);
     });
-
   }
 }

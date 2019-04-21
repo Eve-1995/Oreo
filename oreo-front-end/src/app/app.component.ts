@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnalyticsService } from './@core/utils/analytics.service';
 import { AppGlobalService } from './others/global.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ import { AppGlobalService } from './others/global.service';
     `
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
   mask = false;
   constructor(
     private analytics: AnalyticsService,
@@ -33,9 +35,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.analytics.trackPageViews();
-    this.globalService.watchMask.subscribe((v: boolean) => {
+    this.subscription = this.globalService.watchMask.subscribe((v: boolean) => {
       this.mask = v;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
 

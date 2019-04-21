@@ -1,0 +1,18 @@
+<nb-card [style.width.px]="475">
+  <nb-card-header>回复 {{fromUser}} :</nb-card-header>
+  <nb-card-body>
+    <textarea
+      rows="2"
+      nbInput
+      fullWidth
+      class="form-control"
+      name="replyContent"
+      [(ngModel)]="replyContent"
+      (keyup)="keyUpHandler($event)">
+    </textarea>
+  </nb-card-body>
+  <nb-card-footer class="dialog-button-group">
+    <button nbButton (click)="ref.close()">取消</button>
+    <button nbButton (click)="submit()" [disabled]="replyContent.trim()==''">回复</button>
+  </nb-card-footer>
+</nb-card>

@@ -5,6 +5,7 @@
             font-size: 24px;
             font-weight: 600;
         }
+
         .list-card-info {
             display: -webkit-box;
             display: -webkit-flex;
@@ -23,15 +24,18 @@
     }
 }
 
-app-svg {
-    margin-top: 4px;
-    margin-right: 5px;
+.actions {
+    app-svg {
+        margin-top: 4px;
+        margin-right: 5px;
+    }
 }
 
 ::ng-deep nb-actions {
     .action {
         margin-top: 1px;
     }
+
     nb-action {
         border-left: none !important;
     }
@@ -41,21 +45,57 @@ app-svg {
     .send {
         margin-left: -13px;
     }
+
     .comment {
         display: flex;
         padding: 0.75rem 1.125rem;
         margin-top: -18px;
-        .content {
+
+        .admin {
+            color: #FF8C00;
+            font-family: 微软雅黑;
+        }
+
+        .username {
+            display: flex;
+
+        }
+
+        .king {
+            margin-left: 4px;
+        }
+
+        .content-container {
             flex-grow: 1;
+
+            .content {
+                color: #fff;
+            }
+
             .content-actions {
                 .content-actions-time {
                     color: #777;
                 }
             }
+
             .content-reply {
                 .content-repky-items {
                     display: flex;
+
+                    .content-repky-items-nickname-container {
+                        display: flex;
+
+                        .content-repky-items-nickname {
+                            display: flex;
+                        }
+                    }
+
                     .content-repky-items-content {
+                        pre {
+                            color: #fff;
+                            margin-bottom: 0px;
+                        }
+
                         flex-grow: 1;
                     }
                 }

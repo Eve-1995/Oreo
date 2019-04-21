@@ -4,6 +4,7 @@ import { VisitComponent } from './visit.component';
 import { AppInfoComponent } from './info/info.component';
 import { AppArticleComponent } from './article/article.component';
 import { AppArticleDetailComponent } from './article-detail/article-detail.component';
+import { AppArticleDetailReplyComponent } from './article-detail/article-detail-reply.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
+  entryComponents: [AppArticleDetailReplyComponent]
 })
 export class VisitRoutingModule { }
 

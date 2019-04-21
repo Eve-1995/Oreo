@@ -26,7 +26,8 @@ export class User {
     password: string;
 
     @Column({
-        default: 0,// 0:普通用户,1:管理员
+        default: 0,
+        comment:'用户类别 0:普通用户,1:管理员'
     })
     level: number;
 

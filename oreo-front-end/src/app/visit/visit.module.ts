@@ -4,6 +4,12 @@ import { VisitRoutingModule, visitiRoutedComponents } from './visit-routing.modu
 import { NgxMdModule } from 'ngx-md';
 import { httpInterceptorProviders } from '../others/interceptor';
 import { ClipboardModule } from 'ngx-clipboard';
+import { AppArticleDetailReplyComponent } from './article-detail/article-detail-reply.component';
+import { NbDialogModule } from '@nebular/theme';
+
+const CHILD_COMPONENT = [
+  AppArticleDetailReplyComponent
+];
 
 @NgModule({
   imports: [
@@ -13,10 +19,15 @@ import { ClipboardModule } from 'ngx-clipboard';
     ClipboardModule
   ],
   declarations: [
-    ...visitiRoutedComponents
+    ...visitiRoutedComponents,
+    AppArticleDetailReplyComponent
+  ],
+  entryComponents: [
+    AppArticleDetailReplyComponent
   ],
   providers: [
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    ...NbDialogModule.forRoot().providers,
   ]
 })
 export class VisitModule { }

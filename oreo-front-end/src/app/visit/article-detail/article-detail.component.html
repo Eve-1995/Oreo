@@ -12,7 +12,7 @@
   <nb-card-body>
     <ngx-md [data]="articleDetail.content" class="md"></ngx-md>
   </nb-card-body>
-  <nb-actions size="large">
+  <nb-actions class="actions" size="large">
     <nb-action class="hover" (cbOnSuccess)="copied()" ngxClipboard [cbContent]="copyContent">
       <app-svg [type]="'share'"></app-svg>
       <span class="action">分享</span>
@@ -31,37 +31,44 @@
   <nb-card-footer>
     <div class="row comment" *ngFor="let item of comments">
       <span class="username">
-        {{item.fromUser}}
+        <span [ngClass]="{'admin': item.fromUser.level===1}">
+          {{item.fromUser.nickname}}
+        </span>
+        <app-svg *ngIf="item.fromUser.level===1" class="king" type="king"></app-svg>
       </span>
-      :
-      <div class="content">
-        {{item.content}}
+      &nbsp;:&nbsp;
+      <div class="content-container">
+        <span class="content">
+            {{item.content}}
+        </span>
         <div class="content-actions">
           <span class="content-actions-time">
             {{item.createTime | date:"yyyy-MM-dd"}}
           </span>
-          <a href="javascript:;" (click)="doReply(dialog,item.fromUser,item.id,item.id)">回复</a>
+          <a href="javascript:;" (click)="doReply(item.fromUser.nickname,item.id,item.id)">回复</a>
         </div>
         <div class="content-reply">
           <div class="content-repky-items" *ngFor="let replyItem of item.children">
-            <div class="content-repky-items-nickname">
-              <span>
-                {{replyItem.fromUser}}
+            <div class="content-repky-items-nickname-container">
+              <span class="content-repky-items-nickname" [ngClass]="{'admin': replyItem.fromUser.level===1}">
+                {{replyItem.fromUser.nickname}}
+                <app-svg *ngIf="replyItem.fromUser.level===1" class="king" type="king"></app-svg>
               </span>
-              回复
-              <span>
-                {{replyItem.toUser}}
+              &nbsp;回复&nbsp;
+              <span class="content-repky-items-nickname" [ngClass]="{'admin': replyItem.toUser.level===1}">
+                {{replyItem.toUser.nickname}}
+                <app-svg *ngIf="replyItem.toUser.level===1" class="king" type="king"></app-svg>
               </span>
-              :
+              :&nbsp;
             </div>
             <div class="content-repky-items-content">
-              {{replyItem.content}}
+              <pre>{{replyItem.content}}</pre>
               <div class="content-actions">
                 <span class="content-actions-time">
                   {{replyItem.createTime | date:"yyyy-MM-dd"}}
                 </span>
                 <a href="javascript:;"
-                  (click)="doReply(dialog,replyItem.fromUser,replyItem.id,replyItem.rootCommentId)">回复</a>
+                  (click)="doReply(replyItem.fromUser.nickname,replyItem.id,replyItem.rootCommentId)">回复</a>
               </div>
             </div>
           </div>
@@ -70,8 +77,14 @@
     </div>
     <div class="row">
       <div [ngClass]="{'col-11': focus,'col-12': !focus}">
-        <input nbInput fullWidth placeholder="say something..." [(ngModel)]="commentContent" (focus)="focus = true"
-          (blur)="onBlur()" (keyup.enter)="doComment()">
+        <input
+          nbInput
+          fullWidth
+          placeholder="say something..."
+          [(ngModel)]="commentContent"
+          (focus)="focus = true"
+          (blur)="onBlur()"
+          (keyup)="keyUpHandler($event)">
       </div>
       <div class="col-1 send" *ngIf="focus == true">
         <button nbButton status="success" (click)="doComment()">评论</button>
@@ -79,16 +92,3 @@
     </div>
   </nb-card-footer>
 </nb-card>
-<ng-template #dialog let-data let-ref="dialogRef">
-  <nb-card [style.width.px]="475">
-    <nb-card-header>回复 {{data.fromUser}} :</nb-card-header>
-    <nb-card-body>
-      <textarea rows="2" nbInput fullWidth class="form-control" name="replyContent"
-        [(ngModel)]="replyContent"></textarea>
-    </nb-card-body>
-    <nb-card-footer class="dialog-button-group">
-      <button nbButton (click)="ref.close()">取消</button>
-      <button nbButton (click)="ref.close('yes')" [disabled]="replyContent.trim()==''">评论</button>
-    </nb-card-footer>
-  </nb-card>
-</ng-template>
