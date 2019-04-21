@@ -1,9 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MENU_ITEMS } from './visit-menu';
 import { HttpClient } from '@angular/common/http';
 import { NbMenuService } from '@nebular/theme';
 import { AppGlobalService } from '../others/global.service';
+import { Observable, Subscription } from 'rxjs';
 
+interface Menu {
+  id: number;
+  createTime: Date;
+  updateTime: Date;
+  name: string;
+  keywords: string;
+}
 @Component({
   styleUrls: ['visit.component.scss'],
   template: `
@@ -13,15 +21,20 @@ import { AppGlobalService } from '../others/global.service';
     </app-layout>
   `,
 })
-export class VisitComponent {
+export class VisitComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
+
   constructor(
-    appGlobalService: AppGlobalService,
+    private appGlobalService: AppGlobalService,
     private nBmenuService: NbMenuService,
-    private httpClient: HttpClient) {
-    if (!appGlobalService.haveAddedMenu) {
-      this.getMenu().subscribe(value => {
-        value.forEach((item, index) => {
-          nBmenuService.addItems([{
+    private httpClient: HttpClient
+  ) { }
+
+  ngOnInit(): void {
+    if (!this.appGlobalService.haveAddedMenu) {
+      this.subscription = this.getMenu().subscribe(value => {
+        value.forEach((item: Menu, index: number) => {
+          this.nBmenuService.addItems([{
             title: item.name,
             link: '/visit/article',
             queryParams: { id: item.id },
@@ -31,12 +44,20 @@ export class VisitComponent {
           }
         });
       });
-      appGlobalService.haveAddedMenu = true;
+      this.appGlobalService.haveAddedMenu = true;
     }
   }
-  getMenu(): any {
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  getMenu(): Observable<any> {
     return this.httpClient.get('classification/findClassifications');
   }
+
   /**
    *fix:当切换模块时,会导致之前添加的最后一个元素重新添加.
    *reason:尚不清楚.
@@ -46,7 +67,7 @@ export class VisitComponent {
     this.nBmenuService.addItems([{
       title: undefined,
       hidden: true,
-    }], 'user-menu');
+    }]);
   }
   navTitle = '博客展览系统';
   menu = MENU_ITEMS;

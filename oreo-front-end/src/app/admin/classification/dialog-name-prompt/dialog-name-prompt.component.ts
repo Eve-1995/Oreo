@@ -32,6 +32,10 @@ export class AppDialogNameComponent implements OnInit {
   }
 
   submit() {
-    this.ref.close({ id: this.data.id, name: this.title, keywords: JSON.stringify(this.keywords) });
+    if (this.operation === 'create') {
+      this.ref.close({ name: this.title, keywords: JSON.stringify(this.keywords) });
+    } else if (this.operation === 'edit') {
+      this.ref.close({ id: this.data.id, name: this.title, keywords: JSON.stringify(this.keywords) });
+    }
   }
 }
