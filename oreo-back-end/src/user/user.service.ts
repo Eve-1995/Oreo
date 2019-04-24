@@ -78,4 +78,18 @@ export class UserService {
     });
     return count;
   }
+  /**
+   * 查找用户的文章收藏列表
+   * @param id 用户id
+   */
+  async getUserCollections(id: number): Promise<any> {
+    const result = await this.userRepository.findOne(id, { relations: ['articles'] });
+    result.articles.forEach(item => {
+      delete item.createTime;
+      delete item.updateTime;
+      delete item.content;
+      delete item.keywords;
+    });
+    return result.articles;
+  }
 }

@@ -96,15 +96,17 @@ export class UserController {
     const result: ResponseDTO = { code: null, message: null, data: null }
     await this.service.hasCollect({ id: query.id, articleId: query.articleId }).then(v => {
       result.code = 200
-      if (v) {
-        result.data = {
-          hasCollect: true
-        }
-      } else {
-        result.data = {
-          hasCollect: false
-        }
-      }
+      result.data = { hasCollect: v ? true : false };
+    })
+    return result;
+  }
+
+  @Get('getCollections')
+  async getCollections(@Query() query): Promise<any> {
+    const result: ResponseDTO = { code: null, message: null, data: null }
+    await this.service.getUserCollections(query.id).then(v => {
+      result.code = 200
+      result.data = v;
     })
     return result;
   }

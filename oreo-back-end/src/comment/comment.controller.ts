@@ -27,8 +27,6 @@ export class CommentController {
     const unRootArr = [];
     temp.forEach(item => {
       item.rootComment ? unRootArr.push(item) : rootArr.push(item);
-      console.log('item');
-      console.log(item);
     });
     rootArr.forEach(item1 => {
       const obj = {
@@ -72,14 +70,3 @@ export class CommentController {
     return result;
   }
 }
-
-      // const temp = {
-      //   'id': item.id,
-      //   'content': item.content,
-      //   'createTime': item.createTime,
-      //   'fromUser': item.user.nickname,
-      //   'fromUserId': item.user.id,
-      //   'toUser': item.parentComment ? item.parentComment.user.nickname : null,
-      //   'rootCommentId': item.rootComment ? item.rootComment.id : null
-      // }
-      // result.data.push(temp);

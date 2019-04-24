@@ -1,0 +1,14 @@
+.list-card {
+    nb-card-header {
+        border-bottom: none;
+    }
+    nb-card-body {
+        padding: 0;
+    }
+}
+nb-list-item {
+    cursor: pointer;
+    .info {
+        float: right;
+    }
+}
