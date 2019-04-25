@@ -14,7 +14,7 @@ export class CommentService {
   }
   async getCommentsByArticle(id: number): Promise<any> {
     return await this.repository
-      .createQueryBuilder("comment")
+      .createQueryBuilder('comment')
       .leftJoinAndSelect('comment.article', 'article')
       .where('article.id = :id', { id })
       .leftJoinAndSelect('comment.user', 'user')

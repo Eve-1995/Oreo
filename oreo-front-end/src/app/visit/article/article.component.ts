@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from './article.service';
+import { ArticleList } from './article.dto';
 
 @Component({
   templateUrl: './article.component.html',
@@ -23,16 +24,14 @@ export class AppArticleComponent {
           });
         });
       } else {
-        service.findArticlesByClassificationId(queryParams.id).subscribe(value => {
-          if (value != null) {
-            this.items = value.data.articles;
-            this.name = value.data.name;
-          }
+        service.findArticlesByClassificationId(queryParams.id).subscribe((v: ArticleList) => {
+          this.name = v.data.name;
+          this.items = v.data.articles;
         });
       }
     });
   }
-  name;
+  name: string;
   items = [];
   checkArticle(id: number) {
     this.router.navigate(['/visit/article-detail'], {

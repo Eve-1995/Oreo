@@ -5,12 +5,22 @@
       <nb-list-item *ngFor="let item of items" (click)="checkArticle(item.id)">
         {{ item.name }}
         <span class="info">
-          <i class="far fa-heart" aria-hidden="true"></i>{{ item.likeAmount }}
-          <i class="far fa-comment" aria-hidden="true"></i>{{ item.commentAmount }}
+          <div class="info-item">
+            <app-svg type="greate-solid"></app-svg>
+            999
+          </div>
+          <div class="info-item">
+            <app-svg type="collect-solid"></app-svg>
+            {{ item.userAmount }}
+          </div>
+          <div class="info-item">
+            <app-svg type="comment"></app-svg>
+            {{ item.commentAmount }}
+          </div>
         </span>
       </nb-list-item>
       <nb-list-item *ngIf="items.length==0">
-        暂无数据
+        暂时麻油想好该写点啥~
       </nb-list-item>
     </nb-list>
   </nb-card-body>

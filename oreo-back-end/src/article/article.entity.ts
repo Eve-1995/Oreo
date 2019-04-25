@@ -34,6 +34,9 @@ export class Article {
     @ManyToMany(type => Classification, classification => classification.articles)
     classifications: Classification[];
 
+    @ManyToMany(type => Article, article => article.classifications)
+    articles: Article[];
+
     @ManyToMany(type => User, user => user.articles)
     users: User[];
 

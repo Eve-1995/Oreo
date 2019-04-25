@@ -2,6 +2,7 @@
     nb-card-header {
         border-bottom: none;
     }
+
     nb-card-body {
         padding: 0;
     }
@@ -9,7 +10,20 @@
 
 nb-list-item {
     cursor: pointer;
+
     .info {
+        display: flex;
         float: right;
+        .info-item{
+            display: flex;
+            align-items: center;
+            &:not(:first-child){
+                margin-left: 24px;
+            }
+        }
+
+        app-svg {
+            margin-right: 4px;
+        }
     }
 }

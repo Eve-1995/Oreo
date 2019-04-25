@@ -2,6 +2,7 @@
 import { Get, Controller, Param, Post, Body, Delete, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
+import { ResponseDTO } from 'src/others/response.dto';
 @Controller('article')
 export class ArticleController {
   constructor(
@@ -34,12 +35,21 @@ export class ArticleController {
 
   @Get('findByClassification/:classificationId')
   async findByClassification(@Param() params): Promise<any> {
+    let result: ResponseDTO = { code: null, message: null, data: null }
     const temp = await this.service.findListByClassification(params.classificationId);
-    const result = {
-      data: {
-        articles: temp.articles,
-        name: temp.name
-      }
+    const arr = [];
+    temp.articles.forEach(item => {
+      arr.push({
+        id: item.id,
+        name: item.name,
+        userAmount: item.users.length,
+        commentAmount: item.comments.length
+      });
+    });
+    result.code = 200;
+    result.data = {
+      name: temp.name,
+      articles: arr,
     }
     return result;
   }
