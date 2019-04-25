@@ -9,15 +9,20 @@
 }
 
 nb-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
 
     .info {
         display: flex;
-        float: right;
-        .info-item{
+
+        .info-item {
             display: flex;
             align-items: center;
-            &:not(:first-child){
+            width: 45px;
+
+            &:not(:first-child) {
                 margin-left: 24px;
             }
         }

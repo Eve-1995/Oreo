@@ -1,3 +1,97 @@
+::ng-deep {
+    ngx-md {
+        pre {
+            code {
+                color: white;
+            }
+        }
+    }
+
+    nb-actions {
+        .action {
+            margin-top: 1px;
+        }
+
+        nb-action {
+            border-left: none !important;
+        }
+    }
+
+    nb-card-footer {
+        .send {
+            margin-left: -13px;
+            animation: change 0.3s;
+
+            @keyframes change {
+                from {
+                    transform: scale(0.1);
+                }
+
+                to {
+                    transform: scale(1);
+                }
+            }
+        }
+
+        .comment {
+            display: flex;
+            padding: 0.75rem 1.125rem;
+            margin-top: -18px;
+
+            .admin {
+                color: #FF8C00;
+                font-family: 微软雅黑;
+            }
+
+            .username {
+                display: flex;
+
+            }
+
+            .king {
+                margin-left: 4px;
+            }
+
+            .content-container {
+                flex-grow: 1;
+
+                .content {
+                    color: #fff;
+                }
+
+                .content-actions {
+                    .content-actions-time {
+                        color: #777;
+                    }
+                }
+
+                .content-reply {
+                    .content-repky-items {
+                        display: flex;
+
+                        .content-repky-items-nickname-container {
+                            display: flex;
+
+                            .content-repky-items-nickname {
+                                display: flex;
+                            }
+                        }
+
+                        .content-repky-items-content {
+                            pre {
+                                color: #fff;
+                                margin-bottom: 0px;
+                            }
+
+                            flex-grow: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 .list-card {
     nb-card-header {
         p {
@@ -16,91 +110,10 @@
     }
 }
 
-::ng-deep ngx-md {
-    pre {
-        code {
-            color: white;
-        }
-    }
-}
-
 .actions {
     app-svg {
         margin-top: 4px;
         margin-right: 5px;
-    }
-}
-
-::ng-deep nb-actions {
-    .action {
-        margin-top: 1px;
-    }
-
-    nb-action {
-        border-left: none !important;
-    }
-}
-
-::ng-deep nb-card-footer {
-    .send {
-        margin-left: -13px;
-    }
-
-    .comment {
-        display: flex;
-        padding: 0.75rem 1.125rem;
-        margin-top: -18px;
-
-        .admin {
-            color: #FF8C00;
-            font-family: 微软雅黑;
-        }
-
-        .username {
-            display: flex;
-
-        }
-
-        .king {
-            margin-left: 4px;
-        }
-
-        .content-container {
-            flex-grow: 1;
-
-            .content {
-                color: #fff;
-            }
-
-            .content-actions {
-                .content-actions-time {
-                    color: #777;
-                }
-            }
-
-            .content-reply {
-                .content-repky-items {
-                    display: flex;
-
-                    .content-repky-items-nickname-container {
-                        display: flex;
-
-                        .content-repky-items-nickname {
-                            display: flex;
-                        }
-                    }
-
-                    .content-repky-items-content {
-                        pre {
-                            color: #fff;
-                            margin-bottom: 0px;
-                        }
-
-                        flex-grow: 1;
-                    }
-                }
-            }
-        }
     }
 }
 

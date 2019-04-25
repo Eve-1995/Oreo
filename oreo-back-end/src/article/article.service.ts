@@ -59,10 +59,6 @@ export class ArticleService {
    * @param id 文章分类id
    */
   async findListByClassification(id: number): Promise<any> {
-    // return this.classificationRepository.findOne({
-    //   relations: ['articles'],
-    //   where: { id }
-    // })
     return await this.classificationRepository
       .createQueryBuilder('classification')
       .where('classification.id = :id', { id })
@@ -71,27 +67,7 @@ export class ArticleService {
       .leftJoinAndSelect('article.users', 'user')
       .getOne();
   }
-  // async getCommentsByArticle(id: number): Promise<any> {
-  //   return await this.repository
-  //     .createQueryBuilder("comment")
-  //     .leftJoinAndSelect('comment.article', 'article')
-  //     .where('article.id = :id', { id })
-  //     .leftJoinAndSelect('comment.user', 'user')
-  //     .leftJoinAndSelect('comment.rootComment', 'rootComment')
-  //     .leftJoinAndSelect('comment.parentComment', 'parentComment')
-  //     .leftJoinAndSelect('parentComment.user', 'parentCommentUser')
-  //     .getMany();
-  // }
-
-  // /**
-  //  * 返回文章全部信息
-  //  * @param id 文章id
-  //  */
-  // async findArticleById(id: number): Promise<Article> {
-  //   return await this.articleRepository.findOne({
-  //     where: { id }
-  //   })
-  // }
+  
   /**
    * 返回文章的全部信息基本信息与收藏者列表
    * @param id 文章id

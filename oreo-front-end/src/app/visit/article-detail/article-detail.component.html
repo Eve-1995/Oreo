@@ -13,6 +13,10 @@
     <ngx-md [data]="articleDetail.content" class="md"></ngx-md>
   </nb-card-body>
   <nb-actions class="actions" size="large">
+    <nb-action class="hover">
+      <app-svg [type]="'great-hollow'"></app-svg>
+      <span class="action">赞同</span>
+    </nb-action>
     <nb-action class="hover" (cbOnSuccess)="copied()" ngxClipboard [cbContent]="copyContent">
       <app-svg [type]="'share'"></app-svg>
       <span class="action">分享</span>
@@ -87,7 +91,13 @@
           (keyup)="keyUpHandler($event)">
       </div>
       <div class="col-1 send" *ngIf="focus == true">
-        <button nbButton status="success" (click)="doComment()">评论</button>
+        <button
+        nbButton
+        status="success"
+        (click)="doComment()"
+        [disabled]="commentContent.trim().length == 0">
+          评论
+        </button>
       </div>
     </div>
   </nb-card-footer>

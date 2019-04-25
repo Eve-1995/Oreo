@@ -40,4 +40,8 @@ export class AppArticleComponent {
       },
     });
   }
+
+  get random() {
+    return Math.floor(Math.random() * (150 - 0 + 1)) + 0;
+  }
 }
