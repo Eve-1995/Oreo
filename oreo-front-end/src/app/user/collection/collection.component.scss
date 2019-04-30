@@ -2,13 +2,33 @@
     nb-card-header {
         border-bottom: none;
     }
+
     nb-card-body {
         padding: 0;
     }
 }
+
 nb-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
+
     .info {
-        float: right;
+        display: flex;
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            width: 45px;
+
+            &:not(:first-child) {
+                margin-left: 24px;
+            }
+        }
+
+        app-svg {
+            margin-right: 4px;
+        }
     }
 }

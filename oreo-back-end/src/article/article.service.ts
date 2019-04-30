@@ -65,6 +65,7 @@ export class ArticleService {
       .leftJoinAndSelect('classification.articles', 'article')
       .leftJoinAndSelect('article.comments', 'comment')
       .leftJoinAndSelect('article.users', 'user')
+      .leftJoinAndSelect('article.likeUsers', 'likeUsers')
       .getOne();
   }
   
@@ -74,7 +75,7 @@ export class ArticleService {
    */
   async findDetailById(id: number): Promise<any> {
     return await this.articleRepository.findOne({
-      relations: ['users'],
+      relations: ['users', 'likeUsers', 'comments'],
       where: { id }
     })
   }

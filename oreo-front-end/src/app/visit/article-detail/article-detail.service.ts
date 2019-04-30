@@ -12,6 +12,10 @@ export class AppArticleDetailService {
     const dto = { id, articleId };
     return this.httpClient.post(`user/collect`, dto);
   }
+  like(id: number, articleId: number): ResponseDTO | any {
+    const dto = { id, articleId };
+    return this.httpClient.post(`user/like`, dto);
+  }
   actionStatus(id: any, articleId: any): ResponseDTO | any {
     const params = { id, articleId };
     return this.httpClient.get(`user/actionStatus`, { params });

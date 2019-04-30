@@ -6,30 +6,26 @@
       <div>修改时间:{{articleDetail.updateTime | date:"yyyy-MM-dd"}}</div>
       <div>点赞数:{{articleDetail.likeAmount}}</div>
       <div>评论数:{{articleDetail.commentAmount}}</div>
-      <div>收藏数:{{articleDetail.collectNumber}}</div>
+      <div>收藏数:{{articleDetail.collectAmount}}</div>
     </section>
   </nb-card-header>
   <nb-card-body>
     <ngx-md [data]="articleDetail.content" class="md"></ngx-md>
   </nb-card-body>
   <nb-actions class="actions" size="large">
-    <nb-action class="hover">
-      <app-svg [type]="'great-hollow'"></app-svg>
-      <span class="action">赞同</span>
+    <nb-action class="hover" (click)="like()">
+      <app-svg *ngIf="!hasLike" [type]="'great-hollow'"></app-svg>
+      <app-svg *ngIf="hasLike" [type]="'great-solid'"></app-svg>
+      <span class="action">点赞</span>
+    </nb-action>
+    <nb-action class="hover" (click)="collect()">
+      <app-svg *ngIf="!hasCollection" [type]="'collect-hollow'"></app-svg>
+      <app-svg *ngIf="hasCollection" [type]="'collect-solid'"></app-svg>
+      <span class="action">收藏</span>
     </nb-action>
     <nb-action class="hover" (cbOnSuccess)="copied()" ngxClipboard [cbContent]="copyContent">
       <app-svg [type]="'share'"></app-svg>
       <span class="action">分享</span>
-    </nb-action>
-    <nb-action class="hover" (click)="collect()">
-      <ng-container *ngIf="!hasCollection">
-        <app-svg [type]="'collect-hollow'"></app-svg>
-        <span class="action">收藏</span>
-      </ng-container>
-      <ng-container *ngIf="hasCollection">
-        <app-svg [type]="'collect-solid'"></app-svg>
-        <span class="action">已收藏</span>
-      </ng-container>
     </nb-action>
   </nb-actions>
   <nb-card-footer>

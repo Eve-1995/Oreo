@@ -78,4 +78,8 @@ export class User {
 
     @OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
+
+    @ManyToMany(type => Article, article => article.likeUsers)
+    @JoinTable()
+    likeArticles: Article[];
 }

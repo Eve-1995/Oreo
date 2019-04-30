@@ -42,8 +42,9 @@ export class ArticleController {
       arr.push({
         id: item.id,
         name: item.name,
-        userAmount: item.users.length,
-        commentAmount: item.comments.length
+        likeAmount: item.likeUsers.length,
+        collectAmount: item.users.length,
+        commentAmount: item.comments.length,
       });
     });
     result.code = 200;
@@ -58,11 +59,21 @@ export class ArticleController {
    * @param params 文章id
    */
   @Get('findDetailById/:id')
-  async findDetailById(@Param() params): Promise<any> {
+  async findDetailById(@Param() params): Promise<ResponseDTO> {
+    let result: ResponseDTO = { code: null, message: null, data: null }
     const temp = await this.service.findDetailById(params.id);
-    temp.collectNumber = temp.users.length;
-    delete temp.users;
-    return temp
+    result.code = 200;
+    result.data = {
+      id: temp.id,
+      name: temp.name,
+      createTime: temp.createTime,
+      updateTime: temp.updateTime,
+      content: temp.content,
+      likeAmount: temp.likeUsers.length,
+      collectAmount: temp.users.length,
+      commentAmount: temp.comments.length,
+    }
+    return result
   }
   @Get('findBasicInfo')
   async findBasicInfo(@Query() query): Promise<any> {

@@ -85,8 +85,21 @@ export class UserController {
         result.code = 201
         result.message = '取消成功'
       }
-    }).catch(e => {
-      console.log(e);
+    })
+    return result
+  }
+
+  @Post('like')
+  async like(@Body() dto: { id: number, articleId: number }): Promise<ResponseDTO> {
+    const result: ResponseDTO = { code: null, message: null, data: null }
+    await this.service.like(dto).then(v => {
+      if (v) {
+        result.code = 200
+        result.message = '点赞成功'
+      } else {
+        result.code = 201
+        result.message = '取消成功'
+      }
     })
     return result
   }
@@ -94,10 +107,16 @@ export class UserController {
   @Get('actionStatus')
   async actionStatus(@Query() query): Promise<any> {
     const result: ResponseDTO = { code: null, message: null, data: null }
+    result.code = 200
+    let hasCollect;
+    let hasLike;
     await this.service.hasCollect({ id: query.id, articleId: query.articleId }).then(v => {
-      result.code = 200
-      result.data = { hasCollect: v ? true : false };
+      hasCollect = v ? true : false
     })
+    await this.service.hasLike({ id: query.id, articleId: query.articleId }).then(v => {
+      hasLike = v ? true : false
+    })
+    result.data = { hasCollect, hasLike };
     return result;
   }
 

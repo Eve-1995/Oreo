@@ -58,20 +58,36 @@ export class AppArticleDetailComponent {
       this.router.navigate(['/auth/login']);
     }
   }
+  hasLike = false;
+  like() {
+    // 执行点赞或取消点赞操作
+    if (!!this.user) {
+      this.service.like(this.user.id, this.articleDetail.id).subscribe((v: ResponseDTO) => {
+        if (v.code === 200) {
+          this.hasLike = true;
+        } else if (v.code === 201) {
+          this.hasLike = false;
+        }
+        // 重新请求文章数据
+        this.getAticleInfo();
+      });
+    } else {
+      this.router.navigate(['/auth/login']);
+    }
+  }
   getAticleInfo() {
     this.service.findDetailById(this.articleId).subscribe(value => {
-      this.articleDetail = value;
+      this.articleDetail = value.data;
       this.getActionStatus();
-      this.loading = false;
     });
   }
   // 当用户查看文章时,判断用户是否已点赞、已收藏
   getActionStatus() {
     if (!!this.user) {
       this.service.actionStatus(this.user.id, this.articleDetail.id).subscribe((v: ResponseDTO) => {
-        if (v.data.hasCollect) {
-          this.hasCollection = true;
-        }
+        this.hasCollection = v.data.hasCollect ? true : false;
+        this.hasLike = v.data.hasLike ? true : false;
+        this.loading = false;
       });
     }
   }
@@ -96,6 +112,7 @@ export class AppArticleDetailComponent {
       this.service.saveComment(this.commentContent, this.user.id, this.articleId).subscribe(() => {
         this.getComments();
         this.commentContent = '';
+        this.getAticleInfo();
       });
     }
   }

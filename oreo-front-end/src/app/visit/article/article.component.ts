@@ -9,6 +9,8 @@ import { ArticleList } from './article.dto';
   providers: [ArticleService],
 })
 export class AppArticleComponent {
+  name: string;
+  items = [];
   constructor(
     private router: Router,
     activatedRoute: ActivatedRoute,
@@ -31,17 +33,11 @@ export class AppArticleComponent {
       }
     });
   }
-  name: string;
-  items = [];
   checkArticle(id: number) {
     this.router.navigate(['/visit/article-detail'], {
       queryParams: {
         id: id,
       },
     });
-  }
-
-  get random() {
-    return Math.floor(Math.random() * (150 - 0 + 1)) + 0;
   }
 }

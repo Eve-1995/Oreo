@@ -23,9 +23,6 @@ export class Article {
     content: string;
 
     @Column({default: 0})
-    likeAmount: number;
-
-    @Column({default: 0})
     commentAmount: number;
 
     @Column({default: ''})
@@ -39,6 +36,9 @@ export class Article {
 
     @ManyToMany(type => User, user => user.articles)
     users: User[];
+
+    @ManyToMany(type => User, user => user.likeArticles)
+    likeUsers: User[];
 
     @OneToMany(type => Comment, comment => comment.article)
     comments: Comment[];

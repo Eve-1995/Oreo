@@ -1,17 +1,26 @@
 <nb-card class="list-card">
-  <!-- 放文章类别,暂时不做 -->
-  <!-- <nb-card-header>name</nb-card-header> -->
+  <!-- <nb-card-header>{{name}}</nb-card-header> -->
   <nb-card-body>
     <nb-list>
-      <nb-list-item *ngFor="let item of items" class="hover" (click)="checkArticle(item.id)">
+      <nb-list-item *ngFor="let item of items" (click)="checkArticle(item.id)">
         {{ item.name }}
         <span class="info">
-          <i class="far fa-heart" aria-hidden="true"></i>{{ item.likeAmount }}
-          <i class="far fa-comment" aria-hidden="true"></i>{{ item.commentAmount }}
+          <div class="info-item">
+            <app-svg type="great-solid"></app-svg>
+            {{ item.likeAmount }}
+          </div>
+          <div class="info-item">
+            <app-svg type="collect-solid"></app-svg>
+            {{ item.collectAmount }}
+          </div>
+          <div class="info-item">
+            <app-svg type="comment"></app-svg>
+            {{ item.commentAmount }}
+          </div>
         </span>
       </nb-list-item>
       <nb-list-item *ngIf="items.length==0">
-        暂无数据
+        暂时还没有收藏~
       </nb-list-item>
     </nb-list>
   </nb-card-body>

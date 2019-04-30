@@ -3,12 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan } from 'typeorm';
 import { User } from './user.entity';
 import { Article } from 'src/article/article.entity';
+import { ArticleService } from 'src/article/article.service';
 
 @Injectable()
 export class UserService {
   constructor(
+    // private articleService: ArticleService,
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(Article)
+    private readonly articleRepository: Repository<Article>,
   ) { }
 
   async save(user: User): Promise<User> {
@@ -42,6 +46,36 @@ export class UserService {
       return true;
     }
   }
+
+  /**
+   * 点赞文章
+   * @param dto 用户与文章id
+   */
+  async like(dto: { id: number, articleId: number }): Promise<Boolean> {
+    let user = await this.userRepository.findOne(dto.id, { relations: ['likeArticles'] })
+    let flag = false;
+    const arr = [];
+    // 算出不包含articleId的数组
+    user.likeArticles.forEach(v => {
+      if (v.id === dto.articleId) {
+        flag = true;
+      } else {
+        arr.push(v);
+      }
+    })
+    if (flag) { // 说明已经存过,当前为取消点赞操作
+      user.likeArticles = arr;
+      await this.userRepository.save(user);
+      return false;
+    } else { // 说明尚未存过,当前为执行点赞操作
+      const article = new Article();
+      article.id = dto.articleId
+      user.likeArticles.push(article);
+      await this.userRepository.save(user);
+      return true;
+    }
+  }
+
   async hasCollect(dto: { id: number, articleId: number }) {
     let user = await this.userRepository.findOne(dto.id, { relations: ['articles'] })
     let flag = false;
@@ -52,6 +86,18 @@ export class UserService {
     })
     return flag;
   }
+
+  async hasLike(dto: { id: number, articleId: number }) {
+    let user = await this.userRepository.findOne(dto.id, { relations: ['likeArticles'] })
+    let flag = false;
+    user.likeArticles.forEach(v => {
+      if (v.id == dto.articleId) {
+        flag = true;
+      }
+    })
+    return flag;
+  }
+
   async findBasicInfo(): Promise<User[]> {
     return await this.userRepository.find();
   }
@@ -83,13 +129,25 @@ export class UserService {
    * @param id 用户id
    */
   async getUserCollections(id: number): Promise<any> {
-    const result = await this.userRepository.findOne(id, { relations: ['articles'] });
-    result.articles.forEach(item => {
-      delete item.createTime;
-      delete item.updateTime;
-      delete item.content;
-      delete item.keywords;
-    });
-    return result.articles;
+    const result = [];
+    await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .leftJoinAndSelect('user.articles', 'articles')
+      .leftJoinAndSelect('articles.users', 'users')
+      .leftJoinAndSelect('articles.likeUsers', 'likeUsers')
+      .leftJoinAndSelect('articles.comments', 'comments')
+      .getOne().then(v => {
+        v.articles.forEach(article => {
+          result.push({
+            id: article.id,
+            name: article.name,
+            likeAmount: article.likeUsers.length,
+            collectAmount: article.users.length,
+            commentAmount: article.comments.length,
+          })
+        });
+      })
+    return result;
   }
 }
