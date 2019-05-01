@@ -69,6 +69,6 @@ export class VisitComponent implements OnInit, OnDestroy {
       hidden: true,
     }]);
   }
-  navTitle = '博客展览系统';
+  navTitle = '';
   menu = MENU_ITEMS;
 }

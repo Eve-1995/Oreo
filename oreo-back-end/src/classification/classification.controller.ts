@@ -39,9 +39,9 @@ export class ClassificationController {
     return await this.service.save(classification);
   }
 
-  @Get('findBasicInfoList')
-  async findBasicInfoList(): Promise<Classification[]> {
-    return this.service.findBasicInfoList();
+  @Get('findTableInfo')
+  async findTableInfo(): Promise<Classification[]> {
+    return this.service.findTableInfo();
   }
 
   @Get('findDetail')
@@ -64,11 +64,7 @@ export class ClassificationController {
   @Get('findByFilter')
   async findByFilter(@Query() query): Promise<Classification[]> {
     const name = query.name;
-    if (name != undefined) {
-      return await this.service.findByName(name);
-    } else {
-      return await this.service.findBasicInfoList();
-    }
+    return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
   @Get('findClassifications')

@@ -22,21 +22,40 @@ export class AppHeaderComponent implements OnInit {
   @Input() title: string;
   userInfo: any;
 
-  userMenu = [{ title: '个人中心' }, { title: '登出' }];
+  userMenu = [];
 
   onContecxtItemSelection(title) {
     switch (title) {
+      case '登陆':
+        this.router.navigate(['/auth/login']);
+        break;
       case '登出':
+        this.userMenu = [];
         localStorage.removeItem('userInfo');
         this.userInfo = null;
-        this.router.navigate(['/visit/article']);
+        this.router.navigate(['/visit']);
         break;
       case '个人中心':
-        this.router.navigate(['/user/profile']);
+        this.router.navigate(['/user']);
+        break;
+      case '管理中心':
+        this.router.navigate(['/admin']);
+        break;
+      case '博文中心':
+        this.router.navigate(['/visit']);
         break;
     }
   }
   ngOnInit(): void {
+    const userInfo = this.globalService.getUserInfo();
+    if (userInfo) {
+      this.userMenu.push({ title: '个人中心' });
+      if (userInfo.level === 1) this.userMenu.push({ title: '管理中心' });
+      this.userMenu.push({ title: '博文中心' });
+      this.userMenu.push({ title: '登出' });
+    } else {
+      this.userMenu.push({ title: '登陆' });
+    }
     this.menuService.onItemClick().subscribe((event) => {
       this.onContecxtItemSelection(event.item.title);
     });

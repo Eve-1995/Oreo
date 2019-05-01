@@ -11,6 +11,6 @@ import { MENU_ITEMS } from './user-menu';
   `,
 })
 export class UserComponent {
-  navTitle = '个人设置';
+  navTitle = '个人中心';
   menu = MENU_ITEMS;
 }

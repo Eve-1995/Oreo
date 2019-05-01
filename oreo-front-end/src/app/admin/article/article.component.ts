@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
@@ -6,18 +6,20 @@ import { ArticleService } from './article.service';
 import { ArticleClassificationDto } from './article.dto';
 import { Classification } from '../classification/classification.dto';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
+import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   templateUrl: './article.component.html',
   styleUrls: ['article.component.scss'],
   providers: [ArticleService],
 })
-export class AppArticleComponent {
+export class AppArticleComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private articleService: ArticleService,
     private toastrService: NbToastrService) {
-    articleService.findBasicInfoList().subscribe(value => {
+    articleService.findTableInfo().subscribe(value => {
       this.source.load(value);
       this.source.setPaging(1, 5);
       this.loading = false;
@@ -26,6 +28,14 @@ export class AppArticleComponent {
       this.classificationGroup = value;
     });
   }
+
+  ngOnInit(): void {
+    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+      this.fetchTableList();
+    });
+  }
+
+  fetchTableList$ = new Subject();
   loading = true;
   editOrCreateClassification = [];
   classificationGroup: Classification[];
@@ -43,6 +53,11 @@ export class AppArticleComponent {
       },
       likeAmount: {
         title: '点赞总数',
+        editable: false,
+        filter: false,
+      },
+      collectAmount: {
+        title: '收藏总数',
         editable: false,
         filter: false,
       },

@@ -16,7 +16,7 @@ export class Comment {
     @ManyToOne(type => User, user => user.comments)
     user: User;
 
-    @ManyToOne(type => Article, article => article.comments)
+    @ManyToOne(type => Article, article => article.comments, { onDelete: 'CASCADE' })
     article: Article;
 
     @ManyToOne(type => Comment, comment => comment.parentComments)

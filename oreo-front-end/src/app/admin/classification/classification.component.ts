@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
@@ -6,23 +6,33 @@ import { AppDialogNameComponent } from './dialog-name-prompt/dialog-name-prompt.
 import { ClassificationService } from './classification.service';
 import { Classification, CreateClassification } from './classification.dto';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   templateUrl: './classification.component.html',
   styleUrls: ['classification.component.scss'],
   providers: [ClassificationService],
 })
-export class AppClassificationComponent {
+export class AppClassificationComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private classificationService: ClassificationService,
     private toastrService: NbToastrService) {
-    classificationService.findBasicInfoList().subscribe(value => {
+    classificationService.findTableInfo().subscribe(value => {
       this.source.load(value);
       this.source.setPaging(1, 5);
       this.loading = false;
     });
   }
+
+  ngOnInit(): void {
+    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+      this.fetchTableList();
+    });
+  }
+
+  fetchTableList$ = new Subject();
   loading = true;
   filterName: string;
   source: LocalDataSource = new LocalDataSource();
@@ -45,6 +55,11 @@ export class AppClassificationComponent {
         editable: false,
         filter: false,
       },
+      collectAmount: {
+        title: '收藏总数',
+        editable: false,
+        filter: false,
+      },
       commentAmount: {
         title: '评论总数',
         editable: false,
@@ -58,6 +73,7 @@ export class AppClassificationComponent {
   }
 
   create() {
+    console.log('create');
     this.dialogService.open(AppDialogNameComponent, { context: { operation: 'create' }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: CreateClassification) => {
       if (v !== undefined) {
         this.classificationService.save({ name: v.name, keywords: v.keywords }).subscribe(() => {

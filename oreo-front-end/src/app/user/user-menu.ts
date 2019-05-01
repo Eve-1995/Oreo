@@ -18,9 +18,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'nb-bar-chart',
     link: '/user/collection',
   },
-  {
-    title: '我的评论',
-    icon: 'nb-bar-chart',
-    link: '/user/comment',
-  },
+  // {
+  //   title: '我的评论',
+  //   icon: 'nb-bar-chart',
+  //   link: '/user/comment',
+  // },
 ];

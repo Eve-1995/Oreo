@@ -5,8 +5,8 @@ import { CreateClassification } from './classification.dto';
 @Injectable()
 export class ClassificationService {
   constructor(private httpClient: HttpClient) { }
-  findBasicInfoList(): any {
-    return this.httpClient.get(`classification/findBasicInfoList`);
+  findTableInfo(): any {
+    return this.httpClient.get(`classification/findTableInfo`);
   }
   findDetail(id: number): any {
     const body = {

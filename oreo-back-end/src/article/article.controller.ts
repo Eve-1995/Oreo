@@ -17,6 +17,10 @@ export class ArticleController {
   async findBasicInfoList(): Promise<Article[]> {
     return await this.service.findBasicInfoList();
   }
+  @Get('findTableInfo')
+  async findTableInfo(): Promise<Article[]> {
+    return await this.service.findTableInfo();
+  }
 
   @Delete('delete')
   async delete(@Query() request): Promise<any> {
@@ -26,11 +30,7 @@ export class ArticleController {
   @Get('findByFilter')
   async findByFilter(@Query() query): Promise<Article[]> {
     const name = query.name;
-    if (name != undefined) {
-      return await this.service.findByName(name);
-    } else {
-      return await this.service.findBasicInfoList();
-    }
+    return name !== undefined ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
   @Get('findByClassification/:classificationId')

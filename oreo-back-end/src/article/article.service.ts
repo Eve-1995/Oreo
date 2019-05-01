@@ -30,6 +30,31 @@ export class ArticleService {
   async findBasicInfoList(): Promise<Article[]> {
     return await this.articleRepository.find();
   }
+  
+  /**
+   * 根据参数查找类别的关联信息
+   * @param name 类别名称
+   */
+  async findTableInfo(name?: string): Promise<any> {
+    const result = [];
+    let articles: Article[] = [];
+    const query = this.articleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.users', 'users')
+      .leftJoinAndSelect('article.likeUsers', 'likeUsers')
+      .leftJoinAndSelect('article.comments', 'comments')
+    articles = await (name ? query.where(`article.name like '%${name}%'`).getMany() : query.getMany());
+    articles.forEach(v => {
+      result.push({
+        id: v.id,
+        name: v.name,
+        likeAmount: v.likeUsers.length,
+        collectAmount: v.users.length,
+        commentAmount: v.comments.length
+      })
+    });
+    return result;
+  }
   /**
    * 查找文章的详细信息
    */

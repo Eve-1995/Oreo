@@ -5,8 +5,8 @@ import { ArticleClassificationDto } from './article.dto';
 @Injectable()
 export class ArticleService {
   constructor(private httpClient: HttpClient) { }
-  findBasicInfoList(): any {
-    return this.httpClient.get(`article/findBasicInfoList`);
+  findTableInfo(): any {
+    return this.httpClient.get(`article/findTableInfo`);
   }
   getClassificationNames(): any {
     return this.httpClient.get(`classification/findNames`);

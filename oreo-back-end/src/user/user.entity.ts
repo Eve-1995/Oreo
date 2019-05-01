@@ -27,7 +27,7 @@ export class User {
 
     @Column({
         default: 0,
-        comment:'用户类别 0:普通用户,1:管理员'
+        comment: '用户类别 0:普通用户,1:管理员'
     })
     level: number;
 
@@ -76,7 +76,7 @@ export class User {
     @JoinTable()
     articles: Article[];
 
-    @OneToMany(type => Comment, comment => comment.user)
+    @OneToMany(type => Comment, comment => comment.user, { onDelete: 'CASCADE' })
     comments: Comment[];
 
     @ManyToMany(type => Article, article => article.likeUsers)

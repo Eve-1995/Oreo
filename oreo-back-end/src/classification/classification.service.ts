@@ -21,25 +21,37 @@ export class ClassificationService {
     return await this.classificationRepository.delete(id);
   }
 
-  async findBasicInfoList(): Promise<any> {
-    const result = await this.classificationRepository.find({ relations: ['articles'] });
-    // 删去[文章]的对象,且将[文章]的好评数、点赞数等数据添加到[类别]对象上
-    result.forEach(item => {
-      item['articleAmount'] = item.articles.length;
-      if (item.articles.length !== 0) {
-        let commentAmount = 0;
-        let likeAmount = 0;
-        item.articles.forEach(articleItem => {
-          commentAmount += articleItem.commentAmount;
-          likeAmount += articleItem.likeAmount;
-        });
-        item['commentAmount'] = commentAmount;
-        item['likeAmount'] = likeAmount;
-      } else {
-        item['commentAmount'] = 0;
-        item['likeAmount'] = 0;
-      }
-      delete item.articles;
+  /**
+   * 根据参数查找类别的关联信息
+   * @param name 类别名称
+   */
+  async findTableInfo(name?: string): Promise<any> {
+    const result = [];
+    let classifications: Classification[] = [];
+    const query = this.classificationRepository
+      .createQueryBuilder('classification')
+      .leftJoinAndSelect('classification.articles', 'articles')
+      .leftJoinAndSelect('articles.users', 'users')
+      .leftJoinAndSelect('articles.likeUsers', 'likeUsers')
+      .leftJoinAndSelect('articles.comments', 'comments')
+    classifications = await (name ? query.where(`classification.name like '%${name}%'`).getMany() : query.getMany());
+    classifications.forEach(classification => {
+      let likeAmount = 0;
+      let collectAmount = 0;
+      let commentAmount = 0;
+      classification.articles.forEach(article => {
+        likeAmount += article.likeUsers.length;
+        collectAmount += article.users.length;
+        commentAmount += article.comments.length;
+      });
+      result.push({
+        id: classification.id,
+        name: classification.name,
+        articleAmount: classification.articles.length,
+        likeAmount: likeAmount,
+        collectAmount: collectAmount,
+        commentAmount: commentAmount
+      })
     });
     return result;
   }
@@ -59,8 +71,8 @@ export class ClassificationService {
         let commentAmount = 0;
         let likeAmount = 0;
         item.articles.forEach(articleItem => {
-          commentAmount += articleItem.commentAmount;
-          likeAmount += articleItem.likeAmount;
+          // commentAmount += articleItem.commentAmount;
+          // likeAmount += articleItem.likeAmount;
         });
         item['commentAmount'] = commentAmount;
         item['likeAmount'] = likeAmount;

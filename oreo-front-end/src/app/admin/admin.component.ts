@@ -11,6 +11,6 @@ import { MENU_ITEMS } from './admin-menu';
   `,
 })
 export class AdminComponent {
-  navTitle = '博客管理系统';
+  navTitle = '管理中心';
   menu = MENU_ITEMS;
 }

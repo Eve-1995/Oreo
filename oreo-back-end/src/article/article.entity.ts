@@ -22,10 +22,7 @@ export class Article {
     })
     content: string;
 
-    @Column({default: 0})
-    commentAmount: number;
-
-    @Column({default: ''})
+    @Column({ default: '' })
     keywords: string;
 
     @ManyToMany(type => Classification, classification => classification.articles)
