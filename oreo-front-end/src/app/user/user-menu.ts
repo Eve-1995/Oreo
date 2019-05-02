@@ -5,7 +5,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   ...pre_items,
   {
     title: '资料设置',
-    icon: 'nb-bar-chart',
+    icon: 'nb-edit',
     link: '/user/profile',
   },
   // {
@@ -15,7 +15,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   // },
   {
     title: '我的收藏',
-    icon: 'nb-bar-chart',
+    icon: 'nb-star',
     link: '/user/collection',
   },
   // {

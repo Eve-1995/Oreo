@@ -5,17 +5,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
   ...pre_items,
   {
     title: '类别管理',
-    icon: 'nb-bar-chart',
+    icon: 'nb-grid-a-outline',
     link: '/admin/classification',
   },
   {
     title: '文章管理',
-    icon: 'nb-bar-chart',
+    icon: 'nb-grid-a',
     link: '/admin/article',
   },
   {
     title: '用户管理',
-    icon: 'nb-bar-chart',
+    icon: 'nb-person',
     link: '/admin/user',
   },
 ];
