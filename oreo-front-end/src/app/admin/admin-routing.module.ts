@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AdminComponent } from './admin.component';
 import { AppClassificationComponent } from './classification/classification.component';
 import { AppArticleComponent } from './article/article.component';
+import { AppUserComponent } from './user/user.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'classification', pathMatch: 'full' },
       { path: 'classification', component: AppClassificationComponent },
       { path: 'article', component: AppArticleComponent },
+      { path: 'user', component: AppUserComponent },
       { path: '**', redirectTo: 'classification' },
     ],
   }
@@ -26,5 +28,6 @@ export class AdminRoutingModule { }
 export const adminRoutedComponents = [
   AdminComponent,
   AppClassificationComponent,
-  AppArticleComponent
+  AppArticleComponent,
+  AppUserComponent
 ];

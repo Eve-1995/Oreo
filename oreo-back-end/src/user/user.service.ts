@@ -97,10 +97,43 @@ export class UserService {
     })
     return flag;
   }
-
-  async findBasicInfo(): Promise<User[]> {
-    return await this.userRepository.find();
+  /**
+   * 根据参数查找用户信息
+   * @param name 用户昵称
+   */
+  async findTableInfo(name?: string): Promise<User[]> {
+    const result = [];
+    let users: User[] = [];
+    const query = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.likeArticles', 'likeArticles')
+      .leftJoinAndSelect('user.articles', 'articles')
+      .leftJoinAndSelect('user.comments', 'comments')
+    users = await (name ? query.where(`user.nickname like '%${name}%'`).getMany() : query.getMany());
+    users.forEach(v => {
+      result.push({
+        id: v.id,
+        nickname: v.nickname,
+        realname: v.realname,
+        liveCity: v.liveCity,
+        phone: v.phone,
+        email: v.email,
+        likeAmount: v.likeArticles.length,
+        collectAmount: v.articles.length,
+        commentAmount: v.comments.length
+      })
+    });
+    return result;
   }
+
+  /**
+   * 根据id删除文章
+   * @param id 文章id
+   */
+  async delete(id: number): Promise<any> {
+    return await this.userRepository.delete(id);
+  }
+
   async getUser(user: User): Promise<User> {
     return await this.userRepository.findOne(user);
   }

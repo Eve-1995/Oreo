@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { ResponseDTO } from 'src/others/response.dto';
@@ -8,18 +8,29 @@ export class UserController {
   constructor(private readonly service: UserService,
   ) { }
 
-  @Get('findBasicInfo')
-  async findBasicInfo(): Promise<User[]> {
-    return this.service.findBasicInfo();
+  @Get('findTableInfo')
+  async findTableInfo(): Promise<ResponseDTO> {
+    const result: ResponseDTO = { code: null, message: null, data: null }
+    await this.service.findTableInfo().then(v => {
+      result.code = 200;
+      result.data = v;
+    })
+    return result;
+  }
+
+  @Get('findByFilter')
+  async findByFilter(@Query() query): Promise<User[]> {
+    const name = query.name;
+    return name !== undefined ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
   @Post('save')
   async save(@Body() dto: User): Promise<ResponseDTO> {
     const result: ResponseDTO = { code: null, message: null, data: null }
     await this.service.save(dto).then(v => {
-      result.code = 200
-      result.message = '注册成功'
-      result.data = { id: v.id }
+      result.code = 200;
+      result.message = '注册成功';
+      result.data = { id: v.id };
     }).catch(e => {
       if (e.errno === 1062) {
         result.code = 500
@@ -35,12 +46,26 @@ export class UserController {
     await this.save(dto).then((v: ResponseDTO) => {
       result = v;
       if (v.code === 200) {
-        result.message = '修改成功'
+        result.message = '修改成功';
       }
     })
     return result
   }
 
+  @Delete('delete')
+  async delete(@Query() request): Promise<any> {
+    let result: ResponseDTO = { code: null, message: null, data: null }
+    const res = await this.service.delete(request.id);
+    if (res.raw.affectedRows > 0) {
+      result.code = 200;
+      result.message = '删除成功';
+    } else {
+      result.code = 500;
+      result.message = '删除失败';
+    }
+    return result;
+  }
+  
   @Post('login')
   async login(@Body() user: User): Promise<any> {
     const result: ResponseDTO = { code: null, message: null, data: null }

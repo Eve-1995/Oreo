@@ -37,7 +37,6 @@ export class User {
     realname: string;
 
     @Column({
-        unique: true,
         nullable: true
     })
     email: string;

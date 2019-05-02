@@ -29,6 +29,9 @@ export class AppHeaderComponent implements OnInit {
       case '登陆':
         this.router.navigate(['/auth/login']);
         break;
+      case '注册':
+        this.router.navigate(['/auth/register']);
+        break;
       case '登出':
         this.userMenu = [];
         localStorage.removeItem('userInfo');
@@ -55,6 +58,7 @@ export class AppHeaderComponent implements OnInit {
       this.userMenu.push({ title: '登出' });
     } else {
       this.userMenu.push({ title: '登陆' });
+      this.userMenu.push({ title: '注册' });
     }
     this.menuService.onItemClick().subscribe((event) => {
       this.onContecxtItemSelection(event.item.title);
