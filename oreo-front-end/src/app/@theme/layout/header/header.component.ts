@@ -33,10 +33,11 @@ export class AppHeaderComponent implements OnInit {
         this.router.navigate(['/auth/register']);
         break;
       case '登出':
-        this.userMenu = [];
+        // this.userMenu = []; // 会报错
         localStorage.removeItem('userInfo');
         this.userInfo = null;
         this.router.navigate(['/visit']);
+        window.location.reload();
         break;
       case '个人中心':
         this.router.navigate(['/user']);

@@ -74,7 +74,7 @@ export class AppUserComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.userService.findTableInfo().subscribe(value => {
+    this.subscription = this.userService.findTableInfo().subscribe(value => {
       this.source.load(value.data);
       this.source.setPaging(1, 5);
       this.loading = false;

@@ -13,13 +13,13 @@ export class Comment {
     @Column()
     content: string;
 
-    @ManyToOne(type => User, user => user.comments)
+    @ManyToOne(type => User, user => user.comments, { onDelete: 'CASCADE' })
     user: User;
 
     @ManyToOne(type => Article, article => article.comments, { onDelete: 'CASCADE' })
     article: Article;
 
-    @ManyToOne(type => Comment, comment => comment.parentComments)
+    @ManyToOne(type => Comment, comment => comment.parentComments, { onDelete: 'CASCADE' })
     parentComment: Comment;
 
     @OneToMany(type => Comment, comment => comment.parentComment)

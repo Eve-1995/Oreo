@@ -87,7 +87,6 @@ export class AppArticleDetailComponent {
       this.service.actionStatus(this.user.id, this.articleDetail.id).subscribe((v: ResponseDTO) => {
         this.hasCollection = v.data.hasCollect ? true : false;
         this.hasLike = v.data.hasLike ? true : false;
-        this.loading = false;
       });
     }
   }
@@ -95,6 +94,7 @@ export class AppArticleDetailComponent {
   getComments() {
     this.service.getCommentsByArticle(this.articleId).subscribe((v: ResponseDTO) => {
       this.comments = v.data;
+      this.loading = false;
     });
   }
   commentContent = '';

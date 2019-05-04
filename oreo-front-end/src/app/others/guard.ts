@@ -9,7 +9,7 @@ export class AdminGuard implements CanActivateChild {
     if (userInfo && userInfo.level === 1) {
       return true;
     }
-    return false;
+    return this.router.createUrlTree(['/visit/article']);
   }
 }
 
@@ -21,6 +21,6 @@ export class UserGuard implements CanActivateChild {
     if (userInfo) {
       return true;
     }
-    return false;
+    return this.router.createUrlTree(['/auth/login']);
   }
 }

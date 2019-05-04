@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ThemeModule } from './@theme/theme.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxElectronModule } from 'ngx-electron';
+// import { NgxElectronModule } from 'ngx-electron';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +20,7 @@ import { NgxElectronModule } from 'ngx-electron';
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
-    NgxElectronModule
+    // NgxElectronModule
   ],
   bootstrap: [AppComponent],
   providers: [
