@@ -4,8 +4,8 @@ import { UserService } from './user.service';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
-import { Subscription } from 'rxjs';
-// import { debounceTime } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   templateUrl: './user.component.html',
@@ -18,7 +18,7 @@ export class AppUserComponent implements OnInit, OnDestroy {
   loading = true;
   filterName: string;
   source: LocalDataSource = new LocalDataSource();
-  // fetchTableList$ = new Subject();
+  fetchTableList$ = new Subject();
   settings = {
     actions: false,
     hideSubHeader: true,
@@ -79,9 +79,9 @@ export class AppUserComponent implements OnInit, OnDestroy {
       this.source.setPaging(1, 5);
       this.loading = false;
     });
-    // this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-    //   this.fetchTableList();
-    // });
+    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+      this.fetchTableList();
+    });
   }
 
   ngOnDestroy(): void {
