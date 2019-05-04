@@ -5,7 +5,7 @@
   <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
     <form class="form-inline filter">
       <div class="filter-input">
-        <input type="text" nbInput placeholder="搜索文章名称" (keyup)="fetchTableList$.next()" [(ngModel)]="filterName"
+        <input type="text" nbInput placeholder="搜索文章名称" (keyup)="fetchTableList()" [(ngModel)]="filterName"
           name="filterName">
       </div>
       <div class="filter-button-group">
