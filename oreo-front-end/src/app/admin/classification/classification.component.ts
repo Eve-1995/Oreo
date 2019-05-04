@@ -6,8 +6,8 @@ import { AppDialogNameComponent } from './dialog-name-prompt/dialog-name-prompt.
 import { ClassificationService } from './classification.service';
 import { Classification, CreateClassification } from './classification.dto';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+// import { Subject } from 'rxjs';
+// import { debounceTime } from 'rxjs/operators';
 
 @Component({
   templateUrl: './classification.component.html',
@@ -27,12 +27,12 @@ export class AppClassificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
+    // this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+    //   this.fetchTableList();
+    // });
   }
 
-  fetchTableList$ = new Subject();
+  // fetchTableList$ = new Subject();
   loading = true;
   filterName: string;
   source: LocalDataSource = new LocalDataSource();

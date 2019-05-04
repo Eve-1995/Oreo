@@ -6,8 +6,8 @@ import { ArticleService } from './article.service';
 import { ArticleClassificationDto } from './article.dto';
 import { Classification } from '../classification/classification.dto';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
-import { debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+// import { debounceTime } from 'rxjs/operators';
+// import { Subject } from 'rxjs';
 
 @Component({
   templateUrl: './article.component.html',
@@ -30,12 +30,12 @@ export class AppArticleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
+    // this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+    //   this.fetchTableList();
+    // });
   }
 
-  fetchTableList$ = new Subject();
+  // fetchTableList$ = new Subject();
   loading = true;
   editOrCreateClassification = [];
   classificationGroup: Classification[];
