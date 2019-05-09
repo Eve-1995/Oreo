@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from './article.service';
 import { ArticleList } from './article.dto';
@@ -8,31 +8,41 @@ import { ArticleList } from './article.dto';
   styleUrls: ['article.component.scss'],
   providers: [ArticleService],
 })
-export class AppArticleComponent {
-  name: string;
-  items = [];
+export class AppArticleComponent implements OnInit {
+  public name: string;
+  public items = [];
+
   constructor(
     private router: Router,
-    activatedRoute: ActivatedRoute,
-    service: ArticleService,
-  ) {
-    activatedRoute.queryParams.subscribe(queryParams => {
-      if (queryParams.id === undefined) {
-        service.findFirstMenu().subscribe(value => {
-          router.navigate(['/visit/article'], {
+    private activatedRoute: ActivatedRoute,
+    private service: ArticleService,
+  ) { }
+
+  ngOnInit(): void {
+    this.listenRouteChange();
+  }
+
+  // 当跳转至article路由时, 若无指定'类别'id, 则取第一个类别进行分类查看文章
+  listenRouteChange(): void {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      if (queryParams.id) {
+        this.service.findArticlesByClassificationId(queryParams.id).subscribe((v: ArticleList) => {
+          this.name = v.name;
+          this.items = v.articles;
+        });
+      } else {
+        this.service.findFirstMenu().subscribe(value => {
+          this.router.navigate(['/visit/article'], {
             queryParams: {
               id: value.id,
             },
           });
         });
-      } else {
-        service.findArticlesByClassificationId(queryParams.id).subscribe((v: ArticleList) => {
-          this.name = v.data.name;
-          this.items = v.data.articles;
-        });
       }
     });
   }
+
+  // 点击文章时, 跳转页面查看文章详情
   checkArticle(id: number) {
     this.router.navigate(['/visit/article-detail'], {
       queryParams: {

@@ -93,11 +93,8 @@ export class ClassificationService {
   /**
    * 获取第一个分类的id
    */
-  async findFirst(): Promise<Classification[]> {
-    return await this.classificationRepository.find({
-      select: ['id'],
-      take: 1
-    });
+  async findFirst(): Promise<{ id: number }> {
+    return await this.classificationRepository.findOne({});
   }
 
 }

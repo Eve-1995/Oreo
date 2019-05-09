@@ -1,17 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MENU_ITEMS } from './visit-menu';
-import { HttpClient } from '@angular/common/http';
 import { NbMenuService } from '@nebular/theme';
 import { AppGlobalService } from '../others/global.service';
-import { Observable, Subscription } from 'rxjs';
+import { VisitService } from './visit.service';
 
-interface Menu {
-  id: number;
-  createTime: Date;
-  updateTime: Date;
-  name: string;
-  keywords: string;
-}
 @Component({
   styleUrls: ['visit.component.scss'],
   template: `
@@ -20,19 +12,26 @@ interface Menu {
       <router-outlet></router-outlet>
     </app-layout>
   `,
+  providers: [VisitService]
 })
-export class VisitComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
+export class VisitComponent implements OnInit {
+  public navTitle = '';
+  public menu = MENU_ITEMS;
 
   constructor(
     private appGlobalService: AppGlobalService,
     private nBmenuService: NbMenuService,
-    private httpClient: HttpClient
+    private visitService: VisitService,
   ) { }
 
   ngOnInit(): void {
+    this.navigateToFirstArticle();
+  }
+
+  // 当进入visit模块时
+  navigateToFirstArticle(): void {
     if (!this.appGlobalService.haveAddedMenu) {
-      this.subscription = this.getMenu().subscribe(value => {
+      this.visitService.getMenu().subscribe(value => {
         value.forEach((item: Menu, index: number) => {
           this.nBmenuService.addItems([{
             title: item.name,
@@ -48,16 +47,6 @@ export class VisitComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  getMenu(): Observable<any> {
-    return this.httpClient.get('classification/findClassifications');
-  }
-
   /**
    *fix:当切换模块时,会导致之前添加的最后一个元素重新添加.
    *reason:尚不清楚.
@@ -69,6 +58,4 @@ export class VisitComponent implements OnInit, OnDestroy {
       hidden: true,
     }]);
   }
-  navTitle = '';
-  menu = MENU_ITEMS;
 }

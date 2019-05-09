@@ -68,13 +68,16 @@ export class ClassificationController {
   }
 
   @Get('findClassifications')
-  async findClassifications(): Promise<Classification[]> {
-    return await this.service.findNames();
+  async findClassifications(): Promise<ResponseDTO> {
+    const dto = new ResponseDTO();
+    dto.data = await this.service.findNames();
+    return dto;
   }
 
   @Get('findFirst')
-  async findFirst(): Promise<{ id: number }> {
-    const data = await this.service.findFirst();
-    return data[0];
+  async findFirst(): Promise<ResponseDTO> {
+    const dto = new ResponseDTO();
+    dto.data = await this.service.findFirst();
+    return dto;
   }
 }
