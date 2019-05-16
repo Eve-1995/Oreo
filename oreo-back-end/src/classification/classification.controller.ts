@@ -1,5 +1,5 @@
 
-import { Get, Controller, Post, Body, Delete, Put, Query } from '@nestjs/common';
+import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors } from '@nestjs/common';
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
 import { ResponseDTO } from 'src/others/response.dto';

@@ -1,5 +1,5 @@
 
-import { Get, Controller, Param, Post, Body, Delete, Query } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
 import { ResponseDTO } from 'src/others/response.dto';
@@ -35,7 +35,7 @@ export class ArticleController {
 
   @Get('findByClassification/:classificationId')
   async findByClassification(@Param() params): Promise<any> {
-    let result: ResponseDTO = { code: null, message: null, data: null }
+    // let result: ResponseDTO = { code: null, message: null, data: null }
     const temp = await this.service.findListByClassification(params.classificationId);
     const arr = [];
     temp.articles.forEach(item => {
@@ -47,12 +47,19 @@ export class ArticleController {
         commentAmount: item.comments.length,
       });
     });
-    result.code = 200;
-    result.data = {
+    // result.code = 200;
+    // result.data = {
+    //   name: temp.name,
+    //   articles: arr,
+    // }
+
+    throw new HttpException({
+      code: 201
+    }, 201);
+    return {
       name: temp.name,
       articles: arr,
-    }
-    return result;
+    };
   }
   /**
    * 返回文章信息以及收藏者数量
