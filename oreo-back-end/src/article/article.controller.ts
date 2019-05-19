@@ -1,8 +1,8 @@
 
-import { Get, Controller, Param, Post, Body, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Delete, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
-import { ResponseDTO } from 'src/others/response.dto';
+import { ClassificationWithArticlesAll, ClassificationWithArticles, ArticleBasicInfo } from '../../../common/interface/article.interface';
 @Controller('article')
 export class ArticleController {
   constructor(
@@ -34,9 +34,8 @@ export class ArticleController {
   }
 
   @Get('findByClassification/:classificationId')
-  async findByClassification(@Param() params): Promise<any> {
-    // let result: ResponseDTO = { code: null, message: null, data: null }
-    const temp = await this.service.findListByClassification(params.classificationId);
+  async findByClassification(@Param() params): Promise<ClassificationWithArticles> {
+    const temp: ClassificationWithArticlesAll = await this.service.findListByClassification(params.classificationId);
     const arr = [];
     temp.articles.forEach(item => {
       arr.push({
@@ -47,15 +46,6 @@ export class ArticleController {
         commentAmount: item.comments.length,
       });
     });
-    // result.code = 200;
-    // result.data = {
-    //   name: temp.name,
-    //   articles: arr,
-    // }
-
-    throw new HttpException({
-      code: 201
-    }, 201);
     return {
       name: temp.name,
       articles: arr,
@@ -66,21 +56,18 @@ export class ArticleController {
    * @param params 文章id
    */
   @Get('findDetailById/:id')
-  async findDetailById(@Param() params): Promise<ResponseDTO> {
-    let result: ResponseDTO = { code: null, message: null, data: null }
-    const temp = await this.service.findDetailById(params.id);
-    result.code = 200;
-    result.data = {
-      id: temp.id,
-      name: temp.name,
-      createTime: temp.createTime,
-      updateTime: temp.updateTime,
-      content: temp.content,
-      likeAmount: temp.likeUsers.length,
-      collectAmount: temp.users.length,
-      commentAmount: temp.comments.length,
-    }
-    return result
+  async findDetailById(@Param() params): Promise<ArticleBasicInfo> {
+    const serviceData = await this.service.findDetailById(params.id);
+    return {
+      'id': serviceData.id,
+      'name': serviceData.name,
+      'createTime': serviceData.createTime,
+      'updateTime': serviceData.updateTime,
+      'content': serviceData.content,
+      'likeAmount': serviceData.likeUsers.length,
+      'collectAmount': serviceData.users.length,
+      'commentAmount': serviceData.comments.length,
+    };
   }
   @Get('findBasicInfo')
   async findBasicInfo(@Query() query): Promise<any> {

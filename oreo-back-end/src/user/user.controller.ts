@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Delete, HttpException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { ResponseDTO } from 'src/others/response.dto';
+import { UserDTO } from '../../../common/interface/user.interface';
 
 @Controller('user')
 export class UserController {
@@ -65,27 +66,27 @@ export class UserController {
     }
     return result;
   }
-  
+
   @Post('login')
-  async login(@Body() user: User): Promise<any> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
-    if (user.phone !== undefined && user.password !== undefined) {
-      await this.service.getUser(user).then(v => {
-        if (v === undefined) {
-          result.code = 404
-          result.message = '帐号或密码不正确'
-        } else {
-          result.code = 200
-          result.message = `验证成功!欢迎你,${v.nickname}`
-          result.data = v
-        }
+  async login(@Body() user: User): Promise<UserDTO> {
+    let result: UserDTO;
+    if (user.phone && user.password) {
+      await this.service.getUser(user).then((v: UserDTO) => {
+        if (!v) {
+          throw new HttpException({
+            message: '帐号或密码不正确'
+          }, 211);
+        } 
+        result = v;
       })
     } else {
-      result.code = 666
-      result.message = '骚年,别玩火哦!(账号或密码缺失)'
+      throw new HttpException({
+        message: '恭喜你获得[四魂之玉碎片I * 1]!'
+      }, 666);
     }
     return result;
   }
+
   @Get('getUser')
   async getUser(@Query() query): Promise<any> {
     const result: ResponseDTO = { code: null, message: null, data: null }
@@ -100,18 +101,18 @@ export class UserController {
   }
 
   @Post('collect')
-  async collect(@Body() dto: { id: number, articleId: number }): Promise<ResponseDTO> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
-    await this.service.collect(dto).then(v => {
+  async collect(@Body() dto: { userId: number, articleId: number }): Promise<any> {
+    await this.service.collect(dto.userId, dto.articleId).then(v => {
       if (v) {
-        result.code = 200
-        result.message = '收藏成功'
+        throw new HttpException({
+          message: '收藏成功'
+        }, 210);
       } else {
-        result.code = 201
-        result.message = '取消成功'
+        throw new HttpException({
+          message: '取消收藏成功'
+        }, 210);
       }
     })
-    return result
   }
 
   @Post('like')
@@ -130,19 +131,16 @@ export class UserController {
   }
 
   @Get('actionStatus')
-  async actionStatus(@Query() query): Promise<any> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
-    result.code = 200
-    let hasCollect;
-    let hasLike;
+  async actionStatus(@Query() query): Promise<{ hasCollect: boolean, hasLike: boolean }> {
+    let hasCollect: boolean;
+    let hasLike: boolean;
     await this.service.hasCollect({ id: query.id, articleId: query.articleId }).then(v => {
       hasCollect = v ? true : false
     })
     await this.service.hasLike({ id: query.id, articleId: query.articleId }).then(v => {
       hasLike = v ? true : false
     })
-    result.data = { hasCollect, hasLike };
-    return result;
+    return { hasCollect, hasLike };
   }
 
   @Get('getCollections')

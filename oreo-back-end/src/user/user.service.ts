@@ -4,6 +4,7 @@ import { Repository, MoreThan } from 'typeorm';
 import { User } from './user.entity';
 import { Article } from 'src/article/article.entity';
 import { ArticleService } from 'src/article/article.service';
+import { UserDTO } from '../../../common/interface/user.interface';
 
 @Injectable()
 export class UserService {
@@ -18,17 +19,19 @@ export class UserService {
   async save(user: User): Promise<User> {
     return this.userRepository.save(user);
   }
+
   /**
-   * 收藏文章
-   * @param dto 用户与文章id
+   * 收藏文章或取消收藏文章
+   * @param userId 用户id
+   * @param articleId 文章id
    */
-  async collect(dto: { id: number, articleId: number }): Promise<Boolean> {
-    let user = await this.userRepository.findOne(dto.id, { relations: ['articles'] })
+  async collect(userId: number, articleId: number): Promise<Boolean> {
+    let user = await this.userRepository.findOne(userId, { relations: ['articles'] })
     let flag = false;
     const arr = [];
     // 算出不包含articleId的数组
     user.articles.forEach(v => {
-      if (v.id === dto.articleId) {
+      if (v.id === articleId) {
         flag = true;
       } else {
         arr.push(v);
@@ -40,7 +43,7 @@ export class UserService {
       return false;
     } else { // 说明尚未存过,当前为执行收藏操作
       const article = new Article();
-      article.id = dto.articleId
+      article.id = articleId
       user.articles.push(article);
       await this.userRepository.save(user);
       return true;
@@ -76,7 +79,7 @@ export class UserService {
     }
   }
 
-  async hasCollect(dto: { id: number, articleId: number }) {
+  async hasCollect(dto: { id: number, articleId: number }): Promise<Boolean> {
     let user = await this.userRepository.findOne(dto.id, { relations: ['articles'] })
     let flag = false;
     user.articles.forEach(v => {
@@ -87,7 +90,7 @@ export class UserService {
     return flag;
   }
 
-  async hasLike(dto: { id: number, articleId: number }) {
+  async hasLike(dto: { id: number, articleId: number }): Promise<Boolean> {
     let user = await this.userRepository.findOne(dto.id, { relations: ['likeArticles'] })
     let flag = false;
     user.likeArticles.forEach(v => {
@@ -134,7 +137,7 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  async getUser(user: User): Promise<User> {
+  async getUser(user: User): Promise<UserDTO> {
     return await this.userRepository.findOne(user);
   }
   /**

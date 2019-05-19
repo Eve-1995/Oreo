@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { Article } from './article.entity';
 import { Classification } from 'src/classification/classification.entity';
+import { ClassificationWithArticlesAll, ArticleBasicInfoAll } from '../../../common/interface/article.interface';
 
 @Injectable()
 export class ArticleService {
@@ -30,7 +31,7 @@ export class ArticleService {
   async findBasicInfoList(): Promise<Article[]> {
     return await this.articleRepository.find();
   }
-  
+
   /**
    * 根据参数查找类别的关联信息
    * @param name 类别名称
@@ -83,7 +84,7 @@ export class ArticleService {
    * 根据文章分类id查找文章列表
    * @param id 文章分类id
    */
-  async findListByClassification(id: number): Promise<any> {
+  async findListByClassification(id: number): Promise<ClassificationWithArticlesAll | any> {
     return await this.classificationRepository
       .createQueryBuilder('classification')
       .where('classification.id = :id', { id })
@@ -93,12 +94,12 @@ export class ArticleService {
       .leftJoinAndSelect('article.likeUsers', 'likeUsers')
       .getOne();
   }
-  
+
   /**
    * 返回文章的全部信息基本信息与收藏者列表
    * @param id 文章id
    */
-  async findDetailById(id: number): Promise<any> {
+  async findDetailById(id: number): Promise<ArticleBasicInfoAll> {
     return await this.articleRepository.findOne({
       relations: ['users', 'likeUsers', 'comments'],
       where: { id }

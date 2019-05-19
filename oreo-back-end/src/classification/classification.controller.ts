@@ -3,6 +3,7 @@ import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors } from
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
 import { ResponseDTO } from 'src/others/response.dto';
+import { ClassificationDTO } from '../../../common/interface/classification.interface';
 
 @Controller('classification')
 export class ClassificationController {
@@ -68,16 +69,12 @@ export class ClassificationController {
   }
 
   @Get('findClassifications')
-  async findClassifications(): Promise<ResponseDTO> {
-    const dto = new ResponseDTO();
-    dto.data = await this.service.findNames();
-    return dto;
+  async findClassifications(): Promise<Classification[]> {
+    return await this.service.findNames();
   }
 
   @Get('findFirst')
-  async findFirst(): Promise<ResponseDTO> {
-    const dto = new ResponseDTO();
-    dto.data = await this.service.findFirst();
-    return dto;
+  async findFirst(): Promise<ClassificationDTO> {
+    return await this.service.findFirst();
   }
 }
