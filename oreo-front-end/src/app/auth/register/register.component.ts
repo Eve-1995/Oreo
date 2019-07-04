@@ -20,8 +20,9 @@ export class AppRegisterComponent {
   moreInfo = false;
   register(): void {
     this.submitted = true;
-    this.service.save(this.user).subscribe((v: ResponseDTO) => {
-      if (v.code === 200) {
+    this.service.save(this.user).subscribe((v: { result: boolean }) => {
+      console.log(v);
+      if (v.result) {
         this.router.navigate(['/auth/login']);
       } else {
         this.submitted = false;

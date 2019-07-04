@@ -54,13 +54,13 @@ export class UserService {
    * 点赞文章
    * @param dto 用户与文章id
    */
-  async like(dto: { id: number, articleId: number }): Promise<Boolean> {
-    let user = await this.userRepository.findOne(dto.id, { relations: ['likeArticles'] })
+  async like(userId: number, articleId: number): Promise<Boolean> {
+    let user = await this.userRepository.findOne(userId, { relations: ['likeArticles'] })
     let flag = false;
     const arr = [];
     // 算出不包含articleId的数组
     user.likeArticles.forEach(v => {
-      if (v.id === dto.articleId) {
+      if (v.id === articleId) {
         flag = true;
       } else {
         arr.push(v);
@@ -72,7 +72,7 @@ export class UserService {
       return false;
     } else { // 说明尚未存过,当前为执行点赞操作
       const article = new Article();
-      article.id = dto.articleId
+      article.id = articleId
       user.likeArticles.push(article);
       await this.userRepository.save(user);
       return true;

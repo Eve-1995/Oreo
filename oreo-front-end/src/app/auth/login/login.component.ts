@@ -17,7 +17,7 @@ export class AppLoginComponent {
     private service: LoginService
   ) { }
 
-  login(): void {
+  public login(): void {
     this.submitted = true;
     this.service.login(this.user).subscribe((v: UserDTO) => {
       localStorage.setItem('userInfo', JSON.stringify(v));

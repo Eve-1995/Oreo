@@ -8,12 +8,12 @@ export class AppArticleDetailService {
   findDetailById(id: number): any {
     return this.httpClient.get(`article/findDetailById/${id}`);
   }
-  collect(userId: number, articleId: number): ResponseDTO | any {
+  collect(userId: number, articleId: number): any {
     const dto = { userId, articleId };
     return this.httpClient.post(`user/collect`, dto);
   }
-  like(id: number, articleId: number): ResponseDTO | any {
-    const dto = { id, articleId };
+  like(userId: number, articleId: number): any {
+    const dto = { userId, articleId };
     return this.httpClient.post(`user/like`, dto);
   }
   actionStatus(id: any, articleId: any): ResponseDTO | any {

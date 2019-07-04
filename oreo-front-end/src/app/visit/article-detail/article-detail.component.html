@@ -1,12 +1,16 @@
-<nb-card class="list-card" [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
+<nb-card
+  class="list-card"
+  nbSpinnerMessage="加载中..."
+  nbSpinnerSize="large"
+  [nbSpinner]="loading">
   <nb-card-header>
-    <p>{{articleDetail.name}}</p>
+    <p>{{ articleDetail.name }}</p>
     <section class="list-card-info">
-      <div>创建时间:{{articleDetail.createTime | date:"yyyy-MM-dd"}}</div>
-      <div>修改时间:{{articleDetail.updateTime | date:"yyyy-MM-dd"}}</div>
-      <div>点赞数:{{articleDetail.likeAmount}}</div>
-      <div>评论数:{{articleDetail.commentAmount}}</div>
-      <div>收藏数:{{articleDetail.collectAmount}}</div>
+      <div>创建时间:{{ articleDetail.createTime | date:"yyyy-MM-dd" }}</div>
+      <div>修改时间:{{ articleDetail.updateTime | date:"yyyy-MM-dd" }}</div>
+      <div>点赞数:{{ articleDetail.likeAmount }}</div>
+      <div>评论数:{{ articleDetail.commentAmount }}</div>
+      <div>收藏数:{{ articleDetail.collectAmount }}</div>
     </section>
   </nb-card-header>
   <nb-card-body>
@@ -23,49 +27,49 @@
       <app-svg *ngIf="hasCollection" [type]="'collect-solid'"></app-svg>
       <span class="action">收藏</span>
     </nb-action>
-    <nb-action class="hover" (cbOnSuccess)="copied()" ngxClipboard [cbContent]="copyContent">
+    <nb-action class="hover" (cbOnSuccess)="this.toastrService.success('', '链接复制成功!');" ngxClipboard [cbContent]="copyContent">
       <app-svg [type]="'share'"></app-svg>
       <span class="action">分享</span>
     </nb-action>
   </nb-actions>
   <nb-card-footer>
-    <div class="row comment" *ngFor="let item of comments">
+    <div *ngFor="let item of comments" class="row comment">
       <span class="username">
         <span [ngClass]="{'admin': item.fromUser.level===1}">
-          {{item.fromUser.nickname}}
+          {{ item.fromUser.nickname }}
         </span>
         <app-svg *ngIf="item.fromUser.level===1" class="king" type="king"></app-svg>
       </span>
       &nbsp;:&nbsp;
       <div class="content-container">
         <span class="content">
-            {{item.content}}
+            {{ item.content }}
         </span>
         <div class="content-actions">
           <span class="content-actions-time">
-            {{item.createTime | date:"yyyy-MM-dd"}}
+            {{ item.createTime | date:"yyyy-MM-dd" }}
           </span>
           <a href="javascript:;" (click)="doReply(item.fromUser.nickname,item.id,item.id)">回复</a>
         </div>
         <div class="content-reply">
-          <div class="content-repky-items" *ngFor="let replyItem of item.children">
+          <div *ngFor="let replyItem of item.children" class="content-repky-items">
             <div class="content-repky-items-nickname-container">
               <span class="content-repky-items-nickname" [ngClass]="{'admin': replyItem.fromUser.level===1}">
-                {{replyItem.fromUser.nickname}}
+                {{ replyItem.fromUser.nickname }}
                 <app-svg *ngIf="replyItem.fromUser.level===1" class="king" type="king"></app-svg>
               </span>
               &nbsp;回复&nbsp;
               <span class="content-repky-items-nickname" [ngClass]="{'admin': replyItem.toUser.level===1}">
-                {{replyItem.toUser.nickname}}
+                {{ replyItem.toUser.nickname }}
                 <app-svg *ngIf="replyItem.toUser.level===1" class="king" type="king"></app-svg>
               </span>
               :&nbsp;
             </div>
             <div class="content-repky-items-content">
-              <pre>{{replyItem.content}}</pre>
+              <pre>{{ replyItem.content }}</pre>
               <div class="content-actions">
                 <span class="content-actions-time">
-                  {{replyItem.createTime | date:"yyyy-MM-dd"}}
+                  {{ replyItem.createTime | date:"yyyy-MM-dd" }}
                 </span>
                 <a href="javascript:;"
                   (click)="doReply(replyItem.fromUser.nickname,replyItem.id,replyItem.rootCommentId)">回复</a>

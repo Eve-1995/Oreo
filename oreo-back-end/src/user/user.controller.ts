@@ -26,32 +26,43 @@ export class UserController {
   }
 
   @Post('save')
-  async save(@Body() dto: User): Promise<ResponseDTO> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
+  async save(@Body() dto: User): Promise<void> {
     await this.service.save(dto).then(v => {
-      result.code = 200;
-      result.message = '注册成功';
-      result.data = { id: v.id };
+      throw new HttpException({
+        message: '注册成功',
+        data: {
+          result: true
+        }
+      }, 210);
     }).catch(e => {
+      console.log('into catch');
+      let message;
       if (e.errno === 1062) {
-        result.code = 500
-        result.message = '手机号或邮箱已存在'
+        message = '手机号已存在';
+      } else {
+        message = '发生未知错误, 请私信博主具体情况';
+        console.log(e);
       }
+      throw new HttpException({
+        message,
+        data: {
+          result: false
+        }
+      }, 211);
     })
-    return result
   }
 
-  @Post('update')
-  async update(@Body() dto: User): Promise<ResponseDTO> {
-    let result: ResponseDTO = { code: null, message: null, data: null }
-    await this.save(dto).then((v: ResponseDTO) => {
-      result = v;
-      if (v.code === 200) {
-        result.message = '修改成功';
-      }
-    })
-    return result
-  }
+  // @Post('update')
+  // async update(@Body() dto: User): Promise<ResponseDTO> {
+  //   let result: ResponseDTO = { code: null, message: null, data: null }
+  //   await this.save(dto).then(v => {
+  //     result = v;
+  //     if (v.code === 200) {
+  //       result.message = '修改成功';
+  //     }
+  //   })
+  //   return result
+  // }
 
   @Delete('delete')
   async delete(@Query() request): Promise<any> {
@@ -66,7 +77,35 @@ export class UserController {
     }
     return result;
   }
-
+  /**
+   *
+   * @api {post} /user/login 登陆
+   * @apiGroup User
+   *
+   * @apiParam {String} phone 手机号
+   * @apiParam {String} password 密码
+   *
+   * @apiSuccess {String} id 编号
+   * @apiSuccess {String} nickname 用户名
+   * @apiSuccess {String} createTime 创建时间
+   * @apiSuccess {String} updateTime 更新时间
+   * @apiSuccess {String} phone 手机号
+   * @apiSuccess {String} password 密码
+   * @apiSuccess {String} level 用户等级 0:普通用户 1:管理员
+   * @apiSuccess {String} realname 用户名
+   * @apiSuccess {String} email 邮箱
+   * @apiSuccess {String} liveCity 居住城市
+   * @apiSuccess {String} hometown 家乡
+   * @apiSuccess {String} birth 生日
+   * @apiSuccess {String} company 公司
+   * @apiSuccess {String} univercity 大学
+   * @apiSuccess {String} eduacation 教育程度
+   * 
+   * @apiError (Error 211) message 帐号或密码不正确
+   * @apiError (Error 666) message 恭喜你获得[四魂之玉碎片I * 1]!
+   *
+   *
+   */
   @Post('login')
   async login(@Body() user: User): Promise<UserDTO> {
     let result: UserDTO;
@@ -76,7 +115,7 @@ export class UserController {
           throw new HttpException({
             message: '帐号或密码不正确'
           }, 211);
-        } 
+        }
         result = v;
       })
     } else {
@@ -116,18 +155,18 @@ export class UserController {
   }
 
   @Post('like')
-  async like(@Body() dto: { id: number, articleId: number }): Promise<ResponseDTO> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
-    await this.service.like(dto).then(v => {
+  async like(@Body() dto: { userId: number, articleId: number }): Promise<any> {
+    await this.service.like(dto.userId, dto.articleId).then(v => {
       if (v) {
-        result.code = 200
-        result.message = '点赞成功'
+        throw new HttpException({
+          message: '点赞成功'
+        }, 210);
       } else {
-        result.code = 201
-        result.message = '取消成功'
+        throw new HttpException({
+          message: '取消点赞成功'
+        }, 210);
       }
     })
-    return result
   }
 
   @Get('actionStatus')

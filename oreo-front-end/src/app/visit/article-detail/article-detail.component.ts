@@ -1,10 +1,8 @@
-import { Component, TemplateRef, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AppArticleDetailService } from './article-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { ArticleDetailDTO } from './dto/article-detail.dto';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { AppGlobalService } from '../../others/global.service';
-import { ResponseDTO } from '../../others/response.dto';
 import { AppArticleDetailReplyComponent } from './article-detail-reply.component';
 import { CommentWithArticle } from '../../../../../common/interface/comment.interface';
 import { ArticleBasicInfo } from '../../../../../common/interface/article.interface';
@@ -33,13 +31,13 @@ export class AppArticleDetailComponent implements OnInit {
     'commentAmount': undefined,
   };
 
-  private articleId;
+  private articleId: any;
   private user: any;
 
   constructor(
+    public toastrService: NbToastrService,
     private activatedRoute: ActivatedRoute,
     private service: AppArticleDetailService,
-    private toastrService: NbToastrService,
     private globalService: AppGlobalService,
     private router: Router,
     private dialogService: NbDialogService,
@@ -57,25 +55,10 @@ export class AppArticleDetailComponent implements OnInit {
     });
   }
 
-  get copyContent() {
-    return `${this.articleDetail.name} - Eve\n${location.href}`;
-  }
-
-  copied() {
-    this.toastrService.success('', '链接复制成功!');
-  }
-
-  /**
-   * 执行收藏或取消收藏操作
-   */
-  collect() {
+  // 执行收藏或取消收藏操作
+  public collect() {
     if (!!this.user) {
-      this.service.collect(this.user.id, this.articleDetail.id).subscribe((v: ResponseDTO) => {
-        // if (v.code === 200) {
-        //   this.hasCollection = true;
-        // } else if (v.code === 201) {
-        //   this.hasCollection = false;
-        // }
+      this.service.collect(this.user.id, this.articleDetail.id).subscribe(() => {
         // 重新请求文章数据
         this.getAticleInfo();
       });
@@ -84,17 +67,10 @@ export class AppArticleDetailComponent implements OnInit {
     }
   }
 
-  /**
-   * 执行点赞或取消点赞操作
-   */
-  like() {
+  // 执行点赞或取消点赞操作
+  public like() {
     if (!!this.user) {
-      this.service.like(this.user.id, this.articleDetail.id).subscribe((v: ResponseDTO) => {
-        if (v.code === 200) {
-          this.hasLike = true;
-        } else if (v.code === 201) {
-          this.hasLike = false;
-        }
+      this.service.like(this.user.id, this.articleDetail.id).subscribe(() => {
         // 重新请求文章数据
         this.getAticleInfo();
       });
@@ -103,38 +79,8 @@ export class AppArticleDetailComponent implements OnInit {
     }
   }
 
-  /**
-   * 获取'文章'的基本信息
-   */
-  getAticleInfo() {
-    this.service.findDetailById(this.articleId).subscribe((value: ArticleBasicInfo) => {
-      this.articleDetail = value;
-      this.getActionStatus();
-    });
-  }
-
-  /**
-   * 判断用户是否已点赞、已收藏
-   */
-  getActionStatus() {
-    if (!!this.user) {
-      this.service.actionStatus(this.user.id, this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
-        this.hasCollection = v.hasCollect ? true : false;
-        this.hasLike = v.hasLike ? true : false;
-      });
-    }
-  }
-
-  /**
-   * 获取'文章'的评论内容
-   */
-  getComments() {
-    this.service.getCommentsByArticle(this.articleId).subscribe((v: CommentWithArticle[]) => {
-      this.comments = v;
-      this.loading = false;
-    });
-  }
-  onBlur() {
+  // 评论输入框的失焦事件
+  public onBlur() {
     if (this.commentContent.trim().length > 0) {
       this.focus = true;
     } else {
@@ -142,7 +88,9 @@ export class AppArticleDetailComponent implements OnInit {
       this.commentContent = '';
     }
   }
-  doComment() {
+
+  // 提交评论
+  public doComment() {
     if (this.commentContent.trim().length > 0) {
       this.focus = false;
       this.service.saveComment(this.commentContent, this.user.id, this.articleId).subscribe(() => {
@@ -152,27 +100,61 @@ export class AppArticleDetailComponent implements OnInit {
       });
     }
   }
-  keyUpHandler(event: KeyboardEvent) {
-    if (event.keyCode === 13 && event.ctrlKey) {
-      this.doComment();
-    }
-  }
-  ReplyKeyUpHandler(event: KeyboardEvent) {
+
+  // 快捷键 ctrl+enter 即可提交评论
+  public keyUpHandler(event: KeyboardEvent) {
     if (event.keyCode === 13 && event.ctrlKey) {
       this.doComment();
     }
   }
 
-  doReply(fromUser: string, parentCommentId: number, rootCommentId: number) {
+  // 弹出评论回复框
+  public doReply(fromUser: string, parentCommentId: number, rootCommentId: number) {
     this.globalService.refreshMaskState(true);
     this.dialogService.open(AppArticleDetailReplyComponent, { context: { fromUser }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: { replyContent: string }) => {
-      if (v !== undefined) {
+      if (v) {
         this.service.saveComment(v.replyContent, this.user.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
           this.getComments();
         });
       }
-      // this.replyContent = '';
       this.globalService.refreshMaskState(false);
     });
+  }
+
+  /**
+   * 获取'文章'的评论内容
+   */
+  private getComments() {
+    this.service.getCommentsByArticle(this.articleId).subscribe((v: CommentWithArticle[]) => {
+      this.comments = v;
+      this.loading = false;
+    });
+  }
+
+  /**
+   * 获取'文章'的基本信息
+   */
+  private getAticleInfo() {
+    this.service.findDetailById(this.articleId).subscribe((value: ArticleBasicInfo) => {
+      this.articleDetail = value;
+      this.getActionStatus();
+    });
+  }
+
+  /**
+   * 判断用户是否已点赞、已收藏
+   */
+  private getActionStatus() {
+    if (!!this.user) {
+      this.service.actionStatus(this.user.id, this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
+        this.hasCollection = v.hasCollect ? true : false;
+        this.hasLike = v.hasLike ? true : false;
+      });
+    }
+  }
+
+  // 设置粘贴板文本内容
+  get copyContent() {
+    return `${this.articleDetail.name} - Eve\n${location.href}`;
   }
 }
