@@ -19,12 +19,9 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(newReq).pipe(
       tap(event => {
         if (event instanceof HttpResponse) {
+          // event.status 是指http协议规定的状态码值
           if ([200, 201].includes(event.status)) {
-            if (event.body.code === 200) {
-              // console.log('200');
-              // console.log(event);
-              // return of(new HttpResponse(Object.assign(event, { body: event.body.data })));
-            }
+            return of(new HttpResponse(Object.assign(event, { body: event.body })));
           } else if (event.status === 210) { // 弹成功框
             this.toastrService.success('', event.body.message);
           } else {
@@ -32,11 +29,12 @@ export class AppInterceptor implements HttpInterceptor {
               this.toastrService.warning('', event.body.message);
             } else if (event.status === 212) { // 弹错误框
               this.toastrService.danger('', event.body.message);
+            } else if (event.status === 666) { // 弹奖励框
+              this.toastrService.info('', event.body.message);
             }
             // throwError是会中断请求避免进入业务层, 只要不是210都应该中断
             return throwError(event);
           }
-          return of(new HttpResponse(Object.assign(event, { body: event.body.data })));
         } else if (event instanceof HttpErrorResponse) {
           console.error('捕获错误响应');
           return throwError(event);

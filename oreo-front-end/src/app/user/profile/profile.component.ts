@@ -28,7 +28,7 @@ export class AppProfileComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('userInfo'));
     this.service.getUser(user.id).subscribe(v => {
-      this.user = v.data;
+      this.user = v;
       this.phoneBoolean = !!this.user.phone;
       this.emailBoolean = !!this.user.email;
       localStorage.setItem('userInfo', JSON.stringify(this.user));

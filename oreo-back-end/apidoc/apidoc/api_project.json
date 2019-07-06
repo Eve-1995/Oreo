@@ -1,13 +1,18 @@
 {
   "name": "Oreo",
-  "version": "0.0.1",
-  "description": "个人网站后端接口文档",
+  "version": "0.0.0",
+  "description": "Personal backend API document",
+  "title": "Oreo's backend API document",
+  "template": {
+    "withCompare": false,
+    "withGenerator": true
+  },
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2019-07-04T15:48:37.751Z",
+    "time": "2019-07-06T12:25:32.163Z",
     "url": "http://apidocjs.com",
     "version": "0.17.7"
   }
