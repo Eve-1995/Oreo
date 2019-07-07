@@ -22,8 +22,8 @@ export class CommentService {
   async getCommentsByArticle(id: number): Promise<CommentDTO[] | any> {
     return await this.repository
       .createQueryBuilder('comment')
-      .leftJoinAndSelect('comment.article', 'article')
       .where('article.id = :id', { id })
+      .leftJoinAndSelect('comment.article', 'article')
       .leftJoinAndSelect('comment.user', 'user')
       .leftJoinAndSelect('comment.rootComment', 'rootComment')
       .leftJoinAndSelect('comment.parentComment', 'parentComment')

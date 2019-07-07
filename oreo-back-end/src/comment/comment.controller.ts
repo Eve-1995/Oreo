@@ -6,18 +6,121 @@ import { CommentDTO, CommentWithArticle } from '../../../common/interface/commen
 
 @Controller('comment')
 export class CommentController {
-  constructor(private readonly service: CommentService,
+  constructor(
+    private readonly service: CommentService
   ) { }
 
+  /**
+   * @api {Post} /comment/save 添加评论
+   * @apiGroup Comment
+   *
+   * @apiParam {String} saveComment 昵称
+   * @apiParam {String} content 留言内容
+   * @apiParam {Object} user 用户
+   * @apiParam {Number} user.id 用户id
+   * @apiParam {Object} article 文章
+   * @apiParam {Number} article.id 文章id
+   * @apiParam {Object} [parentComment] 回复的父评论
+   * @apiParam {Number} [parentComment.id] 父评论id
+   * @apiParam {Object} [rootComment] 回复的祖先评论
+   * @apiParam {Number} [rootComment.id] 祖先评论id
+   * @apiParamExample {json} Request-Example
+   * {
+   *  "content":"上海志愿者大妈: 你是什么垃圾?!",
+   *  "user":{
+   *    "id": 1
+   *  },
+   *  "article":{
+   *    "id": 6
+   *  },
+   *  "parentComment":{
+   *    "id": 15
+   *  },
+   *  "rootComment":{
+   *    "id": 16
+   *  }
+   * }
+   * 
+   * @apiSuccess (Success 201) {String} message 提示文本
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "message": "评论成功"
+   * }
+   */
   @Post('save')
-  async save(@Body() dto: Comment): Promise<ResponseDTO> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
+  async save(@Body() dto: Comment): Promise<any> {
+    let message = '';
     await this.service.save(dto).then(() => {
-      result.code = 200;
-      result.message = '评论成功';
+      message = '评论成功';
     })
-    return result;
+    return {message};
   }
+
+  
+  /**
+   * @api {Get} /comment/getCommentsByArticle 获取文章的评论列表
+   * @apiGroup Comment
+   *
+   * @apiParam {String} id 文章id
+   * @apiParamExample {json} Request-Example
+   * {
+   *  "id": "6"
+   * }
+   * 
+   * @apiSuccess {Number} id 评论id
+   * @apiSuccess {String} content 评论内容
+   * @apiSuccess {String} createTime 创建时间
+   * @apiSuccess {Object} fromUser 创建祖先评论的用户
+   * @apiSuccess {Number} fromUser.id 用户id
+   * @apiSuccess {String} fromUser.nickname 用户昵称
+   * @apiSuccess {String} fromUser.level 用户类别 0:普通用户,1:管理员
+   * @apiSuccess {Object[]} children 回复该条评论的评论集合
+   * @apiSuccess {Number} children.id 评论id
+   * @apiSuccess {String} children.content 评论内容
+   * @apiSuccess {String} children.createTime 创建时间
+   * @apiSuccess {Object} fromUser 回复者
+   * @apiSuccess {Number} fromUser.id 用户id
+   * @apiSuccess {String} fromUser.nickname 用户昵称
+   * @apiSuccess {String} fromUser.level 用户类别 0:普通用户,1:管理员
+   * @apiSuccess {Object} toUser 被回复者
+   * @apiSuccess {Number} toUser.id 用户id
+   * @apiSuccess {String} toUser.nickname 用户昵称
+   * @apiSuccess {String} toUser.level 用户类别 0:普通用户,1:管理员
+   * @apiSuccess {Number} rootCommentId 祖先评论id
+   * 
+   * @apiSuccessExample  {json} Response-Example
+    [{
+      "id": 13,
+      "content": "第一篇文章收藏量有点高啊。。",
+      "createTime": "2019-05-04T16:21:40.187Z",
+      "fromUser":
+      {
+          "id": 16,
+          "nickname": "周家有女",
+          "level": 0
+      },
+      "children": [
+        {
+          "id": 42,
+          "content": "2",
+          "createTime": "2019-07-06T15:20:12.287Z",
+          "fromUser":
+          {
+              "id": 1,
+              "nickname": "Eve",
+              "level": 1
+          },
+          "toUser":
+          {
+              "id": 16,
+              "nickname": "周家有女",
+              "level": 0
+          },
+          "rootCommentId": 13
+        }
+      ]
+    }]
+   */
   @Get('getCommentsByArticle')
   async getCommentsByArticle(@Query() query): Promise<CommentWithArticle[]> {
     const temp: CommentDTO[] = await this.service.getCommentsByArticle(query.id);
@@ -56,8 +159,6 @@ export class CommentController {
                 'nickname': item2.parentComment.user.nickname,
                 'level': item2.parentComment.user.level
               },
-              'fromUserId': item2.user.id,
-              'userLevel': item2.user.level,
               'rootCommentId': item1.id
             }
             obj.children.push(childObj);

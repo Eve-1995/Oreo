@@ -11,7 +11,7 @@ export class UserController {
   ) { }
 
   /**
-   * @api {get} /user/findTableInfo 获取全部用户信息
+   * @api {Get} /user/findTableInfo 获取全部用户信息
    * @apiDescription 包含个人信息以及点赞总数、收藏总数、评论总数.
    * @apiGroup User
    *
@@ -47,11 +47,11 @@ export class UserController {
   }
 
   /**
-   * @api {get} /user/findByFilter 根据用户名查找用户
+   * @api {Get} /user/findByFilter 根据用户名查找用户
    * @apiDescription 包含个人信息以及点赞总数、收藏总数、评论总数.
    * @apiGroup User
    * 
-   * @apiParam {number} name 用户名
+   * @apiParam {Number} name 用户名
    * @apiParamExample {json} Request-Example
    * {
    *  "name": "E"
@@ -86,19 +86,19 @@ export class UserController {
   }
 
   /**
-   * @api {post} /user/save 注册
+   * @api {Post} /user/save 注册
    * @apiGroup User
    *
-   * @apiParam {string} nickname 昵称
-   * @apiParam {string} phone 手机
-   * @apiParam {string} password 密码
-   * @apiParam {string} [email] 邮箱
-   * @apiParam {string} [liveCity] 居住城市
-   * @apiParam {string} [hometown] 家乡
-   * @apiParam {string} [birth] 生日
-   * @apiParam {string} [company] 公司
-   * @apiParam {string} [univercity] 大学
-   * @apiParam {string} [eduacation] 教育程度
+   * @apiParam {String} nickname 昵称
+   * @apiParam {String} phone 手机
+   * @apiParam {String} password 密码
+   * @apiParam {String} [email] 邮箱
+   * @apiParam {String} [liveCity] 居住城市
+   * @apiParam {String} [hometown] 家乡
+   * @apiParam {String} [birth] 生日
+   * @apiParam {String} [company] 公司
+   * @apiParam {String} [univercity] 大学
+   * @apiParam {String} [eduacation] 教育程度
    * @apiParamExample {json} Request-Example
    * {
    *  "nickname": "Eve",
@@ -106,13 +106,13 @@ export class UserController {
    *  "password": "huangmenji"
    * }
    * 
-   * @apiSuccess (Success 210) {string} message 提示文本
+   * @apiSuccess (Success 210) {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "message": "注册成功"
    * }
    * 
-   * @apiError (Error 211) {string} message 提示文本
+   * @apiError (Error 211) {String} message 提示文本
    * @apiErrorExample  {json} Response-Example
    * {
    *   "message": "手机号已存在"
@@ -155,23 +155,23 @@ export class UserController {
   // }
 
   /**
-   * @api {delete} /user/delete 删除
+   * @api {Delete} /user/delete 删除
    * @apiDescription 该操作将触发级联删除, 如用户的收藏记录等一并删除.
    * @apiGroup User
    *
-   * @apiParam {string} userId 用户id
+   * @apiParam {String} userId 用户id
    * @apiParamExample {json} Request-Example
    * {
    *  "userId": "1",
    * }
    * 
-   * @apiSuccess (Success 210) {string} message 提示文本
+   * @apiSuccess (Success 210) {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "message": "删除成功"
    * }
    * 
-   * @apiError (Error 212) {string} message 提示文本
+   * @apiError (Error 212) {String} message 提示文本
    * @apiErrorExample  {json} Response-Example
    * {
    *   "message": "删除失败"
@@ -192,12 +192,12 @@ export class UserController {
   }
 
   /**
-   * @api {post} /user/login 登陆
+   * @api {Post} /user/login 登陆
    * @apiDescription 使用Postman等工具发送只带帐号不带密码的请求有彩蛋.
    * @apiGroup User
    *
-   * @apiParam {string} phone 手机号
-   * @apiParam {string} password 密码   
+   * @apiParam {String} phone 手机号
+   * @apiParam {String} password 密码   
    * @apiParamExample {json} Request-Example   
    * {
    *  "userId": 1,
@@ -224,12 +224,12 @@ export class UserController {
    *   "eduacation": "本科"
    * }
    * 
-   * @apiError (Error 211) {string} message 提示文本
+   * @apiError (Error 211) {String} message 提示文本
    * @apiErrorExample  {json} Response-Example
    * {
    *   "message": "帐号或密码不正确"
    * }
-   * @apiError (Error 666) {string} message 提示文本
+   * @apiError (Error 666) {String} message 提示文本
    * @apiErrorExample  {json} Response-Example
    * {
    *   "message": "恭喜你获得[四魂之玉碎片I * 1]!"
@@ -258,11 +258,11 @@ export class UserController {
 
   
   /**
-   * @api {get} /user/getUser 获取单个用户信息
+   * @api {Get} /user/getUser 获取单个用户信息
    * @apiDescription 只获取用户实体信息
    * @apiGroup User
    *
-   * @apiParam {string} id 用户id
+   * @apiParam {String} id 用户id
    * @apiParamExample {json} Request-Example
    * {
    *  "id": "1"
@@ -301,19 +301,19 @@ export class UserController {
   }
 
   /**
-   * @api {post} /user/collect 收藏文章
+   * @api {Post} /user/collect 收藏文章
    * @apiDescription 若用户未收藏过此文章则执行收藏操作, 反之取消收藏
    * @apiGroup User
    *
-   * @apiParam {number} userId 用户id
-   * @apiParam {number} articleId 文章编号
+   * @apiParam {Number} userId 用户id
+   * @apiParam {Number} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
    *  "userId": 1,
    *  "articleId": 6
    * }
    * 
-   * @apiSuccess (Success 210) {string} message 提示文本
+   * @apiSuccess (Success 210) {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "message": "收藏成功"
@@ -339,19 +339,19 @@ export class UserController {
   }
 
   /**
-   * @api {post} /user/collect 点赞文章
+   * @api {Post} /user/collect 点赞文章
    * @apiDescription 若用户未点赞过此文章则执行点赞操作, 反之取消点赞
    * @apiGroup User
    *
-   * @apiParam {number} userId 用户id
-   * @apiParam {number} articleId 文章编号
+   * @apiParam {Number} userId 用户id
+   * @apiParam {Number} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
    *  "userId": 1,
    *  "articleId": 6
    * }
    * 
-   * @apiSuccess (Success 210) {string} message 提示文本
+   * @apiSuccess (Success 210) {String} message 提示文本
    * @apiSuccessExample  {json} 用户未点赞
    * {
    *   "message": "点赞成功"
@@ -377,20 +377,20 @@ export class UserController {
   }
 
   /**
-   * @api {get} /user/actionStatus 用户是否已对文章操作过
+   * @api {Get} /user/actionStatus 用户是否已对文章操作过
    * @apiDescription 获取用户是否已点赞、收藏过该文章
    * @apiGroup User
    *
-   * @apiParam {string} id 用户id
-   * @apiParam {string} articleId 文章id
+   * @apiParam {String} id 用户id
+   * @apiParam {String} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
    *  "id": "1",
    *  "articleId": "6"
    * }
    * 
-   * @apiSuccess (Success 210) {string} hasCollect 是否已收藏
-   * @apiSuccess (Success 210) {string} hasLike 是否已点赞
+   * @apiSuccess (Success 210) {String} hasCollect 是否已收藏
+   * @apiSuccess (Success 210) {String} hasLike 是否已点赞
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "hasCollect": true,
@@ -411,17 +411,17 @@ export class UserController {
   }
 
   /**
-   * @api {get} /user/getCollections 获取用户的收藏集合
+   * @api {GMet} /user/getCollections 获取用户的收藏集合
    * @apiGroup User
    *
-   * @apiParam {string} id 用户id
+   * @apiParam {String} id 用户id
    * @apiParamExample {json} Request-Example
    * {
    *  "id": "1"
    * }
    * 
-   * @apiSuccess {number} id 文章id
-   * @apiSuccess {number} name 文章名
+   * @apiSuccess {Number} id 文章id
+   * @apiSuccess {Number} name 文章名
    * @apiUse LCCAmountDTO
    * @apiSuccessExample  {json} Response-Example
    * [{

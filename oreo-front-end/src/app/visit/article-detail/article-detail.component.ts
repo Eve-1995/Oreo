@@ -125,6 +125,7 @@ export class AppArticleDetailComponent implements OnInit {
    * 获取'文章'的评论内容
    */
   private getComments() {
+    console.log('获取文章评论内容');
     this.service.getCommentsByArticle(this.articleId).subscribe((v: CommentWithArticle[]) => {
       this.comments = v;
       this.loading = false;

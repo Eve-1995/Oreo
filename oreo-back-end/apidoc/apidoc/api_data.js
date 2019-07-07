@@ -1,6 +1,274 @@
 define({ "api": [
   {
-    "type": "delete",
+    "type": "Get",
+    "url": "/comment/getCommentsByArticle",
+    "title": "获取文章的评论列表",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"6\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>评论id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>评论内容</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "fromUser",
+            "description": "<p>创建祖先评论的用户</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "fromUser.id",
+            "description": "<p>用户id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "fromUser.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "fromUser.level",
+            "description": "<p>用户类别 0:普通用户,1:管理员</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>回复该条评论的评论集合</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "children.id",
+            "description": "<p>评论id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "children.content",
+            "description": "<p>评论内容</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "children.createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "toUser",
+            "description": "<p>被回复者</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "toUser.id",
+            "description": "<p>用户id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "toUser.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "toUser.level",
+            "description": "<p>用户类别 0:普通用户,1:管理员</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rootCommentId",
+            "description": "<p>祖先评论id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 13,\n  \"content\": \"第一篇文章收藏量有点高啊。。\",\n  \"createTime\": \"2019-05-04T16:21:40.187Z\",\n  \"fromUser\":\n  {\n      \"id\": 16,\n      \"nickname\": \"周家有女\",\n      \"level\": 0\n  },\n  \"children\": [\n    {\n      \"id\": 42,\n      \"content\": \"2\",\n      \"createTime\": \"2019-07-06T15:20:12.287Z\",\n      \"fromUser\":\n      {\n          \"id\": 1,\n          \"nickname\": \"Eve\",\n          \"level\": 1\n      },\n      \"toUser\":\n      {\n          \"id\": 16,\n          \"nickname\": \"周家有女\",\n          \"level\": 0\n      },\n      \"rootCommentId\": 13\n    }\n  ]\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/comment/comment.controller.ts",
+    "groupTitle": "Comment",
+    "name": "GetCommentGetcommentsbyarticle"
+  },
+  {
+    "type": "Post",
+    "url": "/comment/save",
+    "title": "添加评论",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "saveComment",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>留言内容</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>用户</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user.id",
+            "description": "<p>用户id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "article",
+            "description": "<p>文章</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "article.id",
+            "description": "<p>文章id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "parentComment",
+            "description": "<p>回复的父评论</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "parentComment.id",
+            "description": "<p>父评论id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "rootComment",
+            "description": "<p>回复的祖先评论</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "rootComment.id",
+            "description": "<p>祖先评论id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"content\":\"上海志愿者大妈: 你是什么垃圾?!\",\n \"user\":{\n   \"id\": 1\n },\n \"article\":{\n   \"id\": 6\n },\n \"parentComment\":{\n   \"id\": 15\n },\n \"rootComment\":{\n   \"id\": 16\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"message\": \"评论成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/comment/comment.controller.ts",
+    "groupTitle": "Comment",
+    "name": "PostCommentSave"
+  },
+  {
+    "type": "Delete",
     "url": "/user/delete",
     "title": "删除",
     "description": "<p>该操作将触发级联删除, 如用户的收藏记录等一并删除.</p>",
@@ -10,7 +278,7 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "userId",
             "description": "<p>用户id</p>"
@@ -30,7 +298,7 @@ define({ "api": [
         "Success 210": [
           {
             "group": "Success 210",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -50,7 +318,7 @@ define({ "api": [
         "Error 212": [
           {
             "group": "Error 212",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -71,7 +339,7 @@ define({ "api": [
     "name": "DeleteUserDelete"
   },
   {
-    "type": "get",
+    "type": "Get",
     "url": "/user/actionStatus",
     "title": "用户是否已对文章操作过",
     "description": "<p>获取用户是否已点赞、收藏过该文章</p>",
@@ -81,14 +349,14 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "id",
             "description": "<p>用户id</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "articleId",
             "description": "<p>文章id</p>"
@@ -108,14 +376,14 @@ define({ "api": [
         "Success 210": [
           {
             "group": "Success 210",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "hasCollect",
             "description": "<p>是否已收藏</p>"
           },
           {
             "group": "Success 210",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "hasLike",
             "description": "<p>是否已点赞</p>"
@@ -136,7 +404,7 @@ define({ "api": [
     "name": "GetUserActionstatus"
   },
   {
-    "type": "get",
+    "type": "Get",
     "url": "/user/findByFilter",
     "title": "根据用户名查找用户",
     "description": "<p>包含个人信息以及点赞总数、收藏总数、评论总数.</p>",
@@ -146,7 +414,7 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "name",
             "description": "<p>用户名</p>"
@@ -292,7 +560,7 @@ define({ "api": [
     "name": "GetUserFindbyfilter"
   },
   {
-    "type": "get",
+    "type": "Get",
     "url": "/user/findTableInfo",
     "title": "获取全部用户信息",
     "description": "<p>包含个人信息以及点赞总数、收藏总数、评论总数.</p>",
@@ -428,85 +696,7 @@ define({ "api": [
     "name": "GetUserFindtableinfo"
   },
   {
-    "type": "get",
-    "url": "/user/getCollections",
-    "title": "获取用户的收藏集合",
-    "group": "User",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "id",
-            "description": "<p>用户id</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example",
-          "content": "{\n \"id\": \"1\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>文章id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "number",
-            "optional": false,
-            "field": "name",
-            "description": "<p>文章名</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "number",
-            "optional": false,
-            "field": "likeAmount",
-            "description": "<p>点赞总数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "number",
-            "optional": false,
-            "field": "collectAmount",
-            "description": "<p>收藏总数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "number",
-            "optional": false,
-            "field": "commentAmount",
-            "description": "<p>评论总数</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "[{\n  \"id\": 6,\n  \"name\": \"Angular从入门到放弃\",\n  \"likeAmount\": \"2\",\n  \"collectAmount\": \"9\",\n  \"commentAmount\": \"8\",\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "../src/user/user.controller.ts",
-    "groupTitle": "User",
-    "name": "GetUserGetcollections"
-  },
-  {
-    "type": "get",
+    "type": "Get",
     "url": "/user/getUser",
     "title": "获取单个用户信息",
     "description": "<p>只获取用户实体信息</p>",
@@ -516,7 +706,7 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "id",
             "description": "<p>用户id</p>"
@@ -662,7 +852,85 @@ define({ "api": [
     "name": "GetUserGetuser"
   },
   {
-    "type": "post",
+    "type": "GMet",
+    "url": "/user/getCollections",
+    "title": "获取用户的收藏集合",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>用户id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "likeAmount",
+            "description": "<p>点赞总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "collectAmount",
+            "description": "<p>收藏总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "commentAmount",
+            "description": "<p>评论总数</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 6,\n  \"name\": \"Angular从入门到放弃\",\n  \"likeAmount\": \"2\",\n  \"collectAmount\": \"9\",\n  \"commentAmount\": \"8\",\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/user/user.controller.ts",
+    "groupTitle": "User",
+    "name": "GmetUserGetcollections"
+  },
+  {
+    "type": "Post",
     "url": "/user/collect",
     "title": "收藏文章",
     "description": "<p>若用户未收藏过此文章则执行收藏操作, 反之取消收藏</p>",
@@ -672,17 +940,17 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "userId",
             "description": "<p>用户id</p>"
           },
           {
             "group": "Parameter",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "articleId",
-            "description": "<p>文章编号</p>"
+            "description": "<p>文章id</p>"
           }
         ]
       },
@@ -699,7 +967,7 @@ define({ "api": [
         "Success 210": [
           {
             "group": "Success 210",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -725,7 +993,7 @@ define({ "api": [
     "name": "PostUserCollect"
   },
   {
-    "type": "post",
+    "type": "Post",
     "url": "/user/collect",
     "title": "点赞文章",
     "description": "<p>若用户未点赞过此文章则执行点赞操作, 反之取消点赞</p>",
@@ -735,17 +1003,17 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "userId",
             "description": "<p>用户id</p>"
           },
           {
             "group": "Parameter",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "articleId",
-            "description": "<p>文章编号</p>"
+            "description": "<p>文章id</p>"
           }
         ]
       },
@@ -762,7 +1030,7 @@ define({ "api": [
         "Success 210": [
           {
             "group": "Success 210",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -788,7 +1056,7 @@ define({ "api": [
     "name": "PostUserCollect"
   },
   {
-    "type": "post",
+    "type": "Post",
     "url": "/user/login",
     "title": "登陆",
     "description": "<p>使用Postman等工具发送只带帐号不带密码的请求有彩蛋.</p>",
@@ -798,14 +1066,14 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>手机号</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "password",
             "description": "<p>密码</p>"
@@ -936,7 +1204,7 @@ define({ "api": [
         "Error 211": [
           {
             "group": "Error 211",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -945,7 +1213,7 @@ define({ "api": [
         "Error 666": [
           {
             "group": "Error 666",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -971,7 +1239,7 @@ define({ "api": [
     "name": "PostUserLogin"
   },
   {
-    "type": "post",
+    "type": "Post",
     "url": "/user/save",
     "title": "注册",
     "group": "User",
@@ -980,70 +1248,70 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "nickname",
             "description": "<p>昵称</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>手机</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "password",
             "description": "<p>密码</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "email",
             "description": "<p>邮箱</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "liveCity",
             "description": "<p>居住城市</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "hometown",
             "description": "<p>家乡</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "birth",
             "description": "<p>生日</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "company",
             "description": "<p>公司</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "univercity",
             "description": "<p>大学</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "eduacation",
             "description": "<p>教育程度</p>"
@@ -1063,7 +1331,7 @@ define({ "api": [
         "Success 210": [
           {
             "group": "Success 210",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
@@ -1083,7 +1351,7 @@ define({ "api": [
         "Error 211": [
           {
             "group": "Error 211",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
