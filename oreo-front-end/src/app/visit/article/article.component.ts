@@ -28,7 +28,6 @@ export class AppArticleComponent implements OnInit {
    */
   listenRouteChange(): void {
     this.activatedRoute.queryParams.subscribe(queryParams => {
-      console.log(`queryParams.id = ${queryParams.id}`);
       if (queryParams.id) {
         this.service.findArticlesByClassificationId(queryParams.id).subscribe((v: ClassificationWithArticles) => {
           this.name = v.name;

@@ -174,6 +174,7 @@ export class ArticleController {
     let name = '';
     const articles = [];
     await this.service.findListByClassification(request.id).then(v => {
+      name = v.name;
       v.articles.forEach(item => {
         articles.push({
           id: item.id,

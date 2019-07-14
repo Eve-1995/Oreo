@@ -2,12 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AppArticleDetailService } from './article-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
-import { AppGlobalService } from '../../others/global.service';
 import { AppArticleDetailReplyComponent } from './article-detail-reply.component';
-import { CommentWithArticle } from '../../../../../common/interface/comment.interface';
-import { ArticleBasicInfo } from '../../../../../common/interface/article.interface';
+import { ArticleBasicInfo } from '../../../../../../common/interface/article.interface';
+import { AppGlobalService } from '../../../others/global.service';
+import { CommentWithArticle } from '../../../../../../common/interface/comment.interface';
 
 @Component({
+  selector: 'app-article-detail',
   templateUrl: './article-detail.component.html',
   styleUrls: ['article-detail.component.scss'],
   providers: [AppArticleDetailService],
@@ -125,7 +126,6 @@ export class AppArticleDetailComponent implements OnInit {
    * 获取'文章'的评论内容
    */
   private getComments() {
-    console.log('获取文章评论内容');
     this.service.getCommentsByArticle(this.articleId).subscribe((v: CommentWithArticle[]) => {
       this.comments = v;
       this.loading = false;

@@ -314,6 +314,7 @@ export class UserController {
    */
   @Get('getUser')
   async getUser(@Query() query): Promise<any> {
+    console.log('getUser');
     let result = undefined;
     await this.service.getUser(query.id).then(v => {
       v ? result = v : result = null;

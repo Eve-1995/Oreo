@@ -25,7 +25,7 @@ export class AppCollectionComponent implements OnInit {
   }
 
   checkArticle(id: number) {
-    this.router.navigate(['/visit/article-detail'], {
+    this.router.navigate(['/user/article-detail'], {
       queryParams: {
         id: id,
       },

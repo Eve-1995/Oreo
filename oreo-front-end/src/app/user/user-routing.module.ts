@@ -5,6 +5,7 @@ import { AppProfileComponent } from './profile/profile.component';
 import { AppResetPasswordComponent } from './reset-password/reset-password.component';
 import { AppCollectionComponent } from './collection/collection.component';
 import { AppCommentComponent } from './comment/comment.component';
+import { AppArticleDetailComponent } from '../common/module/article-detail/article-detail.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'reset-password', component: AppResetPasswordComponent },
       { path: 'collection', component: AppCollectionComponent },
       { path: 'comment', component: AppCommentComponent },
+      { path: 'article-detail', component: AppArticleDetailComponent },
       { path: '**', redirectTo: 'profile' },
     ],
   }

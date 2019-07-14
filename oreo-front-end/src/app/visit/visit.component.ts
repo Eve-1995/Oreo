@@ -32,7 +32,6 @@ export class VisitComponent implements OnInit {
   private navigateToFirstArticle(): void {
     if (!this.appGlobalService.haveAddedMenu) {
       this.visitService.getMenu().subscribe(value => {
-        console.log(value);
         value.forEach((item: Menu, index: number) => {
           this.nBmenuService.addItems([{
             title: item.name,

@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { VisitComponent } from './visit.component';
 import { AppInfoComponent } from './info/info.component';
 import { AppArticleComponent } from './article/article.component';
-import { AppArticleDetailComponent } from './article-detail/article-detail.component';
-import { AppArticleDetailReplyComponent } from './article-detail/article-detail-reply.component';
+import { AppArticleDetailComponent } from '../common/module/article-detail/article-detail.component';
 
 const routes: Routes = [
   {
@@ -23,13 +22,11 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  entryComponents: [AppArticleDetailReplyComponent]
 })
 export class VisitRoutingModule { }
 
 export const visitiRoutedComponents = [
   VisitComponent,
   AppInfoComponent,
-  AppArticleComponent,
-  AppArticleDetailComponent,
+  AppArticleComponent
 ];

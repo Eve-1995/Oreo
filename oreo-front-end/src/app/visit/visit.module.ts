@@ -3,27 +3,19 @@ import { ThemeModule } from '../@theme/theme.module';
 import { VisitRoutingModule, visitiRoutedComponents } from './visit-routing.module';
 import { NgxMdModule } from 'ngx-md';
 import { httpInterceptorProviders } from '../others/interceptor';
-import { ClipboardModule } from 'ngx-clipboard';
-import { AppArticleDetailReplyComponent } from './article-detail/article-detail-reply.component';
 import { NbDialogModule } from '@nebular/theme';
+import { ArticleDetailModule } from '../common/module/article-detail/article-detail.module';
 
-const CHILD_COMPONENT = [
-  AppArticleDetailReplyComponent
-];
 
 @NgModule({
   imports: [
     NgxMdModule.forRoot(),
     VisitRoutingModule,
     ThemeModule,
-    ClipboardModule
+    ArticleDetailModule
   ],
   declarations: [
-    ...visitiRoutedComponents,
-    AppArticleDetailReplyComponent
-  ],
-  entryComponents: [
-    AppArticleDetailReplyComponent
+    ...visitiRoutedComponents
   ],
   providers: [
     httpInterceptorProviders,
