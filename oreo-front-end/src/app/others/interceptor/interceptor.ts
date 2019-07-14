@@ -5,6 +5,12 @@ import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
 
+enum TipType {
+  success = 1,
+  warning,
+  danger,
+  info
+}
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
   constructor(
@@ -19,21 +25,14 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(newReq).pipe(
       tap(event => {
         if (event instanceof HttpResponse) {
+          const tipType = event.body.tipType;
+          // 存在tipType, 即需要弹窗提示, 反之则直接将请求转入业务层
+          if (tipType) {
+            this.handleTipType(tipType, event.body.message);
+          }
           // event.status 是指http协议规定的状态码值
           if ([200, 201].includes(event.status)) {
             return of(new HttpResponse(Object.assign(event, { body: event.body })));
-          } else if (event.status === 210) { // 弹成功框
-            this.toastrService.success('', event.body.message);
-          } else {
-            if (event.status === 211) { // 弹警告框
-              this.toastrService.warning('', event.body.message);
-            } else if (event.status === 212) { // 弹错误框
-              this.toastrService.danger('', event.body.message);
-            } else if (event.status === 666) { // 弹奖励框
-              this.toastrService.info('', event.body.message);
-            }
-            // throwError是会中断请求避免进入业务层, 只要不是210都应该中断
-            return throwError(event);
           }
         } else if (event instanceof HttpErrorResponse) {
           console.error('捕获错误响应');
@@ -41,5 +40,27 @@ export class AppInterceptor implements HttpInterceptor {
         }
       })
     );
+  }
+
+  /**
+   * 根据弹窗类型弹出不同的文本提示框
+   * @param tipType 弹窗类型
+   * @param message 提示文本
+   */
+  private handleTipType(tipType: number, message: string): void {
+    switch (tipType) {
+      case TipType.success:
+        this.toastrService.success('', message);
+        break;
+      case TipType.warning:
+        this.toastrService.warning('', message);
+        break;
+      case TipType.danger:
+        this.toastrService.danger('', message);
+        break;
+      case TipType.info:
+        this.toastrService.info('', message);
+        break;
+    }
   }
 }

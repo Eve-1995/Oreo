@@ -14,7 +14,7 @@ export class ArticleService {
     private readonly classificationRepository: Repository<Classification>) {
   }
   /**
-   * 新增文章信息
+   * 新增文章
    * @param article 文章的实体
    */
   async save(dto: Article): Promise<any> {

@@ -5,8 +5,13 @@ import { ArticleClassificationDto } from './article.dto';
 @Injectable()
 export class ArticleService {
   constructor(private httpClient: HttpClient) { }
-  findTableInfo(): any {
-    return this.httpClient.get(`article/findTableInfo`);
+  findTableInfo(name?: string): any {
+    if (name) {
+      const params = { name };
+      return this.httpClient.get(`article/findTableInfo`, { params });
+    } else {
+      return this.httpClient.get(`article/findTableInfo`);
+    }
   }
   getClassificationNames(): any {
     return this.httpClient.get(`classification/findNames`);
@@ -22,13 +27,8 @@ export class ArticleService {
     };
     return this.httpClient.delete(`article/delete`, body);
   }
-  findByFilter(name: string): any {
-    if (typeof (name) === 'undefined') name = '';
-    const params = { name };
-    return this.httpClient.get(`article/findByFilter`, { params });
-  }
-  findBasicInfo(id: any): any {
+  findDetail(id: any): any {
     const params = { id };
-    return this.httpClient.get(`article/findBasicInfo`, { params });
+    return this.httpClient.get(`article/findDetail`, { params });
   }
 }

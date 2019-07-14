@@ -90,7 +90,7 @@ export class AppUserComponent implements OnInit, OnDestroy {
 
   fetchTableList(): void {
     this.loading = true;
-    this.userService.findByFilter(this.filterName).subscribe(value => {
+    this.userService.findTableInfo(this.filterName).subscribe(value => {
       this.source.load(value);
       this.loading = false;
     });

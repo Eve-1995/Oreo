@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class UserService {
   constructor(private httpClient: HttpClient) { }
-  findTableInfo(): any {
-    return this.httpClient.get(`user/findTableInfo`);
-  }
-  findByFilter(name: string): any {
-    if (typeof (name) === 'undefined') name = '';
-    const params = { name };
-    return this.httpClient.get(`user/findByFilter`, { params });
+  findTableInfo(name?: string): any {
+    if (name) {
+      const params = { name };
+      return this.httpClient.get(`user/findTableInfo`, { params });
+    } else {
+      return this.httpClient.get(`user/findTableInfo`);
+    }
   }
   delete(id: number): any {
     const body = {

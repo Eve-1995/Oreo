@@ -76,7 +76,7 @@ export class AppArticleComponent implements OnInit {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
-      this.articleService.findBasicInfo(this.selectedObj.id).subscribe(value => {
+      this.articleService.findDetail(this.selectedObj.id).subscribe(value => {
         this.selectedObj = value;
         /**
         *fix:无法使用this.selectedObj.classifications填充编辑时的选中下拉框
@@ -106,7 +106,6 @@ export class AppArticleComponent implements OnInit {
           this.selectedObj.classifications = arr;
           this.articleService.save(this.selectedObj).subscribe(() => {
             this.fetchTableList();
-            this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
           });
         }
       });
@@ -128,7 +127,6 @@ export class AppArticleComponent implements OnInit {
         this.selectedObj.classifications = arr;
         this.articleService.save(this.selectedObj).subscribe(() => {
           this.fetchTableList();
-          this.toastrService.show('', '添加成功', { status: NbToastStatus.SUCCESS });
         });
       }
     });
@@ -141,7 +139,6 @@ export class AppArticleComponent implements OnInit {
         if (value === 'yes') {
           this.articleService.delete(this.selectedObj.id).subscribe(result => {
             this.selectedObj = new ArticleClassificationDto();
-            this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
             this.fetchTableList();
           });
         }
@@ -150,7 +147,7 @@ export class AppArticleComponent implements OnInit {
   }
   fetchTableList() {
     this.loading = true;
-    this.articleService.findByFilter(this.filterName).subscribe(value => {
+    this.articleService.findTableInfo(this.filterName).subscribe(value => {
       this.source.load(value);
       this.loading = false;
     });

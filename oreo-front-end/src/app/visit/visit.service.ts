@@ -7,6 +7,6 @@ export class VisitService {
 
     // 获取类别列表
     getMenu(): any {
-        return this.httpClient.get('classification/findClassifications');
+        return this.httpClient.get('classification/findNames');
     }
 }

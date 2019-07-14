@@ -136,7 +136,7 @@ export class AppArticleDetailComponent implements OnInit {
    * 获取'文章'的基本信息
    */
   private getAticleInfo() {
-    this.service.findDetailById(this.articleId).subscribe((value: ArticleBasicInfo) => {
+    this.service.findBasicInfo(this.articleId).subscribe((value: ArticleBasicInfo) => {
       this.articleDetail = value;
       this.getActionStatus();
     });

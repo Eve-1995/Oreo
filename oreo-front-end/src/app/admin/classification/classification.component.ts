@@ -91,7 +91,6 @@ export class AppClassificationComponent implements OnInit {
           this.classificationService.delete(this.selectedObj.id).subscribe(result => {
             this.selectedObj = new Classification();
             this.fetchTableList();
-            this.toastrService.show('', '删除成功', { status: NbToastStatus.SUCCESS });
           });
         }
       });
@@ -114,7 +113,7 @@ export class AppClassificationComponent implements OnInit {
   }
   fetchTableList() {
     this.loading = true;
-    this.classificationService.findByFilter(this.filterName).subscribe(value => {
+    this.classificationService.findTableInfo(this.filterName).subscribe(value => {
       this.source.load(value);
       this.loading = false;
     });

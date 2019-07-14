@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ResponseDTO } from 'src/others/response.dto';
+import { ResponseDTO, TipMessageDTO } from 'src/others/response.dto';
 import { Comment } from './comment.entity';
 import { CommentDTO, CommentWithArticle } from '../../../common/interface/comment.interface';
 
@@ -41,19 +41,23 @@ export class CommentController {
    *  }
    * }
    * 
-   * @apiSuccess (Success 201) {String} message 提示文本
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "评论成功"
    * }
    */
   @Post('save')
-  async save(@Body() dto: Comment): Promise<any> {
-    let message = '';
+  async save(@Body() dto: Comment): Promise<TipMessageDTO> {
+    let message: string;
+    let tipType: number;
     await this.service.save(dto).then(() => {
+      tipType = 1
       message = '评论成功';
     })
-    return {message};
+    return { tipType, message };
   }
 
   

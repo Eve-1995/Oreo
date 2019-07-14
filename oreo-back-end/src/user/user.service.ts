@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan } from 'typeorm';
+import { Repository, MoreThan, DeleteResult } from 'typeorm';
 import { User } from './user.entity';
 import { Article } from 'src/article/article.entity';
-import { ArticleService } from 'src/article/article.service';
 import { UserDTO } from '../../../common/interface/user.interface';
 
 @Injectable()
@@ -11,9 +10,7 @@ export class UserService {
   constructor(
     // private articleService: ArticleService,
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-    @InjectRepository(Article)
-    private readonly articleRepository: Repository<Article>,
+    private readonly userRepository: Repository<User>
   ) { }
 
   async save(user: User): Promise<User> {
@@ -140,7 +137,7 @@ export class UserService {
    * 根据id删除文章
    * @param id 文章id
    */
-  async delete(id: number): Promise<any> {
+  async delete(id: number): Promise<DeleteResult> {
     return await this.userRepository.delete(id);
   }
 

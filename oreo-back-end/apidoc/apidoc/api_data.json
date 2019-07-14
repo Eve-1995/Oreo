@@ -1,5 +1,1031 @@
 [
   {
+    "type": "Delete",
+    "url": "/classification/deleteById",
+    "title": "删除",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 500": [
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0006)\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/article/article.controller.ts",
+    "groupTitle": "Article",
+    "name": "DeleteClassificationDeletebyid"
+  },
+  {
+    "type": "Get",
+    "url": "/article/findBasicInfo",
+    "title": "查看文章内容",
+    "description": "<p>用于查看文章详情, 所以还会返回三连信息</p>",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "1",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>文章内容</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeAmount",
+            "description": "<p>点赞总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "collectAmount",
+            "description": "<p>收藏总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "commentAmount",
+            "description": "<p>评论总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"id\": 1,\n  \"name\": \"SSR - Angular\",\n  \"content\": \"SSR是服务端渲染的技术\",\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"likeAmount\": 16,\n  \"collectAmount\": 22,\n  \"commentAmount\": 22\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/article/article.controller.ts",
+    "groupTitle": "Article",
+    "name": "GetArticleFindbasicinfo"
+  },
+  {
+    "type": "Get",
+    "url": "/article/findByClassification",
+    "title": "获取特定类别的文章列表",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "1",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "articles",
+            "description": "<p>文章列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "articles.id",
+            "description": "<p>文章id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "articles.name",
+            "description": "<p>文章名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "articles.likeAmount",
+            "description": "<p>文章点赞总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "articles.collectAmount",
+            "description": "<p>文章收藏总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "articles.commentAmount",
+            "description": "<p>文章评论总数</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"name\": \"前端技巧\",\n  \"articles\": [{\n     \"id\": 1,\n     \"name\": \"防抖与节流\"\n     \"likeAmount\": 1,\n     \"collectAmount\": 2,\n     \"commentAmount\": 3\n  }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/article/article.controller.ts",
+    "groupTitle": "Article",
+    "name": "GetArticleFindbyclassification"
+  },
+  {
+    "type": "Get",
+    "url": "/article/findDetail",
+    "title": "获取特定文章信息",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "1",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keywords",
+            "description": "<p>文章关键词</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>文章内容</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "classifications",
+            "description": "<p>类别</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "classifications.id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "classifications.name",
+            "description": "<p>类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "classifications.keywords",
+            "description": "<p>类别关键词</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "classifications.createTime",
+            "description": "<p>类别创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "classifications.updateTime",
+            "description": "<p>类别更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n \"id\": 1,\n \"name\": \"SSR - Angular\",\n \"content\": \"SSR是服务端渲染的技术\",\n \"keywords\": \"SSR是服务端渲染的技术\",\n \"createTime\": \"2019-05-01T09:07:24.093Z\",\n \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n \"classifications\": [{\n  \"id\": 1,\n  \"name\": \"Angular\",\n  \"keywords\": \"Google\",\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/article/article.controller.ts",
+    "groupTitle": "Article",
+    "name": "GetArticleFinddetail"
+  },
+  {
+    "type": "Get",
+    "url": "/article/findTableInfo",
+    "title": "获取全部文章信息",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"name\": \"ng\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeAmount",
+            "description": "<p>点赞总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "collectAmount",
+            "description": "<p>收藏总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "commentAmount",
+            "description": "<p>评论总数</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 1,\n  \"name\": \"C语言\",\n  \"likeAmount\": 16,\n  \"collectAmount\": 22,\n  \"commentAmount\": 22\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/article/article.controller.ts",
+    "groupTitle": "Article",
+    "name": "GetArticleFindtableinfo"
+  },
+  {
+    "type": "Post",
+    "url": "/article/save",
+    "title": "新增",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>内容</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": true,
+            "field": "classifications",
+            "description": "<p>类别</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "classifications.id",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"name\": \"Typescript VS Javascript\",\n \"content\": \"其实本质是一样的\"\n \"classifications\": [\n   {\n     \"id\": 5\n   }\n ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 500": [
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"添加失败(错误码:0005)\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/article/article.controller.ts",
+    "groupTitle": "Article",
+    "name": "PostArticleSave"
+  },
+  {
+    "type": "Delete",
+    "url": "/classification/delete",
+    "title": "删除",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 500": [
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0004)\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "DeleteClassificationDelete"
+  },
+  {
+    "type": "Get",
+    "url": "/classification/findDetail",
+    "title": "获取特定类别信息",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keywords",
+            "description": "<p>关键词</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n  \"keywords\": \"[\\\"速度快\\\",\\\"原生\\\"]\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "GetClassificationFinddetail"
+  },
+  {
+    "type": "Get",
+    "url": "/classification/findFirst",
+    "title": "获取第一个类别",
+    "group": "Classification",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keywords",
+            "description": "<p>关键词</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n  \"keywords\": \"[\\\"速度快\\\",\\\"原生\\\"]\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "GetClassificationFindfirst"
+  },
+  {
+    "type": "Get",
+    "url": "/classification/findNames",
+    "title": "获取类别名称",
+    "group": "Classification",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keywords",
+            "description": "<p>关键词</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n  \"keywords\": \"[\\\"速度快\\\",\\\"原生\\\"]\"\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "GetClassificationFindnames"
+  },
+  {
+    "type": "Get",
+    "url": "/classification/findTableInfo",
+    "title": "获取全部类别信息",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"name\": \"ng\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "articleAmount",
+            "description": "<p>文章总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeAmount",
+            "description": "<p>点赞总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "collectAmount",
+            "description": "<p>收藏总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "commentAmount",
+            "description": "<p>评论总数</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 1,\n  \"name\": \"C语言\",\n  \"articleAmount\": 6,\n  \"likeAmount\": 16,\n  \"collectAmount\": 22,\n  \"commentAmount\": 22\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "GetClassificationFindtableinfo"
+  },
+  {
+    "type": "Post",
+    "url": "/classification/save",
+    "title": "新增",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keywords",
+            "description": "<p>关键词</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example   ",
+          "content": "{\n \"name\": \"Typescript VS Javascript\",\n \"keywords\": \"[\"可维护性\",\"语法糖\"]\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 500": [
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"添加失败(错误码:0003)\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "PostClassificationSave"
+  },
+  {
     "type": "Get",
     "url": "/comment/getCommentsByArticle",
     "title": "获取文章的评论列表",
@@ -244,9 +1270,16 @@
     },
     "success": {
       "fields": {
-        "Success 201": [
+        "Success 200": [
           {
-            "group": "Success 201",
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -257,7 +1290,7 @@
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"评论成功\"\n}",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"评论成功\"\n}",
           "type": "json"
         }
       ]
@@ -295,9 +1328,16 @@
     },
     "success": {
       "fields": {
-        "Success 210": [
+        "Success 200": [
           {
-            "group": "Success 210",
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -308,16 +1348,23 @@
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"删除成功\"\n}",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Error 212": [
+        "Error 500": [
           {
-            "group": "Error 212",
+            "group": "Error 500",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 500",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -328,7 +1375,7 @@
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"删除失败\"\n}",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0002)\"\n}",
           "type": "json"
         }
       ]
@@ -341,7 +1388,7 @@
   {
     "type": "Get",
     "url": "/user/actionStatus",
-    "title": "用户是否已对文章操作过",
+    "title": "用户与文章的关系",
     "description": "<p>获取用户是否已点赞、收藏过该文章</p>",
     "group": "User",
     "parameter": {
@@ -373,16 +1420,16 @@
     },
     "success": {
       "fields": {
-        "Success 210": [
+        "Success 200": [
           {
-            "group": "Success 210",
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "hasCollect",
             "description": "<p>是否已收藏</p>"
           },
           {
-            "group": "Success 210",
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "hasLike",
@@ -532,21 +1579,21 @@
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "likeAmount",
             "description": "<p>点赞总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "collectAmount",
             "description": "<p>收藏总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "commentAmount",
             "description": "<p>评论总数</p>"
@@ -668,21 +1715,21 @@
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "likeAmount",
             "description": "<p>点赞总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "collectAmount",
             "description": "<p>收藏总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "commentAmount",
             "description": "<p>评论总数</p>"
@@ -824,21 +1871,21 @@
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "likeAmount",
             "description": "<p>点赞总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "collectAmount",
             "description": "<p>收藏总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "commentAmount",
             "description": "<p>评论总数</p>"
@@ -895,21 +1942,21 @@
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "likeAmount",
             "description": "<p>点赞总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "collectAmount",
             "description": "<p>收藏总数</p>"
           },
           {
             "group": "Success 200",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "commentAmount",
             "description": "<p>评论总数</p>"
@@ -964,9 +2011,16 @@
     },
     "success": {
       "fields": {
-        "Success 210": [
+        "Success 200": [
           {
-            "group": "Success 210",
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -977,12 +2031,12 @@
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"收藏成功\"\n}",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"收藏成功\"\n}",
           "type": "json"
         },
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"取消收藏成功\"\n}",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"取消收藏成功\"\n}",
           "type": "json"
         }
       ]
@@ -994,7 +2048,7 @@
   },
   {
     "type": "Post",
-    "url": "/user/collect",
+    "url": "/user/like",
     "title": "点赞文章",
     "description": "<p>若用户未点赞过此文章则执行点赞操作, 反之取消点赞</p>",
     "group": "User",
@@ -1027,9 +2081,16 @@
     },
     "success": {
       "fields": {
-        "Success 210": [
+        "Success 200": [
           {
-            "group": "Success 210",
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -1039,13 +2100,13 @@
       },
       "examples": [
         {
-          "title": "用户未点赞",
-          "content": "{\n  \"message\": \"点赞成功\"\n}",
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"点赞成功\"\n}",
           "type": "json"
         },
         {
-          "title": "用户已点赞",
-          "content": "{\n  \"message\": \"取消点赞成功\"\n}",
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"取消点赞成功\"\n}",
           "type": "json"
         }
       ]
@@ -1053,7 +2114,7 @@
     "version": "0.0.0",
     "filename": "../src/user/user.controller.ts",
     "groupTitle": "User",
-    "name": "PostUserCollect"
+    "name": "PostUserLike"
   },
   {
     "type": "Post",
@@ -1201,9 +2262,16 @@
     },
     "error": {
       "fields": {
-        "Error 211": [
+        "Error 400": [
           {
-            "group": "Error 211",
+            "group": "Error 400",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 400",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -1215,6 +2283,13 @@
             "group": "Error 666",
             "type": "String",
             "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 666",
+            "type": "String",
+            "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
           }
@@ -1222,13 +2297,13 @@
       },
       "examples": [
         {
-          "title": "Response-Example",
-          "content": "{\n  \"message\": \"帐号或密码不正确\"\n}",
+          "title": "Response-Example(400)",
+          "content": "{\n  \"tipType\": \"2\",\n  \"message\": \"帐号或密码不正确\"\n}",
           "type": "json"
         },
         {
-          "title": "Response-Example",
-          "content": "{\n  \"message\": \"恭喜你获得[四魂之玉碎片I * 1]!\"\n}",
+          "title": "Response-Example(666)",
+          "content": "{\n  \"tipType\": \"4\",\n  \"message\": \"恭喜你获得[四魂之玉碎片I * 1]!\"\n}",
           "type": "json"
         }
       ]
@@ -1328,9 +2403,16 @@
     },
     "success": {
       "fields": {
-        "Success 210": [
+        "Success 200": [
           {
-            "group": "Success 210",
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -1341,16 +2423,28 @@
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"注册成功\"\n}",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"注册成功\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"2\",\n  \"message\": \"手机号已存在\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Error 211": [
+        "Error 4xx": [
           {
-            "group": "Error 211",
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+          },
+          {
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "message",
@@ -1361,12 +2455,7 @@
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"message\": \"手机号已存在\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"message\": \"发生未知错误, 请私信博主具体情况\"\n}",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0001)\"\n}",
           "type": "json"
         }
       ]

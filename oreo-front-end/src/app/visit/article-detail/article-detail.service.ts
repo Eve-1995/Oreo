@@ -5,8 +5,9 @@ import { ResponseDTO } from '../../others/response.dto';
 @Injectable()
 export class AppArticleDetailService {
   constructor(private httpClient: HttpClient) { }
-  findDetailById(id: number): any {
-    return this.httpClient.get(`article/findDetailById/${id}`);
+  findBasicInfo(id: string): any {
+    const params = { id };
+    return this.httpClient.get(`article/findBasicInfo`, { params });
   }
   collect(userId: number, articleId: number): any {
     const dto = { userId, articleId };

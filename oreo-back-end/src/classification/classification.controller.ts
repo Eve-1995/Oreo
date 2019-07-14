@@ -1,78 +1,206 @@
 
-import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors, HttpException } from '@nestjs/common';
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
-import { ResponseDTO } from 'src/others/response.dto';
+import { ResponseDTO, TipMessageDTO } from 'src/others/response.dto';
 import { ClassificationDTO } from '../../../common/interface/classification.interface';
+import { DeleteResult } from 'typeorm';
 
 @Controller('classification')
 export class ClassificationController {
   constructor(private readonly service: ClassificationService) { }
 
+  /**
+   * @api {Post} /classification/save 新增
+   * @apiGroup Classification
+   *
+   * @apiParam {String} name 文章名
+   * @apiParam {String} keywords 关键词   
+   * @apiParamExample {json} Request-Example   
+   * {
+   *  "name": "Typescript VS Javascript",
+   *  "keywords": "["可维护性","语法糖"]"
+   * }
+   * 
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "tipType": "1",
+   *   "message": "添加成功"
+   * }
+   * @apiSuccess {String} message 提示文本
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "tipType": "1",
+   *   "message": "修改成功"
+   * }
+   *  
+   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiError (Error 500) {String} message 提示文本
+   * @apiErrorExample  {json} Response-Example
+   * {
+   *   "tipType": "3",
+   *   "message": "添加失败(错误码:0003)"
+   * }
+   */
   @Post('save')
-  async save(@Body() dto: Classification): Promise<ResponseDTO> {
-    const result: ResponseDTO = { code: null, message: null, data: null }
+  async save(@Body() dto: Classification): Promise<TipMessageDTO> {
+    const flag = dto.id ? true : false;
+    let tipType: number;
+    let message: string;
     await this.service.save(dto).then(v => {
-      result.code = 200
-      result.message = '添加成功'
+      tipType = 1
+      message = flag ? '修改成功' : '添加成功';
     }).catch(() => {
-      result.code = 500
-      result.message = '添加失败'
+      throw new HttpException({
+        tipType: 3,
+        message: '添加失败(错误码:0003)'
+      }, 500);
     });
-    return result;
+    return { tipType, message };
   }
 
-  @Delete('deleteById')
-  async deleteById(@Query() request): Promise<boolean> {
-    const result: any = await this.service.delete(request.id);
-    if (result.raw.affectedRows > 0) {
-      return true;
-    } else {
-      return false;
-    }
+  /**
+   * @api {Delete} /classification/delete 删除
+   * @apiGroup Classification
+   *
+   * @apiParam {String} id 文章id
+   * @apiParamExample {json} Request-Example
+   * {
+   *  "id": "1",
+   * }
+   * 
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "tipType": "1",
+   *   "message": "删除成功"
+   * }
+   * 
+   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiError (Error 500) {String} message 提示文本
+   * @apiErrorExample  {json} Response-Example
+   * {
+   *   "tipType": "3",
+   *   "message": "发生未知错误, 请私信博主错误码(错误码:0004)"
+   * }
+   */
+  @Delete('delete')
+  async delete(@Query() request): Promise<TipMessageDTO> {
+    let message: string;
+    let tipType: number;
+    await this.service.delete(request.id).then((v: DeleteResult) => {
+      if (v.raw.affectedRows > 0) {
+        tipType = 1;
+        message = '删除成功';
+      } else {
+        throw new HttpException({
+          tipType: 3,
+          message: '发生未知错误, 请私信博主错误码(错误码:0004)'
+        }, 500);
+      }
+    })
+    return { tipType, message };
   }
 
-  @Put('updateById')
-  async updateById(@Body() params): Promise<Classification> {
-    const classification = new Classification();
-    classification.id = params.id;
-    classification.name = params.name;
-    return await this.service.save(classification);
-  }
-
+  /**
+   * @api {Get} /classification/findTableInfo 获取全部类别信息
+   * @apiGroup Classification
+   *
+   * @apiParam {String} [name] 类别名
+   * @apiParamExample {json} Request-Example
+   * {
+   *  "name": "ng"
+   * }
+   * 
+   * @apiSuccess {Number} id 类别id
+   * @apiSuccess {Number} articleAmount 文章总数
+   * @apiUse LCCAmountDTO
+   * @apiSuccessExample  {json} Response-Example
+   * [{
+   *   "id": 1,
+   *   "name": "C语言",
+   *   "articleAmount": 6,
+   *   "likeAmount": 16,
+   *   "collectAmount": 22,
+   *   "commentAmount": 22
+   * }]
+   */
   @Get('findTableInfo')
-  async findTableInfo(): Promise<Classification[]> {
-    return this.service.findTableInfo();
+  async findTableInfo(@Query() query): Promise<Classification[]> {
+    const name = query.name;
+    return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
+  /**
+   * @api {Get} /classification/findDetail 获取特定类别信息
+   * @apiGroup Classification
+   *
+   * @apiParam {String} id 类别id
+   * @apiParamExample {json} Request-Example
+   * {
+   *  "id": "1",
+   * }
+   * 
+   * @apiSuccess {Number} id 类别id
+   * @apiUse TimeDTO
+   * @apiSuccess {String} name 类别名
+   * @apiSuccess {String} keywords 关键词
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "id": 1,
+   *   "createTime": "2019-05-01T09:07:24.093Z",
+   *   "updateTime": "2019-05-04T15:55:57.000Z",
+   *   "name": "C语言",
+   *   "keywords": "[\"速度快\",\"原生\"]"
+   * }
+   */
   @Get('findDetail')
   async findDetail(@Query() query): Promise<any> {
     return this.service.findDetail(query.id);
   }
 
-  // 用于表格编辑或新增时的下拉数据
+  /**
+   * @api {Get} /classification/findNames 获取类别名称
+   * @apiGroup Classification
+   * 
+   * @apiSuccess {Number} id 类别id
+   * @apiUse TimeDTO
+   * @apiSuccess {String} name 类别名
+   * @apiSuccess {String} keywords 关键词
+   * @apiSuccessExample  {json} Response-Example
+   * [{
+   *   "id": 1,
+   *   "createTime": "2019-05-01T09:07:24.093Z",
+   *   "updateTime": "2019-05-04T15:55:57.000Z",
+   *   "name": "C语言",
+   *   "keywords": "[\"速度快\",\"原生\"]"
+   * }]
+   */
   @Get('findNames')
   async findNames(): Promise<any[]> {
     return await this.service.findNames();
   }
 
-  // 用于查找文章分类时的过滤选项
-  @Get('findNamesForFilter')
-  async findNamesForFilter(): Promise<any[]> {
-    return await this.service.findNames();
-  }
-
-  @Get('findByFilter')
-  async findByFilter(@Query() query): Promise<Classification[]> {
-    const name = query.name;
-    return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
-  }
-
-  @Get('findClassifications')
-  async findClassifications(): Promise<Classification[]> {
-    return await this.service.findNames();
-  }
-
+  /**
+   * @api {Get} /classification/findFirst 获取第一个类别
+   * @apiGroup Classification
+   *
+   * @apiSuccess {Number} id 类别id
+   * @apiUse TimeDTO
+   * @apiSuccess {String} name 类别名
+   * @apiSuccess {String} keywords 关键词
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "id": 1,
+   *   "createTime": "2019-05-01T09:07:24.093Z",
+   *   "updateTime": "2019-05-04T15:55:57.000Z",
+   *   "name": "C语言",
+   *   "keywords": "[\"速度快\",\"原生\"]"
+   * }
+   */
   @Get('findFirst')
   async findFirst(): Promise<ClassificationDTO> {
     return await this.service.findFirst();

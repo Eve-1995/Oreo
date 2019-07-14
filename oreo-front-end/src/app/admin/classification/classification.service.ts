@@ -5,8 +5,13 @@ import { CreateClassification } from './classification.dto';
 @Injectable()
 export class ClassificationService {
   constructor(private httpClient: HttpClient) { }
-  findTableInfo(): any {
-    return this.httpClient.get(`classification/findTableInfo`);
+  findTableInfo(name?: string): any {
+    if (name) {
+      const params = { name };
+      return this.httpClient.get(`classification/findTableInfo`, { params });
+    } else {
+      return this.httpClient.get(`classification/findTableInfo`);
+    }
   }
   findDetail(id: number): any {
     const body = {
@@ -22,14 +27,9 @@ export class ClassificationService {
         id: id.toString(),
       },
     };
-    return this.httpClient.delete(`classification/deleteById`, body);
+    return this.httpClient.delete(`classification/delete`, body);
   }
   save(obj: CreateClassification): any {
     return this.httpClient.post(`classification/save`, obj);
-  }
-  findByFilter(name: string): any {
-    if (typeof (name) === 'undefined') name = '';
-    const params = { name };
-    return this.httpClient.get(`classification/findByFilter`, { params });
   }
 }

@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Query, Delete, HttpException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
-import { ResponseDTO } from 'src/others/response.dto';
 import { UserDTO } from '../../../common/interface/user.interface';
+import { TipMessageDTO } from 'src/others/response.dto';
 
 @Controller('user')
 export class UserController {
@@ -38,9 +38,9 @@ export class UserController {
    * }]
    */
   @Get('findTableInfo')
-  async findTableInfo(): Promise<ResponseDTO> {
+  async findTableInfo(): Promise<User[]> {
     let result = undefined;
-    await this.service.findTableInfo().then(v => {
+    await this.service.findTableInfo().then((v: User[]) => {
       result = v;
     })
     return result;
@@ -106,40 +106,46 @@ export class UserController {
    *  "password": "huangmenji"
    * }
    * 
-   * @apiSuccess (Success 210) {String} message 提示文本
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "注册成功"
    * }
-   * 
-   * @apiError (Error 211) {String} message 提示文本
-   * @apiErrorExample  {json} Response-Example
+   * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "2",
    *   "message": "手机号已存在"
    * }
-   * @apiErrorExample  {json} Response-Example
+   * 
+   * @apiError {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiError {String} message 提示文本
+   * @apiErrorExample {json} Response-Example
    * {
-   *   "message": "发生未知错误, 请私信博主具体情况"
+   *   "tipType": "3",
+   *   "message": "发生未知错误, 请私信博主错误码(错误码:0001)"
    * }
    */
   @Post('save')
-  async save(@Body() dto: User): Promise<void> {
+  async save(@Body() dto: User): Promise<TipMessageDTO> {
+    let tipType: number;
+    let message: string;
     await this.service.save(dto).then(() => {
-      throw new HttpException({
-        message: '注册成功',
-      }, 210);
+      tipType = 1
+      message = '注册成功';
     }).catch(e => {
-      let message = '';
       if (e.errno === 1062) {
+        tipType = 2;
         message = '手机号已存在';
       } else {
-        message = '发生未知错误, 请私信博主具体情况';
-        console.log(e);
+        throw new HttpException({
+          tipType: 3,
+          message: '发生未知错误, 请私信博主错误码(错误码:0001)'
+        }, 500);
       }
-      throw new HttpException({
-        message
-      }, 211);
     })
+    return { tipType, message };
   }
 
   // @Post('update')
@@ -165,30 +171,38 @@ export class UserController {
    *  "userId": "1",
    * }
    * 
-   * @apiSuccess (Success 210) {String} message 提示文本
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "删除成功"
    * }
    * 
-   * @apiError (Error 212) {String} message 提示文本
+   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiError (Error 500) {String} message 提示文本
    * @apiErrorExample  {json} Response-Example
    * {
-   *   "message": "删除失败"
+   *   "tipType": "3",
+   *   "message": "发生未知错误, 请私信博主错误码(错误码:0002)"
    * }
    */
   @Delete('delete')
-  async delete(@Query() request): Promise<void> {
-    const res = await this.service.delete(request.id);
-    if (res.raw.affectedRows > 0) {
+  async delete(@Query() request): Promise<TipMessageDTO> {
+    let message: string;
+    let tipType: number;
+    await this.service.delete(request.id).then(v => {
+      if (v.raw.affectedRows > 0) {
+        tipType = 1;
+        message = '删除成功';
+      }
+    }).catch(() => {
       throw new HttpException({
-        message: '删除成功'
-      }, 210);
-    } else {
-      throw new HttpException({
-        message: '删除失败'
-      }, 212);
-    }
+        tipType: 3,
+        message: '发生未知错误, 请私信博主错误码(错误码:0002)'
+      }, 500);
+    })
+    return { tipType, message };
   }
 
   /**
@@ -223,15 +237,20 @@ export class UserController {
    *   "univercity": "浙江水利水电学院",
    *   "eduacation": "本科"
    * }
-   * 
-   * @apiError (Error 211) {String} message 提示文本
-   * @apiErrorExample  {json} Response-Example
+   *  
+   * @apiError (Error 400) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiError (Error 400) {String} message 提示文本
+   * @apiErrorExample  {json} Response-Example(400)
    * {
+   *   "tipType": "2",
    *   "message": "帐号或密码不正确"
    * }
+   * 
+   * @apiError (Error 666) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
    * @apiError (Error 666) {String} message 提示文本
-   * @apiErrorExample  {json} Response-Example
+   * @apiErrorExample  {json} Response-Example(666)
    * {
+   *   "tipType": "4",
    *   "message": "恭喜你获得[四魂之玉碎片I * 1]!"
    * }
    */
@@ -242,21 +261,24 @@ export class UserController {
       await this.service.getUser(user).then((v: UserDTO) => {
         if (!v) {
           throw new HttpException({
+            tipType: 2,
             message: '帐号或密码不正确'
-          }, 211);
+          }, 400);
         }
         result = v;
         delete result.password
       })
+      return result;
     } else if (user.phone && !user.password) {
+      // 为该帐号发放奖励
       throw new HttpException({
+        tipType: 4,
         message: '恭喜你获得[四魂之玉碎片I * 1]!'
       }, 666);
     }
-    return result;
   }
 
-  
+
   /**
    * @api {Get} /user/getUser 获取单个用户信息
    * @apiDescription 只获取用户实体信息
@@ -296,7 +318,7 @@ export class UserController {
     await this.service.getUser(query.id).then(v => {
       v ? result = v : result = null;
     })
-    if(result) delete result.password;
+    if (result) delete result.password;
     return result;
   }
 
@@ -313,33 +335,32 @@ export class UserController {
    *  "articleId": 6
    * }
    * 
-   * @apiSuccess (Success 210) {String} message 提示文本
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
    * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "收藏成功"
    * }
    * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "取消收藏成功"
    * }
    */
   @Post('collect')
   async collect(@Body() dto: { userId: number, articleId: number }): Promise<any> {
-    await this.service.collect(dto.userId, dto.articleId).then(v => {
-      let message = '';
-      if (v) {
-        message = '收藏成功';
-      } else {
-        message = '取消收藏成功'
-      }
-      throw new HttpException({
-        message: '收藏成功'
-      }, 210);
+    let tipType: number;
+    let message: string;
+    await this.service.collect(dto.userId, dto.articleId).then((v: boolean) => {
+      tipType = 1;
+      message = v ? '收藏成功' : '取消收藏成功';
     })
+    return { tipType, message }
   }
 
   /**
-   * @api {Post} /user/collect 点赞文章
+   * @api {Post} /user/like 点赞文章
    * @apiDescription 若用户未点赞过此文章则执行点赞操作, 反之取消点赞
    * @apiGroup User
    *
@@ -351,33 +372,32 @@ export class UserController {
    *  "articleId": 6
    * }
    * 
-   * @apiSuccess (Success 210) {String} message 提示文本
-   * @apiSuccessExample  {json} 用户未点赞
+   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
+   * @apiSuccess {String} message 提示文本
+   * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "点赞成功"
    * }
-   * @apiSuccessExample  {json} 用户已点赞
+   * @apiSuccessExample  {json} Response-Example
    * {
+   *   "tipType": "1",
    *   "message": "取消点赞成功"
    * }
    */
   @Post('like')
   async like(@Body() dto: { userId: number, articleId: number }): Promise<any> {
-    await this.service.like(dto.userId, dto.articleId).then(v => {
-      let message = '';
-      if (v) {
-        message = '点赞成功'
-      } else {
-        message = '取消点赞成功'
-      }
-      throw new HttpException({
-        message
-      }, 210);
+    let tipType: number;
+    let message: string;
+    await this.service.like(dto.userId, dto.articleId).then((v: boolean) => {
+      tipType = 1;
+      message = v ? '点赞成功' : '取消点赞成功';
     })
+    return { tipType, message }
   }
 
   /**
-   * @api {Get} /user/actionStatus 用户是否已对文章操作过
+   * @api {Get} /user/actionStatus 用户与文章的关系
    * @apiDescription 获取用户是否已点赞、收藏过该文章
    * @apiGroup User
    *
@@ -389,8 +409,8 @@ export class UserController {
    *  "articleId": "6"
    * }
    * 
-   * @apiSuccess (Success 210) {String} hasCollect 是否已收藏
-   * @apiSuccess (Success 210) {String} hasLike 是否已点赞
+   * @apiSuccess {String} hasCollect 是否已收藏
+   * @apiSuccess {String} hasLike 是否已点赞
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "hasCollect": true,

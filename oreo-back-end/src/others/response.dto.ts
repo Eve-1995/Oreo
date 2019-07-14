@@ -15,3 +15,8 @@ export class ResponseDTO {
         this.code = 200;
     }
 }
+
+export interface TipMessageDTO {
+    tipType: number;
+    message: string;
+}
