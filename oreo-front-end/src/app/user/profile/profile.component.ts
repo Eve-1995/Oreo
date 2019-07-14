@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
-import { ResponseDTO } from '../../others/response.dto';
 import { AppGlobalService } from '../../others/global.service';
 import { NbDialogService } from '@nebular/theme';
 import { AppConfirmComponent } from '../../@theme/global-components/confirm/confirm.component';
@@ -41,10 +40,8 @@ export class AppProfileComponent implements OnInit {
   personalSave() {
     this.personalSubmitted = true;
     this.personalLoading = true;
-    this.service.save(this.user).subscribe((v: ResponseDTO) => {
-      if (v.code === 200) {
-        this.ngOnInit();
-      }
+    this.service.save(this.user).subscribe(v => {
+      this.ngOnInit();
       this.personalSubmitted = false;
     });
   }
@@ -54,10 +51,8 @@ export class AppProfileComponent implements OnInit {
       if (value === 'yes') {
         this.accountSubmitted = true;
         this.accountLoading = true;
-        this.service.save(this.user).subscribe((v: ResponseDTO) => {
-          if (v.code === 200) {
-            this.ngOnInit();
-          }
+        this.service.save(this.user).subscribe(v => {
+          this.ngOnInit();
           this.accountSubmitted = false;
         });
       }

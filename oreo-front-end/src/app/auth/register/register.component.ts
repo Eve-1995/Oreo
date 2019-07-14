@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegistService } from './register.service';
-import { ResponseDTO } from '../../others/response.dto';
 import { NbDialogService } from '@nebular/theme';
 import { AppContrastComponent } from './contrast/contrast.component';
 
@@ -11,17 +10,19 @@ import { AppContrastComponent } from './contrast/contrast.component';
   providers: [RegistService]
 })
 export class AppRegisterComponent {
+  public user: any = {};
+  public submitted: boolean = false;
+  public moreInfo = false;
+
   constructor(
     private router: Router,
     private service: RegistService,
-    private dialogService: NbDialogService) { }
-  user: any = {};
-  submitted: boolean = false;
-  moreInfo = false;
-  register(): void {
+    private dialogService: NbDialogService
+  ) { }
+
+  public register(): void {
     this.submitted = true;
     this.service.save(this.user).subscribe((v: { result: boolean }) => {
-      console.log(v);
       if (v.result) {
         this.router.navigate(['/auth/login']);
       } else {
@@ -29,7 +30,8 @@ export class AppRegisterComponent {
       }
     });
   }
-  checkContrast() {
+
+  public checkContrast() {
     this.dialogService.open(AppContrastComponent);
   }
 }

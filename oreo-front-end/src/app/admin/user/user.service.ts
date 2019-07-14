@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class UserService {
   constructor(private httpClient: HttpClient) { }
+
   findTableInfo(name?: string): any {
     if (name) {
       const params = { name };

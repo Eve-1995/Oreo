@@ -15,28 +15,12 @@ import { debounceTime } from 'rxjs/operators';
   providers: [ClassificationService],
 })
 export class AppClassificationComponent implements OnInit {
-  constructor(
-    private dialogService: NbDialogService,
-    private classificationService: ClassificationService,
-    private toastrService: NbToastrService) {
-    classificationService.findTableInfo().subscribe(value => {
-      this.source.load(value);
-      this.source.setPaging(1, 5);
-      this.loading = false;
-    });
-  }
-
-  ngOnInit(): void {
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
-  }
-
-  fetchTableList$ = new Subject();
-  loading = true;
-  filterName: string;
-  source: LocalDataSource = new LocalDataSource();
-  settings = {
+  public fetchTableList$ = new Subject();
+  public loading = true;
+  public filterName: string;
+  public source: LocalDataSource = new LocalDataSource();
+  public selectedObj = new Classification();
+  public settings = {
     actions: false,
     hideSubHeader: true,
     noDataMessage: '暂无数据',
@@ -67,13 +51,30 @@ export class AppClassificationComponent implements OnInit {
       },
     },
   };
-  selectedObj = new Classification();
-  onRowSelect(event) {
+
+  constructor(
+    private dialogService: NbDialogService,
+    private classificationService: ClassificationService,
+    private toastrService: NbToastrService) {
+    classificationService.findTableInfo().subscribe(value => {
+      this.source.load(value);
+      this.source.setPaging(1, 5);
+      this.loading = false;
+    });
+  }
+
+  ngOnInit(): void {
+    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+      this.fetchTableList();
+    });
+  }
+
+
+  public onRowSelect(event) {
     this.selectedObj = event.data;
   }
 
-  create() {
-    console.log('create');
+  public create() {
     this.dialogService.open(AppDialogNameComponent, { context: { operation: 'create' }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: CreateClassification) => {
       if (v !== undefined) {
         this.classificationService.save({ name: v.name, keywords: v.keywords }).subscribe(() => {
@@ -82,7 +83,8 @@ export class AppClassificationComponent implements OnInit {
       }
     });
   }
-  delete(): void {
+
+  public delete(): void {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
@@ -96,7 +98,8 @@ export class AppClassificationComponent implements OnInit {
       });
     }
   }
-  edit(): void {
+
+  public edit(): void {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
@@ -111,7 +114,8 @@ export class AppClassificationComponent implements OnInit {
       });
     }
   }
-  fetchTableList() {
+
+  private fetchTableList() {
     this.loading = true;
     this.classificationService.findTableInfo(this.filterName).subscribe(value => {
       this.source.load(value);

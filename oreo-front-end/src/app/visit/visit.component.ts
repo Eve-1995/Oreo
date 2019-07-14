@@ -29,7 +29,7 @@ export class VisitComponent implements OnInit {
   }
 
   // 当进入visit模块时
-  navigateToFirstArticle(): void {
+  private navigateToFirstArticle(): void {
     if (!this.appGlobalService.haveAddedMenu) {
       this.visitService.getMenu().subscribe(value => {
         console.log(value);
@@ -53,7 +53,7 @@ export class VisitComponent implements OnInit {
    *reason:尚不清楚.
    *solution:只能手动将最后一个元素设置为隐藏,以保证用户体验.
    */
-  addLastItem() {
+  private addLastItem() {
     this.nBmenuService.addItems([{
       title: undefined,
       hidden: true,

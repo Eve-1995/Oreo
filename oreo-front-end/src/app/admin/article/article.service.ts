@@ -5,6 +5,7 @@ import { ArticleClassificationDto } from './article.dto';
 @Injectable()
 export class ArticleService {
   constructor(private httpClient: HttpClient) { }
+
   findTableInfo(name?: string): any {
     if (name) {
       const params = { name };

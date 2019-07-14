@@ -6,14 +6,16 @@ import { Classification } from '../classification.dto';
   styleUrls: ['dialog-name-prompt.component.scss'],
 })
 export class AppDialogNameComponent implements OnInit {
+  public title: string;
+  public keywords = [];
+  public newKeyword = '';
+
+  @Input() operation: 'create' | 'edit';
+  @Input() data: Classification;
+
   constructor(
     private ref: NbDialogRef<AppDialogNameComponent>
   ) { }
-  title: string;
-  keywords = [];
-  newKeyword = '';
-  @Input() operation: string;
-  @Input() data: Classification;
 
   ngOnInit(): void {
     if (this.operation === 'edit') {
@@ -24,14 +26,14 @@ export class AppDialogNameComponent implements OnInit {
     }
   }
 
-  add() {
+  public add(): void {
     if (this.newKeyword.trim().length > 0) {
       this.keywords.push(this.newKeyword);
     }
     this.newKeyword = '';
   }
 
-  submit() {
+  public submit(): void {
     if (this.operation === 'create') {
       this.ref.close({ name: this.title, keywords: JSON.stringify(this.keywords) });
     } else if (this.operation === 'edit') {

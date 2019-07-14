@@ -15,33 +15,13 @@ import { Subject } from 'rxjs';
   providers: [ArticleService],
 })
 export class AppArticleComponent implements OnInit {
-  constructor(
-    private dialogService: NbDialogService,
-    private articleService: ArticleService,
-    private toastrService: NbToastrService) {
-    articleService.findTableInfo().subscribe(value => {
-      this.source.load(value);
-      this.source.setPaging(1, 5);
-      this.loading = false;
-    });
-    articleService.getClassificationNames().subscribe(value => {
-      this.classificationGroup = value;
-    });
-  }
-
-  ngOnInit(): void {
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
-  }
-
-  fetchTableList$ = new Subject();
-  loading = true;
-  editOrCreateClassification = [];
-  classificationGroup: Classification[];
-  filterName: string;
-  source: LocalDataSource = new LocalDataSource();
-  settings = {
+  public fetchTableList$ = new Subject();
+  public loading = true;
+  public classificationGroup: Classification[];
+  public filterName: string;
+  public source: LocalDataSource = new LocalDataSource();
+  public selectedObj = new ArticleClassificationDto();
+  public settings = {
     actions: false,
     hideSubHeader: true,
     noDataMessage: '暂无数据',
@@ -68,11 +48,32 @@ export class AppArticleComponent implements OnInit {
       },
     },
   };
-  selectedObj = new ArticleClassificationDto();
-  onRowSelect(event) {
+
+  constructor(
+    private dialogService: NbDialogService,
+    private articleService: ArticleService,
+    private toastrService: NbToastrService
+  ) { }
+
+  ngOnInit(): void {
+    this.articleService.findTableInfo().subscribe(value => {
+      this.source.load(value);
+      this.source.setPaging(1, 5);
+      this.loading = false;
+    });
+    this.articleService.getClassificationNames().subscribe(value => {
+      this.classificationGroup = value;
+    });
+    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
+      this.fetchTableList();
+    });
+  }
+
+  public onRowSelect(event): void {
     this.selectedObj = event.data;
   }
-  edit(dialog: TemplateRef<any>) {
+
+  public edit(dialog: TemplateRef<any>): void {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
@@ -112,7 +113,7 @@ export class AppArticleComponent implements OnInit {
     }
   }
 
-  create(dialog: TemplateRef<any>) {
+  public create(dialog: TemplateRef<any>): void {
     this.selectedObj = new ArticleClassificationDto();
     this.dialogService.open(dialog, {
       context: {
@@ -131,7 +132,8 @@ export class AppArticleComponent implements OnInit {
       }
     });
   }
-  delete(): void {
+
+  public delete(): void {
     if (this.selectedObj.id === undefined) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
@@ -145,7 +147,8 @@ export class AppArticleComponent implements OnInit {
       });
     }
   }
-  fetchTableList() {
+
+  private fetchTableList(): void {
     this.loading = true;
     this.articleService.findTableInfo(this.filterName).subscribe(value => {
       this.source.load(value);

@@ -15,11 +15,12 @@ import { debounceTime } from 'rxjs/operators';
 export class AppUserComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private id: number;
-  loading = true;
-  filterName: string;
-  source: LocalDataSource = new LocalDataSource();
-  fetchTableList$ = new Subject();
-  settings = {
+
+  public loading = true;
+  public filterName: string;
+  public source: LocalDataSource = new LocalDataSource();
+  public fetchTableList$ = new Subject();
+  public settings = {
     actions: false,
     hideSubHeader: true,
     noDataMessage: '暂无数据',
@@ -88,18 +89,11 @@ export class AppUserComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  fetchTableList(): void {
-    this.loading = true;
-    this.userService.findTableInfo(this.filterName).subscribe(value => {
-      this.source.load(value);
-      this.loading = false;
-    });
-  }
-  onRowSelect(e): void {
+  public onRowSelect(e): void {
     this.id = e.data.id;
   }
 
-  delete(): void {
+  public delete(): void {
     if (this.id) {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
@@ -111,5 +105,13 @@ export class AppUserComponent implements OnInit, OnDestroy {
     } else {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     }
+  }
+
+  private fetchTableList(): void {
+    this.loading = true;
+    this.userService.findTableInfo(this.filterName).subscribe(value => {
+      this.source.load(value);
+      this.loading = false;
+    });
   }
 }

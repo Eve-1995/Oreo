@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ResponseDTO } from '../../others/response.dto';
 
 @Injectable()
 export class AppArticleDetailService {
@@ -17,15 +16,15 @@ export class AppArticleDetailService {
     const dto = { userId, articleId };
     return this.httpClient.post(`user/like`, dto);
   }
-  actionStatus(id: any, articleId: any): ResponseDTO | any {
+  actionStatus(id: any, articleId: any): any {
     const params = { id, articleId };
     return this.httpClient.get(`user/actionStatus`, { params });
   }
-  getCommentsByArticle(id: any): ResponseDTO | any {
+  getCommentsByArticle(id: any): any {
     const params = { id };
     return this.httpClient.get(`comment/getCommentsByArticle`, { params });
   }
-  saveComment(content: string, userId: number, articleId: number, parentCommentId?: number, rootCommentId?: number): ResponseDTO | any {
+  saveComment(content: string, userId: number, articleId: number, parentCommentId?: number, rootCommentId?: number): any {
     const dto = {
       'content': content,
       'user': {
