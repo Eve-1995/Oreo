@@ -1,0 +1,17 @@
+<div class="row">
+  <ng-container *ngFor="let item of fragments;let first = first;">
+    <div class="col-md-6">
+      <div class="item" [ngClass]="{'active': first}">
+        <img [src]="item.img">
+        <div class="text-container">
+          <div class="title">
+            {{item.title}}
+          </div>
+          <div class="sub-title">
+            {{item.subTitle}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

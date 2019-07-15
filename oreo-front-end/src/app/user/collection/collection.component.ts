@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providers: [CollectionService],
 })
 export class AppCollectionComponent implements OnInit {
-  items = [];
+  public items = [];
 
   constructor(
     private router: Router,

@@ -1,0 +1,31 @@
+.item{
+    display: flex;
+    align-items: center;
+    height: 96px;
+    background: rgb(61, 55, 128);
+
+    &.active{
+      img{
+        filter: grayscale(0%);
+      }
+    }
+
+    img{
+        margin: 10px;
+        width: 92px;
+        height: 76px;
+        filter: grayscale(100%);
+    }
+    .text-container{
+        margin-left: 12px;
+        .title{
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .sub-title{
+          font-size: 14px;
+          font-weight: 400;
+        }
+    }
+}
