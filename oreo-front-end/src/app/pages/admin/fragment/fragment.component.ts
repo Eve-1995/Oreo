@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
-import { NbToastrService, NbDialogService } from '@nebular/theme';
-import { NbToastStatus } from '@nebular/theme/components/toastr/model';
-import { Subscription, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
+import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
 import { FragmentService, Fragment } from './fragment.service';
-import { AppCreateOrEditFragmentComponent } from './components/create-or-edit-fragment.component';
+import { AppAdminComponent } from '../admin-basic.component';
 import { NgModel } from '@angular/forms';
+import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { AppCreateOrEditFragmentComponent } from './components/create-or-edit-fragment.component';
+import { NbToastStatus } from '@nebular/theme/components/toastr/model';
+import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-fragment',
@@ -15,19 +14,21 @@ import { NgModel } from '@angular/forms';
   styleUrls: ['fragment.component.scss'],
   providers: [FragmentService],
 })
-export class AppFragmentComponent implements OnInit, AfterViewInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-
-  public loading = true;
-  public filterName: string;
-  public source: LocalDataSource = new LocalDataSource();
-  public fetchTableList$ = new Subject();
+export class AppFragmentComponent extends AppAdminComponent implements OnInit, AfterViewInit {
   public selectedObj = new Fragment();
-  public settings = {
-    actions: false,
-    hideSubHeader: true,
-    noDataMessage: '暂无数据',
-    columns: {
+
+  @ViewChild('searchInput') searchInput: NgModel;
+
+  constructor(
+    public fragmentService: FragmentService,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
       name: {
         title: '碎片名称',
         editable: false,
@@ -43,25 +44,11 @@ export class AppFragmentComponent implements OnInit, AfterViewInit, OnDestroy {
         editable: false,
         filter: false,
       }
-    },
-  };
-
-  @ViewChild('searchInput') searchInput: NgModel;
-
-  constructor(
-    private fragmentService: FragmentService,
-    private dialogService: NbDialogService,
-    private toastrService: NbToastrService
-  ) { }
-
-  ngOnInit(): void {
+    };
     this.fragmentService.findTableInfo().subscribe(value => {
-      this.source.load(value);
-      this.source.setPaging(1, 5);
+      this.tableSource.load(value);
+      this.tableSource.setPaging(1, 5);
       this.loading = false;
-    });
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
     });
   }
 
@@ -73,17 +60,8 @@ export class AppFragmentComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  public onRowSelect(e): void {
-    this.selectedObj = e.data;
-  }
-
   public create(dialog: TemplateRef<any>): void {
-    this.dialogService.open(AppCreateOrEditFragmentComponent, { context: { operation: 'create' }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: Fragment) => {
+    this.dialogService.open(AppCreateOrEditFragmentComponent, { context: { operation: 'create' }, ...this.dialogSettings }).onClose.subscribe((v: Fragment) => {
       if (v) {
         this.fragmentService.save(v).subscribe(() => this.fetchTableList());
       }
@@ -113,6 +91,7 @@ export class AppFragmentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
           this.fragmentService.delete(this.selectedObj.id).subscribe(() => {
+            this.selectedObj = new Fragment();
             this.fetchTableList();
           });
         }
@@ -122,8 +101,8 @@ export class AppFragmentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private fetchTableList(): void {
     this.loading = true;
-    this.fragmentService.findTableInfo(this.filterName).subscribe(value => {
-      this.source.load(value);
+    this.fragmentService.findTableInfo(this.filterInfo).subscribe(value => {
+      this.tableSource.load(value);
       this.loading = false;
     });
   }
