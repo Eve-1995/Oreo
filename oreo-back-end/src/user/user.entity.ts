@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Article } from 'src/article/article.entity';
 import { Comment } from 'src/comment/comment.entity';
+import { Fragment } from 'src/fragment/fragment.entity';
 
 @Entity()
 export class User {
@@ -81,4 +82,8 @@ export class User {
     @ManyToMany(type => Article, article => article.likeUsers)
     @JoinTable()
     likeArticles: Article[];
+
+    @ManyToMany(type => Fragment, fragment => fragment.users)
+    @JoinTable()
+    fragments: Fragment[];
 }

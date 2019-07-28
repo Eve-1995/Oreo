@@ -41,10 +41,10 @@ import { AppFooterComponent } from './layout/footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { httpInterceptorProviders } from '../others/interceptor';
+import { httpInterceptorProviders } from '../global/interceptor';
 import { NgxMdModule } from 'ngx-md';
-import { AppConfirmComponent } from './global-components/confirm/confirm.component';
-import { AppSvgComponent } from './global-components/svg/svg.component';
+import { AppConfirmComponent } from '../global/components/confirm/confirm.component';
+import { AppSvgComponent } from '../global/components/svg/svg.component';
 
 // Nebular组件
 const NB_MODULES = [

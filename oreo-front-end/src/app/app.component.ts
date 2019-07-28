@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnalyticsService } from './@core/utils/analytics.service';
-import { AppGlobalService } from './others/global.service';
+import { AppGlobalService } from './global/service/global.service';
 import { Subscription } from 'rxjs';
 
 @Component({

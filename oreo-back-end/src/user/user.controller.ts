@@ -38,12 +38,9 @@ export class UserController {
    * }]
    */
   @Get('findTableInfo')
-  async findTableInfo(): Promise<User[]> {
-    let result = undefined;
-    await this.service.findTableInfo().then((v: User[]) => {
-      result = v;
-    })
-    return result;
+  async findTableInfo(@Query() query): Promise<User[]> {
+    const name = query.name;
+    return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
   /**
@@ -314,7 +311,6 @@ export class UserController {
    */
   @Get('getUser')
   async getUser(@Query() query): Promise<any> {
-    console.log('getUser');
     let result = undefined;
     await this.service.getUser(query.id).then(v => {
       v ? result = v : result = null;

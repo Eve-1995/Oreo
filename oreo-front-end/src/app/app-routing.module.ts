@@ -1,14 +1,14 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AdminGuard, UserGuard } from './others/guard';
-import { AppGlobalService } from './others/global.service';
+import { AdminGuard, UserGuard } from './global/guard/guard';
+import { AppGlobalService } from './global/service/global.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'visit', pathMatch: 'full' },
-  { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule', canActivateChild: [AdminGuard] },
-  { path: 'user', loadChildren: 'app/user/user.module#UserModule', canActivateChild: [UserGuard] },
-  { path: 'auth', loadChildren: 'app/auth/auth.module#AuthModule' },
-  { path: 'visit', loadChildren: 'app/visit/visit.module#VisitModule' },
+  { path: 'admin', loadChildren: 'app/pages/admin/admin.module#AdminModule', canActivateChild: [AdminGuard] },
+  { path: 'user', loadChildren: 'app/pages/user/user.module#UserModule', canActivateChild: [UserGuard] },
+  { path: 'auth', loadChildren: 'app/pages/auth/auth.module#AuthModule' },
+  { path: 'visit', loadChildren: 'app/pages/visit/visit.module#VisitModule' },
   { path: '**', redirectTo: 'visit' },
 ];
 

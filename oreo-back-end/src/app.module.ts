@@ -4,6 +4,7 @@ import { ClassificationModule } from './classification/classification.module';
 import { ArticleModule } from './article/article.module';
 import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
+import { FragmentModule } from './fragment/fragment.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { CommentModule } from './comment/comment.module';
     ArticleModule,
     UserModule,
     CommentModule,
+    FragmentModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',

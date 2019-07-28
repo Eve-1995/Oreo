@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NbSidebarService, NbMenuService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
 import { Router } from '@angular/router';
-import { AppGlobalService } from '../../../others/global.service';
+import { AppGlobalService } from '../../../global/service/global.service';
 
 @Component({
   selector: 'app-header',

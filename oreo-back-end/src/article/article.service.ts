@@ -23,7 +23,7 @@ export class ArticleService {
     dto.classifications.forEach(v => {
       article.classifications.push(v);
     })
-    await this.articleRepository.save(article);
+    return await this.articleRepository.save(article);
   }
   /**
    * 查找文章的基本信息列表
