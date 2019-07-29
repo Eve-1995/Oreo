@@ -1,30 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
-import { AppDialogNameComponent } from './dialog-name-prompt/dialog-name-prompt.component';
-import { ClassificationService } from './classification.service';
-import { Classification, CreateClassification } from './classification.dto';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { ClassificationService, Classification, CreateClassification, EditClassification } from './classification.service';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
+import { AppAdminComponent } from '../admin-basic.component';
+import { AppCreateOrEditClassificationComponent } from './components/create-or-edit-classification/create-or-edit-classification.component';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
+  selector: 'app-classification',
   templateUrl: './classification.component.html',
   styleUrls: ['classification.component.scss'],
   providers: [ClassificationService],
 })
-export class AppClassificationComponent implements OnInit {
-  public fetchTableList$ = new Subject();
-  public loading = true;
-  public filterName: string;
-  public source: LocalDataSource = new LocalDataSource();
+export class AppClassificationComponent extends AppAdminComponent implements OnInit, AfterViewInit {
   public selectedObj = new Classification();
-  public settings = {
-    actions: false,
-    hideSubHeader: true,
-    noDataMessage: '暂无数据',
-    columns: {
+
+  constructor(
+    private dialogService: NbDialogService,
+    private classificationService: ClassificationService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
       name: {
         title: '类别名称',
         filter: false,
@@ -49,43 +50,49 @@ export class AppClassificationComponent implements OnInit {
         editable: false,
         filter: false,
       },
-    },
-  };
-
-  constructor(
-    private dialogService: NbDialogService,
-    private classificationService: ClassificationService,
-    private toastrService: NbToastrService) {
-    classificationService.findTableInfo().subscribe(value => {
-      this.source.load(value);
-      this.source.setPaging(1, 5);
+    };
+    this.classificationService.findTableInfo().subscribe(value => {
+      this.tableSource.load(value);
       this.loading = false;
     });
   }
 
-  ngOnInit(): void {
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
-  }
-
-
-  public onRowSelect(event) {
-    this.selectedObj = event.data;
+  ngAfterViewInit(): void {
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.fetchTableList();
+      });
   }
 
   public create() {
-    this.dialogService.open(AppDialogNameComponent, { context: { operation: 'create' }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: CreateClassification) => {
-      if (v !== undefined) {
-        this.classificationService.save({ name: v.name, keywords: v.keywords }).subscribe(() => {
+    this.dialogService.open(AppCreateOrEditClassificationComponent, { context: { operation: 'create' }, ...this.dialogSettings }).onClose.subscribe((v: CreateClassification) => {
+      if (v) {
+        this.classificationService.save(v).subscribe(() => {
           this.fetchTableList();
         });
       }
     });
   }
 
+  public edit(): void {
+    if (!this.selectedObj.id) {
+      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
+    } else {
+      this.classificationService.findDetail(this.selectedObj.id).subscribe(value => {
+        this.dialogService.open(AppCreateOrEditClassificationComponent, { context: { operation: 'edit', data: value }, ...this.dialogSettings }).onClose.subscribe((v: EditClassification) => {
+          if (v) {
+            this.classificationService.save(v).subscribe(() => {
+              this.fetchTableList();
+            });
+          }
+        });
+      });
+    }
+  }
+
   public delete(): void {
-    if (this.selectedObj.id === undefined) {
+    if (!this.selectedObj.id) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
@@ -99,26 +106,11 @@ export class AppClassificationComponent implements OnInit {
     }
   }
 
-  public edit(): void {
-    if (this.selectedObj.id === undefined) {
-      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
-    } else {
-      this.classificationService.findDetail(this.selectedObj.id).subscribe(value => {
-        this.dialogService.open(AppDialogNameComponent, { context: { operation: 'edit', data: value }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: CreateClassification) => {
-          if (v !== undefined) {
-            this.classificationService.save({ id: v.id, name: v.name, keywords: v.keywords }).subscribe(() => {
-              this.fetchTableList();
-            });
-          }
-        });
-      });
-    }
-  }
 
   private fetchTableList() {
     this.loading = true;
-    this.classificationService.findTableInfo(this.filterName).subscribe(value => {
-      this.source.load(value);
+    this.classificationService.findTableInfo(this.filterInfo).subscribe(value => {
+      this.tableSource.load(value);
       this.loading = false;
     });
   }

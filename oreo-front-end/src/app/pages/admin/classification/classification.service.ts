@@ -1,10 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CreateClassification } from './classification.dto';
+
+export class Classification {
+  id: number;
+  name: string;
+  createTime: Date;
+  updateTime: Date;
+  keywords: string;
+}
+
+export interface CreateClassification {
+  name: string;
+  keywords?: string;
+}
+export interface EditClassification extends CreateClassification {
+  id: number;
+}
 
 @Injectable()
 export class ClassificationService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   findTableInfo(name?: string): any {
     if (name) {
@@ -14,6 +31,7 @@ export class ClassificationService {
       return this.httpClient.get(`classification/findTableInfo`);
     }
   }
+
   findDetail(id: number): any {
     const body = {
       params: {
@@ -22,6 +40,7 @@ export class ClassificationService {
     };
     return this.httpClient.get(`classification/findDetail`, body);
   }
+
   delete(id: number): any {
     const body = {
       params: {
@@ -30,6 +49,7 @@ export class ClassificationService {
     };
     return this.httpClient.delete(`classification/delete`, body);
   }
+
   save(obj: CreateClassification): any {
     return this.httpClient.post(`classification/save`, obj);
   }

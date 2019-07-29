@@ -1,9 +1,7 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Fragment, FragmentService } from './fragment/fragment.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NgModel } from '@angular/forms';
-import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin',
@@ -29,7 +27,7 @@ export class AppAdminComponent implements OnDestroy {
     closeOnEsc: false,
     hasBackdrop: false
   };
-  public tableSettings = {
+  public tableSettings = { // 表格配置
     actions: false,
     hideSubHeader: true,
     noDataMessage: '暂无数据',

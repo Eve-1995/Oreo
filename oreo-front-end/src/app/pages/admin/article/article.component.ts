@@ -4,10 +4,10 @@ import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { ArticleService } from './article.service';
 import { ArticleClassificationDto } from './article.dto';
-import { Classification } from '../classification/classification.dto';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
+import { Classification } from '../classification/classification.service';
 
 @Component({
   templateUrl: './article.component.html',

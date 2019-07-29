@@ -15,11 +15,9 @@ export class ClassificationController {
    * @apiGroup Classification
    *
    * @apiParam {String} name 文章名
-   * @apiParam {String} keywords 关键词   
    * @apiParamExample {json} Request-Example   
    * {
    *  "name": "Typescript VS Javascript",
-   *  "keywords": "["可维护性","语法糖"]"
    * }
    * 
    * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
@@ -49,13 +47,15 @@ export class ClassificationController {
     const flag = dto.id ? true : false;
     let tipType: number;
     let message: string;
+    console.log(dto);
     await this.service.save(dto).then(v => {
       tipType = 1
       message = flag ? '修改成功' : '添加成功';
-    }).catch(() => {
+    }).catch((err) => {
+      console.log(err);
       throw new HttpException({
         tipType: 3,
-        message: '添加失败(错误码:0003)'
+        message: '发生未知错误, 请私信博主错误信息([classification, save])'
       }, 500);
     });
     return { tipType, message };
@@ -147,14 +147,12 @@ export class ClassificationController {
    * @apiSuccess {Number} id 类别id
    * @apiUse TimeDTO
    * @apiSuccess {String} name 类别名
-   * @apiSuccess {String} keywords 关键词
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "id": 1,
    *   "createTime": "2019-05-01T09:07:24.093Z",
    *   "updateTime": "2019-05-04T15:55:57.000Z",
    *   "name": "C语言",
-   *   "keywords": "[\"速度快\",\"原生\"]"
    * }
    */
   @Get('findDetail')
@@ -169,14 +167,12 @@ export class ClassificationController {
    * @apiSuccess {Number} id 类别id
    * @apiUse TimeDTO
    * @apiSuccess {String} name 类别名
-   * @apiSuccess {String} keywords 关键词
    * @apiSuccessExample  {json} Response-Example
    * [{
    *   "id": 1,
    *   "createTime": "2019-05-01T09:07:24.093Z",
    *   "updateTime": "2019-05-04T15:55:57.000Z",
    *   "name": "C语言",
-   *   "keywords": "[\"速度快\",\"原生\"]"
    * }]
    */
   @Get('findNames')
@@ -191,14 +187,12 @@ export class ClassificationController {
    * @apiSuccess {Number} id 类别id
    * @apiUse TimeDTO
    * @apiSuccess {String} name 类别名
-   * @apiSuccess {String} keywords 关键词
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "id": 1,
    *   "createTime": "2019-05-01T09:07:24.093Z",
    *   "updateTime": "2019-05-04T15:55:57.000Z",
    *   "name": "C语言",
-   *   "keywords": "[\"速度快\",\"原生\"]"
    * }
    */
   @Get('findFirst')

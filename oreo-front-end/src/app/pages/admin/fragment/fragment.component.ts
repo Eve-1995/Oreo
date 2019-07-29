@@ -4,9 +4,9 @@ import { AppAdminComponent } from '../admin-basic.component';
 import { NgModel } from '@angular/forms';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { AppCreateOrEditFragmentComponent } from './components/create-or-edit-fragment.component';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
+import { AppCreateOrEditFragmentComponent } from './components/create-or-edit-fragment/create-or-edit-fragment.component';
 
 @Component({
   selector: 'app-fragment',
@@ -47,7 +47,6 @@ export class AppFragmentComponent extends AppAdminComponent implements OnInit, A
     };
     this.fragmentService.findTableInfo().subscribe(value => {
       this.tableSource.load(value);
-      this.tableSource.setPaging(1, 5);
       this.loading = false;
     });
   }

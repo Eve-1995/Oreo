@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Fragment } from '../fragment.service';
+import { Fragment } from '../../fragment.service';
 import { NbDialogRef } from '@nebular/theme';
 @Component({
   selector: 'app-create-or-edit-fragment',
