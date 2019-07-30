@@ -3,7 +3,7 @@ import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { ClassificationService, Classification, CreateClassification, EditClassification } from './classification.service';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
-import { AppAdminComponent } from '../admin-basic.component';
+import { AppAdminComponent } from '../basic/admin-basic.component';
 import { AppCreateOrEditClassificationComponent } from './components/create-or-edit-classification/create-or-edit-classification.component';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 

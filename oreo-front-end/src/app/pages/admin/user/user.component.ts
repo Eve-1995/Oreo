@@ -1,30 +1,31 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { UserService } from './user.service';
+import { UserService, User } from './user.service';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { Subscription, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
+import { AppAdminComponent } from '../basic/admin-basic.component';
 
 @Component({
   templateUrl: './user.component.html',
   styleUrls: ['user.component.scss'],
   providers: [UserService],
 })
-export class AppUserComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
-  private id: number;
+export class AppUserComponent extends AppAdminComponent implements OnInit, AfterViewInit {
+  public selectedObj = new User();
 
-  public loading = true;
-  public filterName: string;
-  public source: LocalDataSource = new LocalDataSource();
-  public fetchTableList$ = new Subject();
-  public settings = {
-    actions: false,
-    hideSubHeader: true,
-    noDataMessage: '暂无数据',
-    columns: {
+  constructor(
+    private userService: UserService,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
       nickname: {
         title: '用户名',
         editable: false,
@@ -51,66 +52,54 @@ export class AppUserComponent implements OnInit, OnDestroy {
         filter: false,
       },
       likeAmount: {
-        title: '点赞',
+        title: '点赞数',
         editable: false,
         filter: false,
       },
       collectAmount: {
-        title: '收藏',
+        title: '收藏数',
         editable: false,
         filter: false,
       },
       commentAmount: {
-        title: '评论',
+        title: '评论数',
         editable: false,
         filter: false,
       }
-    },
-  };
-
-  constructor(
-    private userService: UserService,
-    private dialogService: NbDialogService,
-    private toastrService: NbToastrService
-  ) { }
-
-  ngOnInit(): void {
-    this.subscription = this.userService.findTableInfo().subscribe(value => {
-      this.source.load(value);
-      this.source.setPaging(1, 5);
+    };
+    this.userService.findTableInfo().subscribe(value => {
+      this.tableSource.load(value);
       this.loading = false;
     });
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  public onRowSelect(e): void {
-    this.id = e.data.id;
+  ngAfterViewInit(): void {
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.fetchTableList();
+      });
   }
 
   public delete(): void {
-    if (this.id) {
+    if (!this.selectedObj.id) {
+      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
+    } else {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
-          this.subscription = this.userService.delete(this.id).subscribe(() => {
+          this.userService.delete(this.selectedObj.id).subscribe(() => {
+            this.selectedObj = new User();
             this.fetchTableList();
           });
         }
       });
-    } else {
-      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     }
   }
 
   private fetchTableList(): void {
     this.loading = true;
-    this.userService.findTableInfo(this.filterName).subscribe(value => {
-      this.source.load(value);
+    this.userService.findTableInfo(this.filterInfo).subscribe(value => {
+      this.tableSource.load(value);
       this.loading = false;
     });
   }

@@ -1,11 +1,1 @@
-@import '../../admin/admin.module';
-.filter {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 17px;
-    .filter-button-group {
-        button {
-            margin-left: 10px;
-        }
-    }
-}
+@import '../../admin/basic/admin-basic.component.scss';

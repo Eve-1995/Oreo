@@ -1,23 +1,8 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NgModel } from '@angular/forms';
 
-@Component({
-  selector: 'app-admin',
-  styles: [
-    `.filter {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 17px;
-      .filter-button-group {
-          button {
-              margin-left: 10px;
-          }
-      }
-    }`
-  ],
-})
 export class AppAdminComponent implements OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public loading = true; // 表格loading

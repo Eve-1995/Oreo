@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
 import { FragmentService, Fragment } from './fragment.service';
-import { AppAdminComponent } from '../admin-basic.component';
+import { AppAdminComponent } from '../basic/admin-basic.component';
 import { NgModel } from '@angular/forms';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
 import { debounceTime, takeUntil } from 'rxjs/operators';

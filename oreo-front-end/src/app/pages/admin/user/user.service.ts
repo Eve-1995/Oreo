@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+export class User {
+  id: number;
+}
+
 @Injectable()
 export class UserService {
   constructor(private httpClient: HttpClient) { }

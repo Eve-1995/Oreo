@@ -4,7 +4,7 @@ import { NbToastStatus } from '@nebular/theme/components/toastr/model';
 import { ArticleService, ArticleClassificationDto } from './article.service';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
-import { AppAdminComponent } from '../admin-basic.component';
+import { AppAdminComponent } from '../basic/admin-basic.component';
 import { Classification } from '../classification/classification.service';
 
 @Component({
