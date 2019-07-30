@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
 
 enum TipType {
@@ -25,19 +25,13 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(newReq).pipe(
       tap(event => {
         if (event instanceof HttpResponse) {
-          const tipType = event.body.tipType;
-          // 存在tipType, 即需要弹窗提示, 反之则直接将请求转入业务层
-          if (tipType) {
-            this.handleTipType(tipType, event.body.message);
-          }
-          // event.status 是指http协议规定的状态码值
-          if ([200, 201].includes(event.status)) {
-            return of(new HttpResponse(Object.assign(event, { body: event.body })));
-          }
-        } else if (event instanceof HttpErrorResponse) {
-          console.error('捕获错误响应');
-          return throwError(event);
+          this.handleMessage(event.body.tipType, event.body.message);
         }
+        return of(event);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        this.handleMessage(err.error.tipType, err.error.message);
+        return throwError(event);
       })
     );
   }
@@ -47,7 +41,7 @@ export class AppInterceptor implements HttpInterceptor {
    * @param tipType 弹窗类型
    * @param message 提示文本
    */
-  private handleTipType(tipType: number, message: string): void {
+  private handleMessage(tipType: number, message: string): void {
     switch (tipType) {
       case TipType.success:
         this.toastrService.success('', message);

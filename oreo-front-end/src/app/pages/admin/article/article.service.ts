@@ -1,10 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ArticleClassificationDto } from './article.dto';
+import { Classification } from '../classification/classification.service';
+
+export class ArticleClassificationDto {
+  constructor() {
+    this.id = undefined;
+    this.name = undefined;
+    this.content = undefined;
+    this.classifications = [];
+    this.classificationIds = [];
+  }
+  id: number;
+  name: string;
+  content: string;
+  classifications: Classification[];
+  classificationIds: number[];
+}
 
 @Injectable()
 export class ArticleService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   findTableInfo(name?: string): any {
     if (name) {
@@ -14,12 +31,15 @@ export class ArticleService {
       return this.httpClient.get(`article/findTableInfo`);
     }
   }
+
   getClassificationNames(): any {
     return this.httpClient.get(`classification/findNames`);
   }
+
   save(obj: ArticleClassificationDto): any {
     return this.httpClient.post(`article/save`, obj);
   }
+
   delete(id: number): any {
     const body = {
       params: {
@@ -28,6 +48,7 @@ export class ArticleService {
     };
     return this.httpClient.delete(`article/delete`, body);
   }
+
   findDetail(id: any): any {
     const params = { id };
     return this.httpClient.get(`article/findDetail`, { params });

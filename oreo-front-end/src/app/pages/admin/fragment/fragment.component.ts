@@ -9,7 +9,7 @@ import { AppConfirmComponent } from '../../../global/components/confirm/confirm.
 import { AppCreateOrEditFragmentComponent } from './components/create-or-edit-fragment/create-or-edit-fragment.component';
 
 @Component({
-  selector: 'app-fragment',
+  selector: 'app-admin-fragment',
   templateUrl: './fragment.component.html',
   styleUrls: ['fragment.component.scss'],
   providers: [FragmentService],

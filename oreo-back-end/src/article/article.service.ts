@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, DeleteResult } from 'typeorm';
 import { Article } from './article.entity';
 import { Classification } from 'src/classification/classification.entity';
 import { ClassificationWithArticlesAll, ArticleBasicInfoAll } from '../../../common/interface/article.interface';
@@ -69,7 +69,7 @@ export class ArticleService {
    * 根据id删除文章
    * @param id 文章id
    */
-  async delete(id: number): Promise<any> {
+  async delete(id: number): Promise<DeleteResult> {
     return await this.articleRepository.delete(id);
   }
   /**

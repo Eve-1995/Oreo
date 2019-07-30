@@ -121,7 +121,7 @@ export class UserController {
    * @apiErrorExample {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误码(错误码:0001)"
+   *   "message": "发生未知错误, 请私信博主错误信息([user, save])"
    * }
    */
   @Post('save')
@@ -138,7 +138,7 @@ export class UserController {
       } else {
         throw new HttpException({
           tipType: 3,
-          message: '发生未知错误, 请私信博主错误码(错误码:0001)'
+          message: '发生未知错误, 请私信博主错误信息([user, save])'
         }, 500);
       }
     })
@@ -181,7 +181,7 @@ export class UserController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误码(错误码:0002)"
+   *   "message": "发生未知错误, 请私信博主错误信息([user, delete])"
    * }
    */
   @Delete('delete')
@@ -196,7 +196,7 @@ export class UserController {
     }).catch(() => {
       throw new HttpException({
         tipType: 3,
-        message: '发生未知错误, 请私信博主错误码(错误码:0002)'
+        message: '发生未知错误, 请私信博主错误信息([user, delete])'
       }, 500);
     })
     return { tipType, message };

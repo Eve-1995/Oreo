@@ -39,7 +39,7 @@ export class ClassificationController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "添加失败(错误码:0003)"
+   *   "message": "发生未知错误, 请私信博主错误信息([classification, save])"
    * }
    */
   @Post('save')
@@ -47,15 +47,13 @@ export class ClassificationController {
     const flag = dto.id ? true : false;
     let tipType: number;
     let message: string;
-    console.log(dto);
     await this.service.save(dto).then(v => {
       tipType = 1
       message = flag ? '修改成功' : '添加成功';
     }).catch((err) => {
-      console.log(err);
       throw new HttpException({
         tipType: 3,
-        message: '发生未知错误, 请私信博主错误信息([classification, save])'
+          message: '发生未知错误, 请私信博主错误信息([classification, save])'
       }, 500);
     });
     return { tipType, message };
@@ -84,7 +82,7 @@ export class ClassificationController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误码(错误码:0004)"
+   *   "message": "发生未知错误, 请私信博主错误信息([classification, delete])"
    * }
    */
   @Delete('delete')
@@ -98,7 +96,7 @@ export class ClassificationController {
       } else {
         throw new HttpException({
           tipType: 3,
-          message: '发生未知错误, 请私信博主错误码(错误码:0004)'
+          message: '发生未知错误, 请私信博主错误信息([classification, delete])'
         }, 500);
       }
     })

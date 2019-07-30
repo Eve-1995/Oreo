@@ -48,7 +48,7 @@ export class ArticleController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "添加失败(错误码:0005)"
+   *   "message": "发生未知错误, 请私信博主错误信息([article, save])"
    * }
    */
   @Post('save')
@@ -62,7 +62,7 @@ export class ArticleController {
     }).catch(() => {
       throw new HttpException({
         tipType: 3,
-        message: '添加失败(错误码:0005)'
+        message: '发生未知错误, 请私信博主错误信息([article, save])'
       }, 500);
     });
     return { tipType, message };
@@ -96,7 +96,7 @@ export class ArticleController {
   }
 
   /**
-   * @api {Delete} /classification/deleteById 删除
+   * @api {Delete} /classification/delete 删除
    * @apiGroup Article
    *
    * @apiParam {String} id 文章id
@@ -118,7 +118,7 @@ export class ArticleController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误码(错误码:0006)"
+   *   "message": "发生未知错误, 请私信博主错误信息([article, delete])"
    * }
    */
   @Delete('delete')
@@ -127,15 +127,27 @@ export class ArticleController {
     let message: string;
     let tipType: number;
     await this.service.delete(request.id).then((v: DeleteResult) => {
-      if (v.raw.affectedRows > 0) {
-        tipType = 1;
-        message = '删除成功';
-      } else {
-        throw new HttpException({
-          tipType: 3,
-          message: '发生未知错误, 请私信博主错误码(错误码:0006)'
-        }, 500);
-      }
+      // 日了狗了, 无论有没有删除成功返回的受影响行数都是0, 只能曲线救国了
+      // if (v.raw.affectedRows > 0) {
+      //   tipType = 1;
+      //   message = '删除成功';
+      // } else {
+      //   throw new HttpException({
+      //     tipType: 3,
+      //     message: '发生未知错误, 请私信博主错误信息([article, delete])'
+      //   }, 500);
+      // }
+      this.service.findDetailById(request.id).then(v => {
+        if (!v) {
+          tipType = 1;
+          message = '删除成功';
+        } else {
+          throw new HttpException({
+            tipType: 3,
+            message: '发生未知错误, 请私信博主错误信息([article, delete])'
+          }, 500);
+        }
+      })
     })
     return { tipType, message };
   }
@@ -193,7 +205,7 @@ export class ArticleController {
    * @apiDescription 用于查看文章详情, 所以还会返回三连信息
    * @apiGroup Article
    *
-   * @apiParam {String} 1 类别id
+   * @apiParam {String} id 类别id
    * @apiParamExample {json} Request-Example
    * {
    *  "id": "1"

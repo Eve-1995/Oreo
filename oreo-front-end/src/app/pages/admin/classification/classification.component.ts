@@ -8,7 +8,7 @@ import { AppCreateOrEditClassificationComponent } from './components/create-or-e
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-classification',
+  selector: 'app-admin-classification',
   templateUrl: './classification.component.html',
   styleUrls: ['classification.component.scss'],
   providers: [ClassificationService],
@@ -105,7 +105,6 @@ export class AppClassificationComponent extends AppAdminComponent implements OnI
       });
     }
   }
-
 
   private fetchTableList() {
     this.loading = true;

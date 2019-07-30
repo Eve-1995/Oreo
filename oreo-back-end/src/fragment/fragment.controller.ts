@@ -43,7 +43,7 @@ export class FragmentController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "添加失败(错误码:0003)"
+   *   "message": "发生未知错误, 请私信博主错误信息([fragment, save])"
    * }
    */
   @Post('save')
@@ -99,7 +99,7 @@ export class FragmentController {
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误码(错误码:0004)"
+   *   "message": "发生未知错误, 请私信博主错误信息([fragment, delete])"
    * }
    */
   @Delete('delete')

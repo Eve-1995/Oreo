@@ -1,31 +1,32 @@
-import { Component, TemplateRef, OnInit } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
+import { Component, TemplateRef, OnInit, AfterViewInit } from '@angular/core';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
-import { ArticleService } from './article.service';
-import { ArticleClassificationDto } from './article.dto';
-import { debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { ArticleService, ArticleClassificationDto } from './article.service';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
+import { AppAdminComponent } from '../admin-basic.component';
 import { Classification } from '../classification/classification.service';
 
 @Component({
+  selector: 'app-admin-article',
   templateUrl: './article.component.html',
   styleUrls: ['article.component.scss'],
   providers: [ArticleService],
 })
-export class AppArticleComponent implements OnInit {
-  public fetchTableList$ = new Subject();
-  public loading = true;
-  public classificationGroup: Classification[];
-  public filterName: string;
-  public source: LocalDataSource = new LocalDataSource();
+export class AppArticleComponent extends AppAdminComponent implements OnInit, AfterViewInit {
   public selectedObj = new ArticleClassificationDto();
-  public settings = {
-    actions: false,
-    hideSubHeader: true,
-    noDataMessage: '暂无数据',
-    columns: {
+  public classificationGroup: Classification[];
+
+  constructor(
+    private dialogService: NbDialogService,
+    private articleService: ArticleService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
       name: {
         title: '文章名称',
         filter: false,
@@ -45,32 +46,43 @@ export class AppArticleComponent implements OnInit {
         title: '评论总数',
         editable: false,
         filter: false,
-      },
-    },
-  };
-
-  constructor(
-    private dialogService: NbDialogService,
-    private articleService: ArticleService,
-    private toastrService: NbToastrService
-  ) { }
-
-  ngOnInit(): void {
+      }
+    };
     this.articleService.findTableInfo().subscribe(value => {
-      this.source.load(value);
-      this.source.setPaging(1, 5);
+      this.tableSource.load(value);
       this.loading = false;
     });
     this.articleService.getClassificationNames().subscribe(value => {
       this.classificationGroup = value;
     });
-    this.fetchTableList$.pipe(debounceTime(300)).subscribe(() => {
-      this.fetchTableList();
-    });
   }
 
-  public onRowSelect(event): void {
-    this.selectedObj = event.data;
+  ngAfterViewInit(): void {
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.fetchTableList();
+      });
+  }
+
+  public create(dialog: TemplateRef<any>): void {
+    this.selectedObj = new ArticleClassificationDto();
+    this.dialogService.open(dialog, {
+      context: {
+        operation: 'create',
+      },
+    }).onClose.subscribe(value => {
+      if (value === 'yes') {
+        const arr = [];
+        this.selectedObj.classificationIds.forEach(item => {
+          arr.push({ id: item });
+        });
+        this.selectedObj.classifications = arr;
+        this.articleService.save(this.selectedObj).subscribe(() => {
+          this.fetchTableList();
+        });
+      }
+    });
   }
 
   public edit(dialog: TemplateRef<any>): void {
@@ -113,28 +125,8 @@ export class AppArticleComponent implements OnInit {
     }
   }
 
-  public create(dialog: TemplateRef<any>): void {
-    this.selectedObj = new ArticleClassificationDto();
-    this.dialogService.open(dialog, {
-      context: {
-        operation: 'create',
-      },
-    }).onClose.subscribe(value => {
-      if (value === 'yes') {
-        const arr = [];
-        this.selectedObj.classificationIds.forEach(item => {
-          arr.push({ id: item });
-        });
-        this.selectedObj.classifications = arr;
-        this.articleService.save(this.selectedObj).subscribe(() => {
-          this.fetchTableList();
-        });
-      }
-    });
-  }
-
   public delete(): void {
-    if (this.selectedObj.id === undefined) {
+    if (!this.selectedObj.id) {
       this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
     } else {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
@@ -150,8 +142,8 @@ export class AppArticleComponent implements OnInit {
 
   private fetchTableList(): void {
     this.loading = true;
-    this.articleService.findTableInfo(this.filterName).subscribe(value => {
-      this.source.load(value);
+    this.articleService.findTableInfo(this.filterInfo).subscribe(value => {
+      this.tableSource.load(value);
       this.loading = false;
     });
   }
