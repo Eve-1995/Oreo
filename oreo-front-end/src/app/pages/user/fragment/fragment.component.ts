@@ -21,6 +21,26 @@ export class AppFragmentComponent implements OnInit {
     img: '../../../assets/images/fragment.jpg',
     title: '爱要大声说出来',
     subTitle: '四魂之玉 III'
+  }, {
+    img: '../../../assets/images/fragment.jpg',
+    title: '爱要大声说出来',
+    subTitle: '四魂之玉 III'
+  }, {
+    img: '../../../assets/images/fragment.jpg',
+    title: '爱要大声说出来',
+    subTitle: '四魂之玉 III'
+  }, {
+    img: '../../../assets/images/fragment.jpg',
+    title: '爱要大声说出来',
+    subTitle: '四魂之玉 III'
+  }, {
+    img: '../../../assets/images/fragment.jpg',
+    title: '爱要大声说出来',
+    subTitle: '四魂之玉 III'
+  }, {
+    img: '../../../assets/images/fragment.jpg',
+    title: '爱要大声说出来',
+    subTitle: '四魂之玉 III'
   }];
 
   constructor(
