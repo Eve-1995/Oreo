@@ -5,9 +5,11 @@ import { ArticleModule } from './article/article.module';
 import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
 import { FragmentModule } from './fragment/fragment.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     ClassificationModule,
     ArticleModule,
     UserModule,

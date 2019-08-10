@@ -2,7 +2,7 @@
 import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors, HttpException } from '@nestjs/common';
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
-import { ResponseDTO, TipMessageDTO } from 'src/others/response.dto';
+import { TipMessageDTO } from 'src/others/response.dto';
 import { ClassificationDTO } from '../../../common/interface/classification.interface';
 import { DeleteResult } from 'typeorm';
 

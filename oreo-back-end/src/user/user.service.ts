@@ -141,7 +141,7 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  async getUser(user: User): Promise<UserDTO> {
+  async getUser(user: { phone: string, password: string }): Promise<UserDTO> {
     return await this.userRepository.findOne(user);
   }
   /**

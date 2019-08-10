@@ -20,7 +20,8 @@ export class AppInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
-      url: this.server + req.url
+      url: this.server + req.url,
+      setHeaders: {Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTY0OTI1NDgzLCJleHAiOjE1NjUwMTE4ODN9.GO-8ZeFTBJEROnDllrasrZ6yvbDEMTYTEWAJ2CbuZCc'}
     });
     return next.handle(newReq).pipe(
       tap(event => {

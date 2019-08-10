@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ResponseDTO, TipMessageDTO } from 'src/others/response.dto';
+import { TipMessageDTO } from 'src/others/response.dto';
 import { Comment } from './comment.entity';
 import { CommentDTO, CommentWithArticle } from '../../../common/interface/comment.interface';
 
