@@ -18,6 +18,6 @@ import { AuthController } from './auth.controller';
     ],
     providers: [AuthService, AuthStrategy],
     controllers: [AuthController],
-    exports: [AuthService]  // 导出 AuthServie 供 UserModule 使用
+    exports: []  // 导出 AuthServie 供 UserModule 使用
 })
 export class AuthModule { }

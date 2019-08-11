@@ -51,7 +51,7 @@ export class AppHeaderComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    const userInfo = this.globalService.getUserInfo();
+    const userInfo = this.globalService.userInfo;
     if (userInfo) {
       this.userMenu.push({ title: '个人中心' });
       if (userInfo.level === 1) this.userMenu.push({ title: '管理中心' });

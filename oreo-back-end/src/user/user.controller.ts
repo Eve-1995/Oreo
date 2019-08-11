@@ -1,9 +1,7 @@
 import { Controller, Get, Post, Body, Query, Delete, HttpException, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
-import { UserDTO } from '../../../common/interface/user.interface';
 import { TipMessageDTO } from 'src/others/response.dto';
-import { AuthService } from 'src/auth/auth.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
@@ -83,69 +81,6 @@ export class UserController {
   async findByFilter(@Query() query): Promise<User[]> {
     const name = query.name;
     return name !== undefined ? this.service.findTableInfo(name) : this.service.findTableInfo();
-  }
-
-  /**
-   * @api {Post} /user/save 注册
-   * @apiGroup User
-   *
-   * @apiParam {String} nickname 昵称
-   * @apiParam {String} phone 手机
-   * @apiParam {String} password 密码
-   * @apiParam {String} [email] 邮箱
-   * @apiParam {String} [liveCity] 居住城市
-   * @apiParam {String} [hometown] 家乡
-   * @apiParam {String} [birth] 生日
-   * @apiParam {String} [company] 公司
-   * @apiParam {String} [univercity] 大学
-   * @apiParam {String} [eduacation] 教育程度
-   * @apiParamExample {json} Request-Example
-   * {
-   *  "nickname": "Eve",
-   *  "phone": "17712345678",
-   *  "password": "huangmenji"
-   * }
-   * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
-   * @apiSuccessExample  {json} Response-Example
-   * {
-   *   "tipType": "1",
-   *   "message": "注册成功"
-   * }
-   * @apiSuccessExample  {json} Response-Example
-   * {
-   *   "tipType": "2",
-   *   "message": "手机号已存在"
-   * }
-   * 
-   * @apiError {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError {String} message 提示文本
-   * @apiErrorExample {json} Response-Example
-   * {
-   *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误信息([user, save])"
-   * }
-   */
-  @Post('save')
-  async save(@Body() dto: User): Promise<TipMessageDTO> {
-    let tipType: number;
-    let message: string;
-    await this.service.save(dto).then(() => {
-      tipType = 1
-      message = '注册成功';
-    }).catch(e => {
-      if (e.errno === 1062) {
-        tipType = 2;
-        message = '手机号已存在';
-      } else {
-        throw new HttpException({
-          tipType: 3,
-          message: '发生未知错误, 请私信博主错误信息([user, save])'
-        }, 500);
-      }
-    })
-    return { tipType, message };
   }
 
   // @Post('update')

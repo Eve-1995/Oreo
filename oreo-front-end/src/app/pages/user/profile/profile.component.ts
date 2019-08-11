@@ -30,10 +30,10 @@ export class AppProfileComponent implements OnInit {
       this.user = v;
       this.phoneBoolean = !!this.user.phone;
       this.emailBoolean = !!this.user.email;
-      localStorage.setItem('userInfo', JSON.stringify(this.user));
+      // localStorage.setItem('userInfo', JSON.stringify(this.user));
       this.personalLoading = false;
       this.accountLoading = false;
-      this.globalService.refreshUserInfo(this.user.nickname);
+      this.globalService.watchUserInfo.next(this.user.nickname);
     });
   }
 

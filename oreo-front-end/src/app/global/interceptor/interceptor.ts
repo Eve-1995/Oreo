@@ -4,24 +4,23 @@ import { Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
+import { TipType, AppGlobalService } from '../service/global.service';
 
-enum TipType {
-  success = 1,
-  warning,
-  danger,
-  info
-}
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
   constructor(
     private toastrService: NbToastrService,
+    private globalService: AppGlobalService
   ) { }
   server = environment.baseApi;
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.globalService.userInfo) {
+      this.globalService.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    }
     const newReq = req.clone({
       url: this.server + req.url,
-      setHeaders: {Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTY0OTI1NDgzLCJleHAiOjE1NjUwMTE4ODN9.GO-8ZeFTBJEROnDllrasrZ6yvbDEMTYTEWAJ2CbuZCc'}
+      setHeaders: { Authorization: `bearer ${this.globalService.userInfo ? this.globalService.userInfo.token : null}` }
     });
     return next.handle(newReq).pipe(
       tap(event => {
@@ -31,7 +30,11 @@ export class AppInterceptor implements HttpInterceptor {
         return of(event);
       }),
       catchError((err: HttpErrorResponse) => {
-        this.handleMessage(err.error.tipType, err.error.message);
+        console.log('catchError');
+        if (err.status === 404) this.toastrService.warning('这波问题很大...', '无法匹配到后端路由');
+        if (err.error) {
+          this.handleMessage(err.error.tipType, err.error.message);
+        }
         return throwError(event);
       })
     );

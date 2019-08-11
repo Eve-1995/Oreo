@@ -21,7 +21,7 @@ import { AuthModule } from './auth/auth.module';
       // logging: ["query"],
       port: 3306,
       username: 'root',
-      password: '12345',
+      password: '123456',
       database: 'myblog',
       entities: ['src/**/**.entity{.ts,.js}'],
       synchronize: true,

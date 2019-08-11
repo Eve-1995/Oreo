@@ -1,6 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+export enum TipType {
+  success = 1,
+  warning,
+  danger,
+  info
+}
+
+/**
+ * 操作类API的返回格式
+ */
+export interface OperationDTO {
+  tipType: TipType, // 文本提示类型
+  message: string // 文本提示内容
+}
+
+export interface Auth {
+  token: string,
+  id: number,
+  nickname: string,
+  level: number
+}
+
 @Injectable()
 export class AppGlobalService {
   /**
@@ -15,14 +37,10 @@ export class AppGlobalService {
   *solution:通过rxjs手动执行变更操作
   */
   watchUserInfo = new Subject();
-  refreshUserInfo(nickname: string) {
-    this.watchUserInfo.next(nickname);
-  }
   watchMask = new Subject();
+
+  userInfo: Auth;
   refreshMaskState(state: boolean) {
     this.watchMask.next(state);
-  }
-  getUserInfo() {
-    return JSON.parse(localStorage.getItem('userInfo'));
   }
 }

@@ -7,6 +7,6 @@ export class RegistService {
   constructor(private httpClient: HttpClient) { }
 
   save(user: User): any {
-    return this.httpClient.post(`user/save`, user);
+    return this.httpClient.post(`auth/save`, user);
   }
 }

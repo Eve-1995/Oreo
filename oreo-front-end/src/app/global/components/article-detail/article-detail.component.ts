@@ -33,7 +33,7 @@ export class AppArticleDetailComponent implements OnInit {
   };
 
   private articleId: any;
-  private user: any;
+  private userInfo: any;
 
   constructor(
     public toastrService: NbToastrService,
@@ -42,11 +42,10 @@ export class AppArticleDetailComponent implements OnInit {
     private globalService: AppGlobalService,
     private router: Router,
     private dialogService: NbDialogService,
-  ) {
-    this.user = this.globalService.getUserInfo();
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.userInfo = this.globalService.userInfo;
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.id) {
         this.articleId = queryParams.id;
@@ -58,8 +57,8 @@ export class AppArticleDetailComponent implements OnInit {
 
   // 执行收藏或取消收藏操作
   public collect() {
-    if (!!this.user) {
-      this.service.collect(this.user.id, this.articleDetail.id).subscribe(() => {
+    if (!!this.userInfo) {
+      this.service.collect(this.userInfo.id, this.articleDetail.id).subscribe(() => {
         // 重新请求文章数据
         this.getAticleInfo();
       });
@@ -70,8 +69,8 @@ export class AppArticleDetailComponent implements OnInit {
 
   // 执行点赞或取消点赞操作
   public like() {
-    if (!!this.user) {
-      this.service.like(this.user.id, this.articleDetail.id).subscribe(() => {
+    if (!!this.userInfo) {
+      this.service.like(this.userInfo.id, this.articleDetail.id).subscribe(() => {
         // 重新请求文章数据
         this.getAticleInfo();
       });
@@ -94,7 +93,7 @@ export class AppArticleDetailComponent implements OnInit {
   public doComment() {
     if (this.commentContent.trim().length > 0) {
       this.focus = false;
-      this.service.saveComment(this.commentContent, this.user.id, this.articleId).subscribe(() => {
+      this.service.saveComment(this.commentContent, this.userInfo.id, this.articleId).subscribe(() => {
         this.getComments();
         this.commentContent = '';
         this.getAticleInfo();
@@ -114,7 +113,7 @@ export class AppArticleDetailComponent implements OnInit {
     this.globalService.refreshMaskState(true);
     this.dialogService.open(AppArticleDetailReplyComponent, { context: { fromUser }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: { replyContent: string }) => {
       if (v) {
-        this.service.saveComment(v.replyContent, this.user.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
+        this.service.saveComment(v.replyContent, this.userInfo.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
           this.getComments();
         });
       }
@@ -146,8 +145,8 @@ export class AppArticleDetailComponent implements OnInit {
    * 判断用户是否已点赞、已收藏
    */
   private getActionStatus() {
-    if (!!this.user) {
-      this.service.actionStatus(this.user.id, this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
+    if (!!this.userInfo) {
+      this.service.actionStatus(this.userInfo.id, this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
         this.hasCollection = v.hasCollect ? true : false;
         this.hasLike = v.hasLike ? true : false;
       });

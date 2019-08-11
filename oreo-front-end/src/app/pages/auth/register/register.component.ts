@@ -22,12 +22,10 @@ export class AppRegisterComponent {
 
   public register(): void {
     this.submitted = true;
-    this.service.save(this.user).subscribe((v: { result: boolean }) => {
-      if (v.result) {
-        this.router.navigate(['/auth/login']);
-      } else {
-        this.submitted = false;
-      }
+    this.service.save(this.user).subscribe(() => {
+      this.router.navigate(['/auth/login']);
+    }, () => {
+      this.submitted = false;
     });
   }
 
