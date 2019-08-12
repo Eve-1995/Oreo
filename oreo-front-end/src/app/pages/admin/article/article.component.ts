@@ -6,6 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
 import { AppAdminComponent } from '../basic/admin-basic.component';
 import { Classification } from '../classification/classification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-article',
@@ -20,7 +21,8 @@ export class AppArticleComponent extends AppAdminComponent implements OnInit, Af
   constructor(
     private dialogService: NbDialogService,
     private articleService: ArticleService,
-    private toastrService: NbToastrService
+    private toastrService: NbToastrService,
+    private router: Router
   ) {
     super();
   }
@@ -66,23 +68,25 @@ export class AppArticleComponent extends AppAdminComponent implements OnInit, Af
   }
 
   public create(dialog: TemplateRef<any>): void {
-    this.selectedObj = new ArticleClassificationDto();
-    this.dialogService.open(dialog, {
-      context: {
-        operation: 'create',
-      },
-    }).onClose.subscribe(value => {
-      if (value === 'yes') {
-        const arr = [];
-        this.selectedObj.classificationIds.forEach(item => {
-          arr.push({ id: item });
-        });
-        this.selectedObj.classifications = arr;
-        this.articleService.save(this.selectedObj).subscribe(() => {
-          this.fetchTableList();
-        });
-      }
-    });
+    // this.selectedObj = new ArticleClassificationDto();
+    // this.dialogService.open(dialog, {
+    //   context: {
+    //     operation: 'create',
+    //   },
+    // }).onClose.subscribe(value => {
+    //   if (value === 'yes') {
+    //     const arr = [];
+    //     this.selectedObj.classificationIds.forEach(item => {
+    //       arr.push({ id: item });
+    //     });
+    //     this.selectedObj.classifications = arr;
+    //     this.articleService.save(this.selectedObj).subscribe(() => {
+    //       this.fetchTableList();
+    //     });
+    //   }
+    // });
+    // this.router.navigate(['/admin/create/article']);
+    window.open('http://localhost:4200/admin/create/article', '_blank');
   }
 
   public edit(dialog: TemplateRef<any>): void {

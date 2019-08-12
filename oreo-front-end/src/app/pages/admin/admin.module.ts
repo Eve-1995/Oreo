@@ -6,6 +6,7 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { httpInterceptorProviders } from '../../global/interceptor';
 import { AppCreateOrEditFragmentComponent } from './fragment/components/create-or-edit-fragment/create-or-edit-fragment.component';
 import { AppCreateOrEditClassificationComponent } from './classification/components/create-or-edit-classification/create-or-edit-classification.component';
+import { MarkdownlModule } from '../../global/components/markdown/markdown.module';
 
 const CHILD_COMPONENT = [
   AppCreateOrEditClassificationComponent,
@@ -16,7 +17,8 @@ const CHILD_COMPONENT = [
   imports: [
     AdminRoutingModule,
     ThemeModule,
-    Ng2SmartTableModule
+    Ng2SmartTableModule,
+    MarkdownlModule // 新建文章时使用的markdown
   ],
   declarations: [
     ...adminRoutedComponents,

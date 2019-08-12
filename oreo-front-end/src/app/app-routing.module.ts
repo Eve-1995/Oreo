@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'user', loadChildren: 'app/pages/user/user.module#UserModule', canActivateChild: [UserGuard] },
   { path: 'auth', loadChildren: 'app/pages/auth/auth.module#AuthModule' },
   { path: 'visit', loadChildren: 'app/pages/visit/visit.module#VisitModule' },
+  // { path: 'markdown', loadChildren: 'app/pages/markdown/markdown.module#MarkdownModule' },
   { path: '**', redirectTo: 'visit' },
 ];
 

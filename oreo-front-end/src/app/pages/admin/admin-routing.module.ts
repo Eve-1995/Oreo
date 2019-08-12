@@ -5,8 +5,15 @@ import { AppClassificationComponent } from './classification/classification.comp
 import { AppArticleComponent } from './article/article.component';
 import { AppUserComponent } from './user/user.component';
 import { AppFragmentComponent } from './fragment/fragment.component';
+import { MarkdownComponent } from '../../global/components/markdown/markdown.component';
 
 const routes: Routes = [
+  {
+    path: 'create',
+    children: [
+      { path: 'article', component: MarkdownComponent }
+    ]
+  },
   {
     path: '',
     component: AdminComponent,
