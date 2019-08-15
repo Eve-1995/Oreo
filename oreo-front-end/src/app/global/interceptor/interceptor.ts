@@ -5,12 +5,14 @@ import { environment } from '../../../environments/environment';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
 import { TipType, AppGlobalService } from '../service/global.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
   constructor(
     private toastrService: NbToastrService,
-    private globalService: AppGlobalService
+    private globalService: AppGlobalService,
+    private router: Router
   ) { }
   server = environment.baseApi;
 
@@ -31,7 +33,15 @@ export class AppInterceptor implements HttpInterceptor {
       }),
       catchError((err: HttpErrorResponse) => {
         console.log('catchError');
-        if (err.status === 404) this.toastrService.warning('这波问题很大...', '无法匹配到后端路由');
+        if (err.status === 404) {
+          this.toastrService.warning('这波问题很大...', '无法匹配到后端路由');
+          return throwError(event);
+          // token 验证失败, 用于token过期
+        } else if(err.status === 401) {
+          this.globalService.userInfo = null;
+          localStorage.removeItem('userInfo');
+          this.globalService.logOut$.next();
+        }
         if (err.error) {
           this.handleMessage(err.error.tipType, err.error.message);
         }

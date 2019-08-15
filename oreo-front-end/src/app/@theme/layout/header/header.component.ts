@@ -10,16 +10,15 @@ import { AppGlobalService } from '../../../global/service/global.service';
   templateUrl: './header.component.html',
 })
 export class AppHeaderComponent implements OnInit {
+  @Input() title: string;
+
   constructor(
     private sidebarService: NbSidebarService,
     private layoutService: LayoutService,
     private menuService: NbMenuService,
     private globalService: AppGlobalService,
     private router: Router,
-  ) {
-    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  }
-  @Input() title: string;
+  ) { }
   userInfo: any;
 
   userMenu = [];
@@ -51,10 +50,11 @@ export class AppHeaderComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    const userInfo = this.globalService.userInfo;
-    if (userInfo) {
+    this.userInfo = this.globalService.userInfo;
+    console.log(this.userInfo);
+    if (this.userInfo) {
       this.userMenu.push({ title: '个人中心' });
-      if (userInfo.level === 1) this.userMenu.push({ title: '管理中心' });
+      if (this.userInfo.level === 1) this.userMenu.push({ title: '管理中心' });
       this.userMenu.push({ title: '博文中心' });
       this.userMenu.push({ title: '登出' });
     } else {
@@ -66,6 +66,10 @@ export class AppHeaderComponent implements OnInit {
     });
     this.globalService.watchUserInfo.subscribe(v => {
       this.userInfo.nickname = v;
+    });
+
+    this.globalService.logOut$.subscribe(() => {
+      this.userInfo = this.globalService.userInfo;
     });
   }
 

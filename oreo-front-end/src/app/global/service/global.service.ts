@@ -43,4 +43,8 @@ export class AppGlobalService {
   refreshMaskState(state: boolean) {
     this.watchMask.next(state);
   }
+
+  // 登出事件
+  logOut$ = new Subject<void>();
+
 }
