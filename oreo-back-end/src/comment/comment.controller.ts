@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseGuards } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { Comment } from './comment.entity';
-import { CommentDTO, CommentWithArticle } from '../../../common/interface/comment.interface';
 import { FragmentService } from 'src/fragment/fragment.service';
-import { RequestUser, RequestUserDTO } from 'src/others/custom-decorator';
+import { RequestUser } from 'src/others/custom-decorator';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/user/user.entity';
 
 @Controller('comment')
 export class CommentController {
@@ -52,18 +52,18 @@ export class CommentController {
    */
   @Post('save')
   @UseGuards(AuthGuard())
-  async save(@Body() dto: Comment, @RequestUser() req: RequestUserDTO): Promise<TipMessageDTO> {
+  async save(@Body() dto: Comment, @RequestUser() user: User): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
     // 彩蛋
     if (dto.content === '人工智能') {
-      await this.fragmentService.saveUser(1, req.id).then(() => {
+      await this.fragmentService.saveUser(1, user.id).then(() => {
         tipType = TipType.SUCCESS;
         message = '恭喜你发现了彩蛋!快去个人中心看看吧~!';
       });
       return { tipType, message };
     } else {
-      dto.user.id = req.id;
+      dto.user.id = user.id;
       await this.service.save(dto).then(() => {
         tipType = TipType.SUCCESS;
         message = '评论成功';
@@ -138,8 +138,8 @@ export class CommentController {
     }]
    */
   @Get('getCommentsByArticle')
-  async getCommentsByArticle(@Query() query): Promise<CommentWithArticle[]> {
-    const temp: CommentDTO[] = await this.service.getCommentsByArticle(query.id);
+  async getCommentsByArticle(@Query() query): Promise<any> {
+    const temp = await this.service.getCommentsByArticle(query.id);
     const result = [];
     const rootArr = [];
     const unRootArr = [];

@@ -2,7 +2,6 @@
 import { Get, Controller, Post, Body, Delete, Query, HttpException } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
-import { ClassificationWithArticles, ArticleBasicInfo } from '../../../common/interface/article.interface';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { DeleteResult } from 'typeorm';
 @Controller('article')
@@ -182,7 +181,7 @@ export class ArticleController {
    * }
    */
   @Get('findByClassification')
-  async findByClassification(@Query() request): Promise<ClassificationWithArticles> {
+  async findByClassification(@Query() request): Promise<any> {
     let name = '';
     const articles = [];
     await this.service.findListByClassification(request.id).then(v => {
@@ -229,7 +228,7 @@ export class ArticleController {
    * }
    */
   @Get('findBasicInfo')
-  async findBasicInfo(@Query() request): Promise<ArticleBasicInfo> {
+  async findBasicInfo(@Query() request): Promise<any> {
     const serviceData = await this.service.findDetailById(request.id);
     return {
       'id': serviceData.id,

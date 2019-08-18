@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from './article.service';
-import { ClassificationWithArticles } from '../../../../../../common/interface/article.interface';
-import { ClassificationDTO } from '../../../../../../common/interface/classification.interface';
 
 @Component({
   templateUrl: './article.component.html',
@@ -29,12 +27,12 @@ export class AppArticleComponent implements OnInit {
   listenRouteChange(): void {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.id) {
-        this.service.findArticlesByClassificationId(queryParams.id).subscribe((v: ClassificationWithArticles) => {
+        this.service.findArticlesByClassificationId(queryParams.id).subscribe((v: { name: string, articles: any }) => {
           this.name = v.name;
           this.items = v.articles;
         });
       } else {
-        this.service.findFirstMenu().subscribe((v: ClassificationDTO) => {
+        this.service.findFirstMenu().subscribe((v: { id: number }) => {
           this.router.navigate(['/visit/article'], {
             queryParams: {
               id: v.id,

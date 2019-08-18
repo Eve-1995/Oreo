@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from './comment.entity';
-import { CommentDTO } from '../../../common/interface/comment.interface';
 
 @Injectable()
 export class CommentService {
@@ -19,7 +18,7 @@ export class CommentService {
    * 根据id查找文章的评论
    * @param id '文章'id
    */
-  async getCommentsByArticle(id: number): Promise<CommentDTO[] | any> {
+  async getCommentsByArticle(id: number): Promise<any> {
     return await this.repository
       .createQueryBuilder('comment')
       .where('article.id = :id', { id })

@@ -7,8 +7,7 @@ export class CollectionService {
     private httpClient: HttpClient
   ) { }
 
-  getCollections(id: any): any {
-    const params = { id };
-    return this.httpClient.get(`user/getCollections`, { params });
+  getCollections(): any {
+    return this.httpClient.get(`user/getCollections`);
   }
 }

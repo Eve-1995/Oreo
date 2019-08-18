@@ -3,8 +3,6 @@ import { AppArticleDetailService } from './article-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { AppArticleDetailReplyComponent } from './article-detail-reply.component';
-import { ArticleBasicInfo } from '../../../../../../common/interface/article.interface';
-import { CommentWithArticle } from '../../../../../../common/interface/comment.interface';
 import { AppGlobalService } from '../../service/global.service';
 
 @Component({
@@ -21,15 +19,15 @@ export class AppArticleDetailComponent implements OnInit {
   public comments;
   public commentContent = '';
   // 必须初始化对象, 因使用了interface来定义DTO, 而模板中也使用到了该对象, 不初始化会导致运行时错误
-  public articleDetail: ArticleBasicInfo = {
-    'id': undefined,
-    'name': undefined,
-    'createTime': undefined,
-    'updateTime': undefined,
-    'content': undefined,
-    'likeAmount': undefined,
-    'collectAmount': undefined,
-    'commentAmount': undefined,
+  public articleDetail = {
+    id: undefined,
+    name: undefined,
+    createTime: undefined,
+    updateTime: undefined,
+    content: undefined,
+    likeAmount: undefined,
+    collectAmount: undefined,
+    commentAmount: undefined,
   };
 
   private articleId: any;
@@ -123,7 +121,7 @@ export class AppArticleDetailComponent implements OnInit {
    * 获取'文章'的评论内容
    */
   private getComments() {
-    this.service.getCommentsByArticle(this.articleId).subscribe((v: CommentWithArticle[]) => {
+    this.service.getCommentsByArticle(this.articleId).subscribe(v => {
       this.comments = v;
       this.loading = false;
     });
@@ -133,7 +131,7 @@ export class AppArticleDetailComponent implements OnInit {
    * 获取'文章'的基本信息
    */
   private getAticleInfo() {
-    this.service.findBasicInfo(this.articleId).subscribe((value: ArticleBasicInfo) => {
+    this.service.findBasicInfo(this.articleId).subscribe(value => {
       this.articleDetail = value;
       this.getActionStatus();
     });

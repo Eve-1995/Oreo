@@ -3,7 +3,6 @@ import { Get, Controller, Post, Body, Delete, Query, HttpException } from '@nest
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
-import { ClassificationDTO } from '../../../common/interface/classification.interface';
 import { DeleteResult } from 'typeorm';
 
 @Controller('classification')
@@ -194,7 +193,7 @@ export class ClassificationController {
    * }
    */
   @Get('findFirst')
-  async findFirst(): Promise<ClassificationDTO> {
+  async findFirst(): Promise<Classification> {
     return await this.service.findFirst();
   }
 }

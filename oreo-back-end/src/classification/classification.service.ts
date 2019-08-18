@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult, Like } from 'typeorm';
 import { Classification } from './classification.entity';
-import { ClassificationDTO } from '../../../common/interface/classification.interface';
-
 @Injectable()
 export class ClassificationService {
   constructor(
@@ -94,7 +92,7 @@ export class ClassificationService {
   /**
    * 获取第一个分类的id
    */
-  async findFirst(): Promise<ClassificationDTO> {
+  async findFirst(): Promise<Classification> {
     return await this.classificationRepository.findOne({});
   }
 

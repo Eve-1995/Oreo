@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestUser, RequestUserDTO } from 'src/others/custom-decorator';
+import { RequestUser } from 'src/others/custom-decorator';
 
 @Controller('user')
 @UseGuards(AuthGuard())
@@ -40,8 +40,8 @@ export class UserController {
    * }]
    */
   @Get('findTableInfo')
-  async findTableInfo(@Query() query, @RequestUser() req: RequestUserDTO): Promise<User[] | TipMessageDTO> {
-    if (req.level !== 1) {
+  async findTableInfo(@Query() query, @RequestUser() user: User): Promise<User[] | TipMessageDTO> {
+    if (user.level !== 1) {
       return { message: '你这样要被抓起来的!' };
     } else {
       const name = query.name;
@@ -128,10 +128,10 @@ export class UserController {
    * }
    */
   @Delete('delete')
-  async delete(@Query() request, @RequestUser() req: RequestUserDTO): Promise<TipMessageDTO> {
+  async delete(@Query() request, @RequestUser() user: User): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
-    if (req.level !== 1) {
+    if (user.level !== 1) {
       return { message: '你这样要被抓起来的' };
     }
     await this.service.delete(request.id).then(v => {
@@ -217,10 +217,10 @@ export class UserController {
    * }
    */
   @Post('collect')
-  async collect(@Body() dto: { articleId: number }, @RequestUser() req: RequestUserDTO): Promise<any> {
+  async collect(@Body() dto: { articleId: number }, @RequestUser() user: User): Promise<any> {
     let tipType: number;
     let message: string;
-    await this.service.collect(req.id, dto.articleId).then((v: boolean) => {
+    await this.service.collect(user.id, dto.articleId).then((v: boolean) => {
       tipType = TipType.SUCCESS;
       message = v ? '收藏成功' : '取消收藏成功';
     })
@@ -252,10 +252,10 @@ export class UserController {
    * }
    */
   @Post('like')
-  async like(@Body() dto: { articleId: number }, @RequestUser() req: RequestUserDTO): Promise<any> {
+  async like(@Body() dto: { articleId: number }, @RequestUser() user: User): Promise<any> {
     let tipType: number;
     let message: string;
-    await this.service.like(req.id, dto.articleId).then((v: boolean) => {
+    await this.service.like(user.id, dto.articleId).then((v: boolean) => {
       tipType = TipType.SUCCESS;
       message = v ? '点赞成功' : '取消点赞成功';
     })
@@ -282,13 +282,13 @@ export class UserController {
    * }
    */
   @Get('actionStatus')
-  async actionStatus(@Query() query, @RequestUser() req: User): Promise<{ hasCollect: boolean, hasLike: boolean }> {
+  async actionStatus(@Query() query, @RequestUser() user: User): Promise<{ hasCollect: boolean, hasLike: boolean }> {
     let hasCollect: boolean;
     let hasLike: boolean;
-    await this.service.hasCollect(req.id, query.articleId).then(v => {
+    await this.service.hasCollect(user.id, query.articleId).then(v => {
       hasCollect = v ? true : false
     })
-    await this.service.hasLike(req.id, query.articleId).then(v => {
+    await this.service.hasLike(user.id, query.articleId).then(v => {
       hasLike = v ? true : false
     })
     return { hasCollect, hasLike };
@@ -317,9 +317,9 @@ export class UserController {
    * }]
    */
   @Get('getCollections')
-  async getCollections(@Query() query): Promise<any> {
+  async getCollections(@RequestUser() user: User): Promise<any> {
     let result = undefined;
-    await this.service.getUserCollections(query.id).then(v => {
+    await this.service.getUserCollections(user.id).then(v => {
       result = v;
     })
     return result;

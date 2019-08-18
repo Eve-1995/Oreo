@@ -18,7 +18,7 @@ export class AppCollectionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.service.getCollections(this.appGlobalService.userInfo.id).subscribe(v => {
+    this.service.getCollections().subscribe(v => {
       this.items = v;
     });
   }

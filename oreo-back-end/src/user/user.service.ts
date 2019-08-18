@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan, DeleteResult } from 'typeorm';
 import { User } from './user.entity';
 import { Article } from 'src/article/article.entity';
-import { UserDTO } from '../../../common/interface/user.interface';
 
 @Injectable()
 export class UserService {
