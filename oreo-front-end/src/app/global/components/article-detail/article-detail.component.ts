@@ -56,7 +56,7 @@ export class AppArticleDetailComponent implements OnInit {
   // 执行收藏或取消收藏操作
   public collect() {
     if (!!this.globalService.userInfo) {
-      this.service.collect(this.globalService.userInfo.id, this.articleDetail.id).subscribe(() => {
+      this.service.collect(this.articleDetail.id).subscribe(() => {
         // 重新请求文章数据
         this.getAticleInfo();
       });
@@ -68,7 +68,7 @@ export class AppArticleDetailComponent implements OnInit {
   // 执行点赞或取消点赞操作
   public like() {
     if (!!this.globalService.userInfo) {
-      this.service.like(this.globalService.userInfo.id, this.articleDetail.id).subscribe(() => {
+      this.service.like(this.articleDetail.id).subscribe(() => {
         // 重新请求文章数据
         this.getAticleInfo();
       });
@@ -91,7 +91,7 @@ export class AppArticleDetailComponent implements OnInit {
   public doComment() {
     if (this.commentContent.trim().length > 0) {
       this.focus = false;
-      this.service.saveComment(this.commentContent, this.globalService.userInfo.id, this.articleId).subscribe(() => {
+      this.service.saveComment(this.commentContent, this.articleId).subscribe(() => {
         this.getComments();
         this.commentContent = '';
         this.getAticleInfo();
@@ -111,7 +111,7 @@ export class AppArticleDetailComponent implements OnInit {
     this.globalService.refreshMaskState(true);
     this.dialogService.open(AppArticleDetailReplyComponent, { context: { fromUser }, closeOnEsc: false, hasBackdrop: false }).onClose.subscribe((v: { replyContent: string }) => {
       if (v) {
-        this.service.saveComment(v.replyContent, this.globalService.userInfo.id, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
+        this.service.saveComment(v.replyContent, this.articleId, parentCommentId, rootCommentId).subscribe(() => {
           this.getComments();
         });
       }
@@ -144,7 +144,7 @@ export class AppArticleDetailComponent implements OnInit {
    */
   private getActionStatus() {
     if (!!this.globalService.userInfo) {
-      this.service.actionStatus(this.globalService.userInfo.id, this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
+      this.service.actionStatus(this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
         this.hasCollection = v.hasCollect ? true : false;
         this.hasLike = v.hasLike ? true : false;
       });

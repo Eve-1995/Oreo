@@ -1,12 +1,14 @@
 
-import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors, HttpException } from '@nestjs/common';
-import { TipMessageDTO } from 'src/others/response.dto';
-import { ClassificationDTO } from '../../../common/interface/classification.interface';
+import { Get, Controller, Post, Body, Delete, Query, HttpException, UseGuards } from '@nestjs/common';
+import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { DeleteResult } from 'typeorm';
 import { FragmentService } from './fragment.service';
 import { Fragment } from './fragment.entity';
+import { AdminGuard } from 'src/others/auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('fragment')
+@UseGuards(AuthGuard())
 export class FragmentController {
   constructor(
     private readonly service: FragmentService
@@ -47,34 +49,35 @@ export class FragmentController {
    * }
    */
   @Post('save')
+  @UseGuards(AdminGuard)
   async save(@Body() dto: Fragment): Promise<TipMessageDTO> {
     const flag = dto.id ? true : false;
     let tipType: number;
     let message: string;
     await this.service.save(dto).then(v => {
-      tipType = 1
+      tipType = TipType.SUCCESS;
       message = flag ? '修改成功' : '添加成功';
     }).catch(() => {
       throw new HttpException({
-        tipType: 3,
+        tipType: TipType.DANGER,
         message: '发生未知错误, 请私信博主错误信息([fragment, save])'
       }, 500);
     });
     return { tipType, message };
   }
 
-  @Post('saveUser')
-  async saveUser(@Body() dto: { fragmentId: number, userId: number }): Promise<TipMessageDTO> {
-    let tipType: number;
-    let message: string;
-    await this.service.saveUser(dto).catch(() => {
-      throw new HttpException({
-        tipType: 3,
-        message: '发生未知错误, 请私信博主错误信息([fragment, save])'
-      }, 500);
-    });
-    return { tipType, message };
-  }
+  // @Post('saveUser')
+  // async saveUser(@Body() dto: { fragmentId: number, userId: number }): Promise<TipMessageDTO> {
+  //   let tipType: number;
+  //   let message: string;
+  //   await this.service.saveUser(dto.fragmentId, dto.userId).catch(() => {
+  //     throw new HttpException({
+  //       tipType: TipType.DANGER,
+  //       message: '发生未知错误, 请私信博主错误信息([fragment, saveUser])'
+  //     }, 500);
+  //   });
+  //   return { tipType, message };
+  // }
 
   /**
    * @api {Delete} /classification/delete 删除
@@ -108,11 +111,11 @@ export class FragmentController {
     let tipType: number;
     await this.service.delete(request.id).then((v: DeleteResult) => {
       if (v.raw.affectedRows > 0) {
-        tipType = 1;
+        tipType = TipType.SUCCESS;
         message = '删除成功';
       } else {
         throw new HttpException({
-          tipType: 3,
+          tipType: TipType.DANGER,
           message: '发生未知错误, 请私信博主错误信息([fragment, delete])'
         }, 500);
       }

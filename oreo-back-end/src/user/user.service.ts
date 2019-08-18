@@ -76,22 +76,22 @@ export class UserService {
     }
   }
 
-  async hasCollect(dto: { id: number, articleId: number }): Promise<Boolean> {
-    let user = await this.userRepository.findOne(dto.id, { relations: ['articles'] })
+  async hasCollect(userId: number, articleId: number): Promise<Boolean> {
+    let user = await this.userRepository.findOne(userId, { relations: ['articles'] })
     let flag = false;
     user.articles.forEach(v => {
-      if (v.id == dto.articleId) {
+      if (v.id == articleId) {
         flag = true;
       }
     })
     return flag;
   }
 
-  async hasLike(dto: { id: number, articleId: number }): Promise<Boolean> {
-    let user = await this.userRepository.findOne(dto.id, { relations: ['likeArticles'] })
+  async hasLike(userId: number, articleId: number): Promise<Boolean> {
+    let user = await this.userRepository.findOne(userId, { relations: ['likeArticles'] })
     let flag = false;
     user.likeArticles.forEach(v => {
-      if (v.id == dto.articleId) {
+      if (v.id == articleId) {
         flag = true;
       }
     })
@@ -141,9 +141,14 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  async getUser(user: { phone: string, password: string }): Promise<UserDTO> {
+  async getUser(user: { phone: string, password: string }): Promise<User> {
     return await this.userRepository.findOne(user);
   }
+
+  async getUserById(id: number): Promise<User> {
+    return await this.userRepository.findOne({ id });
+  }
+
   /**
    * 返回该文章id被多少人收藏过
    * @param id 文章id

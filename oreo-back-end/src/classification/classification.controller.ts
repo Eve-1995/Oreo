@@ -1,8 +1,8 @@
 
-import { Get, Controller, Post, Body, Delete, Put, Query, UseInterceptors, HttpException } from '@nestjs/common';
+import { Get, Controller, Post, Body, Delete, Query, HttpException } from '@nestjs/common';
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
-import { TipMessageDTO } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { ClassificationDTO } from '../../../common/interface/classification.interface';
 import { DeleteResult } from 'typeorm';
 
@@ -48,11 +48,11 @@ export class ClassificationController {
     let tipType: number;
     let message: string;
     await this.service.save(dto).then(v => {
-      tipType = 1
+      tipType = TipType.SUCCESS;
       message = flag ? '修改成功' : '添加成功';
     }).catch((err) => {
       throw new HttpException({
-        tipType: 3,
+        tipType: TipType.DANGER,
           message: '发生未知错误, 请私信博主错误信息([classification, save])'
       }, 500);
     });
@@ -91,11 +91,11 @@ export class ClassificationController {
     let tipType: number;
     await this.service.delete(request.id).then((v: DeleteResult) => {
       if (v.raw.affectedRows > 0) {
-        tipType = 1;
+        tipType = TipType.SUCCESS;
         message = '删除成功';
       } else {
         throw new HttpException({
-          tipType: 3,
+          tipType: TipType.DANGER,
           message: '发生未知错误, 请私信博主错误信息([classification, delete])'
         }, 500);
       }

@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Query, Delete, HttpException, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
-import { TipMessageDTO } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { RequestUser, RequestUserDTO } from 'src/others/custom-decorator';
 
 @Controller('user')
 @UseGuards(AuthGuard())
@@ -39,9 +40,13 @@ export class UserController {
    * }]
    */
   @Get('findTableInfo')
-  async findTableInfo(@Query() query): Promise<User[]> {
-    const name = query.name;
-    return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
+  async findTableInfo(@Query() query, @RequestUser() req: RequestUserDTO): Promise<User[] | TipMessageDTO> {
+    if (req.level !== 1) {
+      return { message: '你这样要被抓起来的!' };
+    } else {
+      const name = query.name;
+      return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
+    }
   }
 
   /**
@@ -123,17 +128,20 @@ export class UserController {
    * }
    */
   @Delete('delete')
-  async delete(@Query() request): Promise<TipMessageDTO> {
+  async delete(@Query() request, @RequestUser() req: RequestUserDTO): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
+    if (req.level !== 1) {
+      return { message: '你这样要被抓起来的' };
+    }
     await this.service.delete(request.id).then(v => {
       if (v.raw.affectedRows > 0) {
-        tipType = 1;
+        tipType = TipType.SUCCESS;
         message = '删除成功';
       }
     }).catch(() => {
       throw new HttpException({
-        tipType: 3,
+        tipType: TipType.DANGER,
         message: '发生未知错误, 请私信博主错误信息([user, delete])'
       }, 500);
     })
@@ -188,7 +196,6 @@ export class UserController {
    * @apiDescription 若用户未收藏过此文章则执行收藏操作, 反之取消收藏
    * @apiGroup User
    *
-   * @apiParam {Number} userId 用户id
    * @apiParam {Number} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
@@ -210,11 +217,11 @@ export class UserController {
    * }
    */
   @Post('collect')
-  async collect(@Body() dto: { userId: number, articleId: number }): Promise<any> {
+  async collect(@Body() dto: { articleId: number }, @RequestUser() req: RequestUserDTO): Promise<any> {
     let tipType: number;
     let message: string;
-    await this.service.collect(dto.userId, dto.articleId).then((v: boolean) => {
-      tipType = 1;
+    await this.service.collect(req.id, dto.articleId).then((v: boolean) => {
+      tipType = TipType.SUCCESS;
       message = v ? '收藏成功' : '取消收藏成功';
     })
     return { tipType, message }
@@ -225,11 +232,9 @@ export class UserController {
    * @apiDescription 若用户未点赞过此文章则执行点赞操作, 反之取消点赞
    * @apiGroup User
    *
-   * @apiParam {Number} userId 用户id
    * @apiParam {Number} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
-   *  "userId": 1,
    *  "articleId": 6
    * }
    * 
@@ -247,11 +252,11 @@ export class UserController {
    * }
    */
   @Post('like')
-  async like(@Body() dto: { userId: number, articleId: number }): Promise<any> {
+  async like(@Body() dto: { articleId: number }, @RequestUser() req: RequestUserDTO): Promise<any> {
     let tipType: number;
     let message: string;
-    await this.service.like(dto.userId, dto.articleId).then((v: boolean) => {
-      tipType = 1;
+    await this.service.like(req.id, dto.articleId).then((v: boolean) => {
+      tipType = TipType.SUCCESS;
       message = v ? '点赞成功' : '取消点赞成功';
     })
     return { tipType, message }
@@ -262,11 +267,9 @@ export class UserController {
    * @apiDescription 获取用户是否已点赞、收藏过该文章
    * @apiGroup User
    *
-   * @apiParam {String} id 用户id
    * @apiParam {String} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
-   *  "id": "1",
    *  "articleId": "6"
    * }
    * 
@@ -279,13 +282,13 @@ export class UserController {
    * }
    */
   @Get('actionStatus')
-  async actionStatus(@Query() query): Promise<{ hasCollect: boolean, hasLike: boolean }> {
+  async actionStatus(@Query() query, @RequestUser() req: User): Promise<{ hasCollect: boolean, hasLike: boolean }> {
     let hasCollect: boolean;
     let hasLike: boolean;
-    await this.service.hasCollect({ id: query.id, articleId: query.articleId }).then(v => {
+    await this.service.hasCollect(req.id, query.articleId).then(v => {
       hasCollect = v ? true : false
     })
-    await this.service.hasLike({ id: query.id, articleId: query.articleId }).then(v => {
+    await this.service.hasLike(req.id, query.articleId).then(v => {
       hasLike = v ? true : false
     })
     return { hasCollect, hasLike };

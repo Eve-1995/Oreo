@@ -1,23 +1,24 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { TipMessageDTO } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { Comment } from './comment.entity';
 import { CommentDTO, CommentWithArticle } from '../../../common/interface/comment.interface';
+import { FragmentService } from 'src/fragment/fragment.service';
+import { RequestUser, RequestUserDTO } from 'src/others/custom-decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('comment')
 export class CommentController {
   constructor(
-    private readonly service: CommentService
+    private readonly fragmentService: FragmentService,
+    private readonly service: CommentService,
   ) { }
 
   /**
    * @api {Post} /comment/save 添加评论
    * @apiGroup Comment
    *
-   * @apiParam {String} saveComment 昵称
    * @apiParam {String} content 留言内容
-   * @apiParam {Object} user 用户
-   * @apiParam {Number} user.id 用户id
    * @apiParam {Object} article 文章
    * @apiParam {Number} article.id 文章id
    * @apiParam {Object} [parentComment] 回复的父评论
@@ -50,17 +51,28 @@ export class CommentController {
    * }
    */
   @Post('save')
-  async save(@Body() dto: Comment): Promise<TipMessageDTO> {
+  @UseGuards(AuthGuard())
+  async save(@Body() dto: Comment, @RequestUser() req: RequestUserDTO): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
-    await this.service.save(dto).then(() => {
-      tipType = 1
-      message = '评论成功';
-    })
-    return { tipType, message };
+    // 彩蛋
+    if (dto.content === '人工智能') {
+      await this.fragmentService.saveUser(1, req.id).then(() => {
+        tipType = TipType.SUCCESS;
+        message = '恭喜你发现了彩蛋!快去个人中心看看吧~!';
+      });
+      return { tipType, message };
+    } else {
+      dto.user.id = req.id;
+      await this.service.save(dto).then(() => {
+        tipType = TipType.SUCCESS;
+        message = '评论成功';
+      });
+      return { tipType, message };
+    }
   }
 
-  
+
   /**
    * @api {Get} /comment/getCommentsByArticle 获取文章的评论列表
    * @apiGroup Comment
@@ -136,34 +148,34 @@ export class CommentController {
     });
     rootArr.forEach(item1 => {
       const obj = {
-        'id': item1.id,
-        'content': item1.content,
-        'createTime': item1.createTime,
+        id: item1.id,
+        content: item1.content,
+        createTime: item1.createTime,
         fromUser: {
-          'id': item1.user.id,
-          'nickname': item1.user.nickname,
-          'level': item1.user.level
+          id: item1.user.id,
+          nickname: item1.user.nickname,
+          level: item1.user.level
         },
-        'children': []
+        children: []
       }
       unRootArr.forEach(item2 => {
         if (item2.rootComment) {
           if (item1.id == item2.rootComment.id) {
             const childObj = {
-              'id': item2.id,
-              'content': item2.content,
-              'createTime': item2.createTime,
+              id: item2.id,
+              content: item2.content,
+              createTime: item2.createTime,
               fromUser: {
-                'id': item2.user.id,
-                'nickname': item2.user.nickname,
-                'level': item2.user.level
+                id: item2.user.id,
+                nickname: item2.user.nickname,
+                level: item2.user.level
               },
               toUser: {
-                'id': item2.parentComment.user.id,
-                'nickname': item2.parentComment.user.nickname,
-                'level': item2.parentComment.user.level
+                id: item2.parentComment.user.id,
+                nickname: item2.parentComment.user.nickname,
+                level: item2.parentComment.user.level
               },
-              'rootCommentId': item1.id
+              rootCommentId: item1.id
             }
             obj.children.push(childObj);
           }

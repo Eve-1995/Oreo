@@ -1,9 +1,9 @@
 
-import { Get, Controller, Param, Post, Body, Delete, Query, HttpException } from '@nestjs/common';
+import { Get, Controller, Post, Body, Delete, Query, HttpException } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
-import { ClassificationWithArticlesAll, ClassificationWithArticles, ArticleBasicInfo } from '../../../common/interface/article.interface';
-import { TipMessageDTO } from 'src/others/response.dto';
+import { ClassificationWithArticles, ArticleBasicInfo } from '../../../common/interface/article.interface';
+import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { DeleteResult } from 'typeorm';
 @Controller('article')
 export class ArticleController {
@@ -57,11 +57,11 @@ export class ArticleController {
     let tipType: number;
     let message: string;
     await this.service.save(dto).then(v => {
-      tipType = 1
+      tipType = TipType.SUCCESS;
       message = flag ? '修改成功' : '添加成功';
     }).catch(() => {
       throw new HttpException({
-        tipType: 3,
+        tipType: TipType.DANGER,
         message: '发生未知错误, 请私信博主错误信息([article, save])'
       }, 500);
     });
@@ -139,11 +139,11 @@ export class ArticleController {
       // }
       this.service.findDetailById(request.id).then(v => {
         if (!v) {
-          tipType = 1;
+          tipType = TipType.SUCCESS;
           message = '删除成功';
         } else {
           throw new HttpException({
-            tipType: 3,
+            tipType: TipType.DANGER,
             message: '发生未知错误, 请私信博主错误信息([article, delete])'
           }, 500);
         }

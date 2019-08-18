@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export enum TipType {
-  success = 1,
-  warning,
-  danger,
-  info
+  SUCCESS = 1,
+  WARING,
+  DANGER,
+  INFO
 }
 
 /**

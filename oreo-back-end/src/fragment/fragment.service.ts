@@ -16,12 +16,12 @@ export class FragmentService {
   }
 
   // 保存用户与碎片的关系
-  async saveUser(dto: { fragmentId: number, userId: number }): Promise<any> {
-    let fragments = await this.repository.findOne(dto.fragmentId, { relations: ['users'] })
-    const exist = fragments.users.some(user => user.id === dto.userId);
+  async saveUser(fragmentId: number, userId: number): Promise<any> {
+    let fragments = await this.repository.findOne(fragmentId, { relations: ['users'] })
+    const exist = fragments.users.some(user => user.id === userId);
     if (!exist) {
       const user = new User();
-      user.id = dto.userId;
+      user.id = userId;
       fragments.users.push(user);
     }
     return await this.repository.save(fragments);

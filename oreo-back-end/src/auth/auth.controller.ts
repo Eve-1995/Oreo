@@ -2,6 +2,7 @@ import { Controller, Body, Post, HttpException } from "@nestjs/common";
 import { UserService } from "src/user/user.service";
 import { AuthService } from "./auth.service";
 import { User } from "src/user/user.entity";
+import { TipType } from "src/others/response.dto";
 
 @Controller('auth')
 export class AuthController {
@@ -12,12 +13,11 @@ export class AuthController {
 
   /**
    * @api {Post} /auth/login 登陆
-   * @apiDescription 使用Postman等工具发送只带帐号不带密码的请求有彩蛋.
    * @apiGroup Auth
    *
    * @apiParam {String} phone 手机号
-   * @apiParam {String} password 密码   
-   * @apiParamExample {json} Request-Example   
+   * @apiParam {String} password 密码
+   * @apiParamExample {json} Request-Example
    * {
    *  "phone": 177,
    *  "password": 177
@@ -66,7 +66,7 @@ export class AuthController {
       await this.service.getUser(user).then((v: User) => {
         if (!v) {
           throw new HttpException({
-            tipType: 2,
+            tipType: TipType.WARING,
             message: '帐号或密码不正确'
           }, 400);
         }
@@ -75,14 +75,13 @@ export class AuthController {
       const token = await this.authService.createToken(result);
       return {
         token,
-        id: result.id,
         nickname: result.nickname,
         level: result.level
       }
     } else if (user.phone && !user.password) {
       // 为该帐号发放奖励
       throw new HttpException({
-        tipType: 4,
+        tipType: TipType.INFO,
         message: '恭喜你获得[四魂之玉碎片I * 1]!'
       }, 666);
     }
@@ -127,7 +126,7 @@ export class AuthController {
    * @apiErrorExample {json} Response-Example
    * {
    *   "tipType": "3",
-   *   "message": "发生未知错误, 请私信博主错误信息([user, save])"
+   *   "message": "发生未知错误, 请私信博主错误信息([auth, save])"
    * }
    */
   @Post('save')
@@ -135,18 +134,18 @@ export class AuthController {
     let tipType: number;
     let message: string;
     await this.service.save(dto).then(() => {
-      tipType = 1
+      tipType = TipType.SUCCESS
       message = '注册成功';
     }).catch(e => {
       if (e.errno === 1062) {
         throw new HttpException({
-          tipType: 2,
+          tipType: TipType.WARING,
           message: '手机号已存在'
         }, 500);
       } else {
         throw new HttpException({
-          tipType: 3,
-          message: '发生未知错误, 请私信博主错误信息([user, save])'
+          tipType: TipType.DANGER,
+          message: '发生未知错误, 请私信博主错误信息([auth, save])'
         }, 500);
       }
     })

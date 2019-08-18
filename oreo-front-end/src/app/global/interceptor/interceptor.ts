@@ -37,7 +37,7 @@ export class AppInterceptor implements HttpInterceptor {
           this.toastrService.warning('这波问题很大...', '无法匹配到后端路由');
           return throwError(event);
           // token 验证失败, 用于token过期
-        } else if(err.status === 401) {
+        } else if (err.status === 401) {
           this.globalService.userInfo = null;
           localStorage.removeItem('userInfo');
           this.globalService.logOut$.next();
@@ -57,16 +57,16 @@ export class AppInterceptor implements HttpInterceptor {
    */
   private handleMessage(tipType: number, message: string): void {
     switch (tipType) {
-      case TipType.success:
+      case TipType.SUCCESS:
         this.toastrService.success('', message);
         break;
-      case TipType.warning:
+      case TipType.WARING:
         this.toastrService.warning('', message);
         break;
-      case TipType.danger:
+      case TipType.DANGER:
         this.toastrService.danger('', message);
         break;
-      case TipType.info:
+      case TipType.INFO:
         this.toastrService.info('', message);
         break;
     }
