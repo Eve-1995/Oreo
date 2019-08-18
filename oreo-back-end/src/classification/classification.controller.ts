@@ -19,8 +19,7 @@ export class ClassificationController {
    *  "name": "Typescript VS Javascript",
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
@@ -33,8 +32,7 @@ export class ClassificationController {
    *   "message": "修改成功"
    * }
    *  
-   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 500) {String} message 提示文本
+   * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
@@ -68,16 +66,14 @@ export class ClassificationController {
    *  "id": "1",
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
    * 
-   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 500) {String} message 提示文本
+   * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",

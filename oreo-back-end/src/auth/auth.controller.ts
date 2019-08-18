@@ -19,41 +19,29 @@ export class AuthController {
    * @apiParam {String} password 密码
    * @apiParamExample {json} Request-Example
    * {
-   *  "phone": 177,
-   *  "password": 177
+   *  "phone": 123456789,
+   *  "password": 123456789
    * }
    * 
-   * @apiUse UserDTO
-   * @apiSuccess {String} level 用户类别 0:普通用户,1:管理员
+   * @apiSuccess {String} token 用户凭证
+   * @apiSuccess {String} nickname 用户名
+   * @apiSuccess {Number} level 用户类别 0:普通用户,1:管理员
    * @apiSuccessExample  {json} Response-Example
    * {
-   *   "id": 1,
+   *   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
    *   "nickname": "Eve",
-   *   "createTime": "2019-05-01T09:05:15.958Z",
-   *   "updateTime": "2019-05-04T16:42:38.000Z",
-   *   "phone": "177****4863",
-   *   "level": "1",
-   *   "realname": "前夕",
-   *   "email": "948832626@qq.com",
-   *   "liveCity": "上海",
-   *   "hometown": "温州",
-   *   "birth": "1995-09-17",
-   *   "company": "上海易校信息科技有限公司",
-   *   "univercity": "浙江水利水电学院",
-   *   "eduacation": "本科"
+   *   "level": 1
    * }
    *  
-   * @apiError (Error 400) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 400) {String} message 提示文本
-   * @apiErrorExample  {json} Response-Example(400)
+   * @apiUse UniversalErrorDTO
+   * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "2",
    *   "message": "帐号或密码不正确"
    * }
    * 
-   * @apiError (Error 666) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 666) {String} message 提示文本
-   * @apiErrorExample  {json} Response-Example(666)
+   * @apiUse UniversalErrorDTO
+   * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "4",
    *   "message": "恭喜你获得[四魂之玉碎片I * 1]!"
@@ -68,7 +56,7 @@ export class AuthController {
           throw new HttpException({
             tipType: TipType.WARING,
             message: '帐号或密码不正确'
-          }, 400);
+          }, 500);
         }
         result = v;
       })
@@ -83,7 +71,7 @@ export class AuthController {
       throw new HttpException({
         tipType: TipType.INFO,
         message: '恭喜你获得[四魂之玉碎片I * 1]!'
-      }, 666);
+      }, 200);
     }
   }
 
@@ -104,12 +92,11 @@ export class AuthController {
    * @apiParamExample {json} Request-Example
    * {
    *  "nickname": "Eve",
-   *  "phone": "17712345678",
+   *  "phone": "123456789",
    *  "password": "huangmenji"
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
@@ -121,8 +108,7 @@ export class AuthController {
    *   "message": "手机号已存在"
    * }
    * 
-   * @apiError {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError {String} message 提示文本
+   * @apiUse UniversalErrorDTO
    * @apiErrorExample {json} Response-Example
    * {
    *   "tipType": "3",

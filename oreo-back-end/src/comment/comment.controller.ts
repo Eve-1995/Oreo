@@ -3,7 +3,7 @@ import { CommentService } from './comment.service';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { Comment } from './comment.entity';
 import { FragmentService } from 'src/fragment/fragment.service';
-import { RequestUser } from 'src/others/custom-decorator';
+import { RequestUser } from 'src/others/decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/user/user.entity';
 
@@ -28,9 +28,6 @@ export class CommentController {
    * @apiParamExample {json} Request-Example
    * {
    *  "content":"上海志愿者大妈: 你是什么垃圾?!",
-   *  "user":{
-   *    "id": 1
-   *  },
    *  "article":{
    *    "id": 6
    *  },
@@ -42,8 +39,7 @@ export class CommentController {
    *  }
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",

@@ -1,7 +1,7 @@
 define({ "api": [
   {
     "type": "Delete",
-    "url": "/classification/deleteById",
+    "url": "/classification/delete",
     "title": "删除",
     "group": "Article",
     "parameter": {
@@ -25,6 +25,13 @@ define({ "api": [
       ]
     },
     "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
@@ -32,7 +39,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
             "group": "Success 200",
@@ -42,52 +49,45 @@ define({ "api": [
             "description": "<p>提示文本</p>"
           }
         ]
-      },
+      }
+    },
+    "error": {
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([article, delete])\"\n}",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 500": [
+        "Error 4xx": [
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0006)\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/article/article.controller.ts",
     "groupTitle": "Article",
-    "name": "DeleteClassificationDeletebyid"
+    "name": "DeleteClassificationDelete"
   },
   {
     "type": "Get",
     "url": "/article/findBasicInfo",
     "title": "查看文章内容",
-    "description": "<p>用于查看文章详情, 所以还会返回三连信息</p>",
+    "description": "<p>查看文章详情时请求的接口</p>",
     "group": "Article",
     "parameter": {
       "fields": {
@@ -96,7 +96,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "1",
+            "field": "id",
             "description": "<p>类别id</p>"
           }
         ]
@@ -279,6 +279,7 @@ define({ "api": [
     "type": "Get",
     "url": "/article/findDetail",
     "title": "获取特定文章信息",
+    "description": "<p>用于编辑文章, 与findBasicInfo有一定的重复, 后期考虑合二为一</p>",
     "group": "Article",
     "parameter": {
       "fields": {
@@ -406,6 +407,7 @@ define({ "api": [
     "type": "Get",
     "url": "/article/findTableInfo",
     "title": "获取全部文章信息",
+    "description": "<p>用于[管理中心]的表格数据</p>",
     "group": "Article",
     "parameter": {
       "fields": {
@@ -520,6 +522,18 @@ define({ "api": [
       ]
     },
     "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"修改成功\"\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
@@ -527,7 +541,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
             "group": "Success 200",
@@ -537,46 +551,294 @@ define({ "api": [
             "description": "<p>提示文本</p>"
           }
         ]
-      },
+      }
+    },
+    "error": {
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([article, save])\"\n}",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 500": [
+        "Error 4xx": [
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"添加失败(错误码:0005)\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/article/article.controller.ts",
     "groupTitle": "Article",
     "name": "PostArticleSave"
+  },
+  {
+    "type": "Post",
+    "url": "/auth/login",
+    "title": "登陆",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>手机号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>密码</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"phone\": 123456789,\n \"password\": 123456789\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>用户凭证</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "level",
+            "description": "<p>用户类别 0:普通用户,1:管理员</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\",\n  \"nickname\": \"Eve\",\n  \"level\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"2\",\n  \"message\": \"帐号或密码不正确\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"4\",\n  \"message\": \"恭喜你获得[四魂之玉碎片I * 1]!\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/auth/auth.controller.ts",
+    "groupTitle": "Auth",
+    "name": "PostAuthLogin"
+  },
+  {
+    "type": "Post",
+    "url": "/auth/save",
+    "title": "注册",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>密码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "email",
+            "description": "<p>邮箱</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "liveCity",
+            "description": "<p>居住城市</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "hometown",
+            "description": "<p>家乡</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "birth",
+            "description": "<p>生日</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "company",
+            "description": "<p>公司</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "univercity",
+            "description": "<p>大学</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "eduacation",
+            "description": "<p>教育程度</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"nickname\": \"Eve\",\n \"phone\": \"123456789\",\n \"password\": \"huangmenji\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"注册成功\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"2\",\n  \"message\": \"手机号已存在\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([auth, save])\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/auth/auth.controller.ts",
+    "groupTitle": "Auth",
+    "name": "PostAuthSave"
   },
   {
     "type": "Delete",
@@ -604,6 +866,13 @@ define({ "api": [
       ]
     },
     "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
@@ -611,7 +880,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
             "group": "Success 200",
@@ -621,38 +890,186 @@ define({ "api": [
             "description": "<p>提示文本</p>"
           }
         ]
-      },
+      }
+    },
+    "error": {
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([fragment, delete])\"\n}",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 500": [
+        "Error 4xx": [
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
           }
         ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Classification",
+    "name": "DeleteClassificationDelete"
+  },
+  {
+    "type": "Delete",
+    "url": "/classification/delete",
+    "title": "删除",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([classification, delete])\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/classification/classification.controller.ts",
+    "groupTitle": "Classification",
+    "name": "DeleteClassificationDelete"
+  },
+  {
+    "type": "Get",
+    "url": "/classification/findDetail",
+    "title": "获取特定类别信息",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
       },
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0004)\"\n}",
+          "content": "{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n}",
           "type": "json"
         }
       ]
@@ -660,7 +1077,7 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "../src/classification/classification.controller.ts",
     "groupTitle": "Classification",
-    "name": "DeleteClassificationDelete"
+    "name": "GetClassificationFinddetail"
   },
   {
     "type": "Get",
@@ -736,7 +1153,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "../src/classification/classification.controller.ts",
+    "filename": "../src/fragment/fragment.controller.ts",
     "groupTitle": "Classification",
     "name": "GetClassificationFinddetail"
   },
@@ -766,13 +1183,6 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "keywords",
-            "description": "<p>关键词</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
             "field": "createTime",
             "description": "<p>创建时间</p>"
           },
@@ -788,7 +1198,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n  \"keywords\": \"[\\\"速度快\\\",\\\"原生\\\"]\"\n}",
+          "content": "{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n}",
           "type": "json"
         }
       ]
@@ -824,13 +1234,6 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "keywords",
-            "description": "<p>关键词</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
             "field": "createTime",
             "description": "<p>创建时间</p>"
           },
@@ -846,7 +1249,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response-Example",
-          "content": "[{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n  \"keywords\": \"[\\\"速度快\\\",\\\"原生\\\"]\"\n}]",
+          "content": "[{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n}]",
           "type": "json"
         }
       ]
@@ -855,6 +1258,84 @@ define({ "api": [
     "filename": "../src/classification/classification.controller.ts",
     "groupTitle": "Classification",
     "name": "GetClassificationFindnames"
+  },
+  {
+    "type": "Get",
+    "url": "/classification/findTableInfo",
+    "title": "获取全部类别信息",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"name\": \"ng\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "articleAmount",
+            "description": "<p>文章总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeAmount",
+            "description": "<p>点赞总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "collectAmount",
+            "description": "<p>收藏总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "commentAmount",
+            "description": "<p>评论总数</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 1,\n  \"name\": \"C语言\",\n  \"articleAmount\": 6,\n  \"likeAmount\": 16,\n  \"collectAmount\": 22,\n  \"commentAmount\": 22\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Classification",
+    "name": "GetClassificationFindtableinfo"
   },
   {
     "type": "Get",
@@ -967,58 +1448,152 @@ define({ "api": [
       ]
     },
     "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"修改成功\"\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "field": "message",
+            "description": "<p>提示文本</p>"
           },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([fragment, save])\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Classification",
+    "name": "PostClassificationSave"
+  },
+  {
+    "type": "Post",
+    "url": "/classification/save",
+    "title": "新增",
+    "group": "Classification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章名</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example   ",
+          "content": "{\n \"name\": \"Typescript VS Javascript\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"修改成功\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 500": [
+          },
           {
-            "group": "Error 500",
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([classification, save])\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"添加失败(错误码:0003)\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/classification/classification.controller.ts",
@@ -1192,29 +1767,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "saveComment",
-            "description": "<p>昵称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
             "field": "content",
             "description": "<p>留言内容</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "user",
-            "description": "<p>用户</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user.id",
-            "description": "<p>用户id</p>"
           },
           {
             "group": "Parameter",
@@ -1263,12 +1817,19 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example",
-          "content": "{\n \"content\":\"上海志愿者大妈: 你是什么垃圾?!\",\n \"user\":{\n   \"id\": 1\n },\n \"article\":{\n   \"id\": 6\n },\n \"parentComment\":{\n   \"id\": 15\n },\n \"rootComment\":{\n   \"id\": 16\n }\n}",
+          "content": "{\n \"content\":\"上海志愿者大妈: 你是什么垃圾?!\",\n \"article\":{\n   \"id\": 6\n },\n \"parentComment\":{\n   \"id\": 15\n },\n \"rootComment\":{\n   \"id\": 16\n }\n}",
           "type": "json"
         }
       ]
     },
     "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"评论成功\"\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
@@ -1276,7 +1837,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
             "group": "Success 200",
@@ -1286,14 +1847,7 @@ define({ "api": [
             "description": "<p>提示文本</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"评论成功\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/comment/comment.controller.ts",
@@ -1327,6 +1881,13 @@ define({ "api": [
       ]
     },
     "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
@@ -1334,7 +1895,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
             "group": "Success 200",
@@ -1344,41 +1905,34 @@ define({ "api": [
             "description": "<p>提示文本</p>"
           }
         ]
-      },
+      }
+    },
+    "error": {
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([user, delete])\"\n}",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 500": [
+        "Error 4xx": [
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
           },
           {
-            "group": "Error 500",
+            "group": "Error 4xx",
             "type": "String",
             "optional": false,
             "field": "message",
             "description": "<p>提示文本</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0002)\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/user/user.controller.ts",
@@ -1398,13 +1952,6 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "id",
-            "description": "<p>用户id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
             "field": "articleId",
             "description": "<p>文章id</p>"
           }
@@ -1413,7 +1960,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example",
-          "content": "{\n \"id\": \"1\",\n \"articleId\": \"6\"\n}",
+          "content": "{\n \"articleId\": \"6\"\n}",
           "type": "json"
         }
       ]
@@ -1454,7 +2001,6 @@ define({ "api": [
     "type": "Get",
     "url": "/user/findByFilter",
     "title": "根据用户名查找用户",
-    "description": "<p>包含个人信息以及点赞总数、收藏总数、评论总数.</p>",
     "group": "User",
     "parameter": {
       "fields": {
@@ -1480,7 +2026,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response-Example",
-          "content": "[{\n  \"id\": 1,\n  \"nickname\": \"Eve\",\n  \"createTime\": \"2019-05-01T09:05:15.958Z\",\n  \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n  \"phone\": \"177****4863\",\n  \"realname\": \"前夕\",\n  \"email\": \"948832626@qq.com\",\n  \"liveCity\": \"上海\",\n  \"hometown\": \"温州\",\n  \"birth\": \"1995-09-17\",\n  \"company\": \"上海易校信息科技有限公司\",\n  \"univercity\": \"浙江水利水电学院\",\n  \"eduacation\": \"本科\",\n  \"likeAmount\": 2,\n  \"collectAmount\": 8,\n  \"commentAmount\": 9\n}]",
+          "content": "[{\n  \"id\": 1,\n  \"nickname\": \"Eve\",\n  \"createTime\": \"2019-05-01T09:05:15.958Z\",\n  \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n  \"phone\": \"123456789\",\n  \"realname\": \"前夕\",\n  \"email\": \"948832626@qq.com\",\n  \"liveCity\": \"上海\",\n  \"hometown\": \"温州\",\n  \"birth\": \"1995-09-17\",\n  \"company\": \"上海易校信息科技有限公司\",\n  \"univercity\": \"浙江水利水电学院\",\n  \"eduacation\": \"本科\",\n  \"likeAmount\": 2,\n  \"collectAmount\": 8,\n  \"commentAmount\": 9\n}]",
           "type": "json"
         }
       ],
@@ -1610,13 +2156,12 @@ define({ "api": [
     "type": "Get",
     "url": "/user/findTableInfo",
     "title": "获取全部用户信息",
-    "description": "<p>包含个人信息以及点赞总数、收藏总数、评论总数.</p>",
     "group": "User",
     "success": {
       "examples": [
         {
           "title": "Response-Example",
-          "content": "[{\n  \"id\": 1,\n  \"nickname\": \"Eve\",\n  \"createTime\": \"2019-05-01T09:05:15.958Z\",\n  \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n  \"phone\": \"177****4863\",\n  \"realname\": \"前夕\",\n  \"email\": \"948832626@qq.com\",\n  \"liveCity\": \"上海\",\n  \"hometown\": \"温州\",\n  \"birth\": \"1995-09-17\",\n  \"company\": \"上海易校信息科技有限公司\",\n  \"univercity\": \"浙江水利水电学院\",\n  \"eduacation\": \"本科\",\n  \"likeAmount\": 2,\n  \"collectAmount\": 8,\n  \"commentAmount\": 9\n}]",
+          "content": "[{\n  \"id\": 1,\n  \"nickname\": \"Eve\",\n  \"createTime\": \"2019-05-01T09:05:15.958Z\",\n  \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n  \"phone\": \"123456789\",\n  \"realname\": \"前夕\",\n  \"email\": \"948832626@qq.com\",\n  \"liveCity\": \"上海\",\n  \"hometown\": \"温州\",\n  \"birth\": \"1995-09-17\",\n  \"company\": \"上海易校信息科技有限公司\",\n  \"univercity\": \"浙江水利水电学院\",\n  \"eduacation\": \"本科\",\n  \"likeAmount\": 2,\n  \"collectAmount\": 8,\n  \"commentAmount\": 9\n}]",
           "type": "json"
         }
       ],
@@ -1745,34 +2290,13 @@ define({ "api": [
   {
     "type": "Get",
     "url": "/user/getUser",
-    "title": "获取单个用户信息",
-    "description": "<p>只获取用户实体信息</p>",
+    "title": "获取登录用户信息",
     "group": "User",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>用户id</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example",
-          "content": "{\n \"id\": \"1\"\n}",
-          "type": "json"
-        }
-      ]
-    },
     "success": {
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n \"id\": 1,\n \"nickname\": \"Eve\",\n \"createTime\": \"2019-05-01T09:05:15.958Z\",\n \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n \"phone\": \"177****4863\",\n \"realname\": \"前夕\",\n \"email\": \"948832626@qq.com\",\n \"liveCity\": \"上海\",\n \"hometown\": \"温州\",\n \"birth\": \"1995-09-17\",\n \"company\": \"上海易校信息科技有限公司\",\n \"univercity\": \"浙江水利水电学院\",\n \"eduacation\": \"本科\",\n \"likeAmount\": 2,\n \"collectAmount\": 8,\n \"commentAmount\": 9\n}",
+          "content": "{\n \"id\": 1,\n \"nickname\": \"Eve\",\n \"createTime\": \"2019-05-01T09:05:15.958Z\",\n \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n \"phone\": \"123456789\",\n \"realname\": \"前夕\",\n \"email\": \"948832626@qq.com\",\n \"liveCity\": \"上海\",\n \"hometown\": \"温州\",\n \"birth\": \"1995-09-17\",\n \"company\": \"上海易校信息科技有限公司\",\n \"univercity\": \"浙江水利水电学院\",\n \"eduacation\": \"本科\",\n \"likeAmount\": 2,\n \"collectAmount\": 8,\n \"commentAmount\": 9\n}",
           "type": "json"
         }
       ],
@@ -1901,7 +2425,7 @@ define({ "api": [
   {
     "type": "GMet",
     "url": "/user/getCollections",
-    "title": "获取用户的收藏集合",
+    "title": "获取用户的收藏文章列表",
     "group": "User",
     "parameter": {
       "fields": {
@@ -1989,13 +2513,6 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "userId",
-            "description": "<p>用户id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
             "field": "articleId",
             "description": "<p>文章id</p>"
           }
@@ -2004,30 +2521,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example",
-          "content": "{\n \"userId\": 1,\n \"articleId\": 6\n}",
+          "content": "{\n \"articleId\": 6\n}",
           "type": "json"
         }
       ]
     },
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Response-Example",
@@ -2039,7 +2538,25 @@ define({ "api": [
           "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"取消收藏成功\"\n}",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/user/user.controller.ts",
@@ -2059,13 +2576,6 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "userId",
-            "description": "<p>用户id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
             "field": "articleId",
             "description": "<p>文章id</p>"
           }
@@ -2074,30 +2584,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example",
-          "content": "{\n \"userId\": 1,\n \"articleId\": 6\n}",
+          "content": "{\n \"articleId\": 6\n}",
           "type": "json"
         }
       ]
     },
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Response-Example",
@@ -2109,360 +2601,29 @@ define({ "api": [
           "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"取消点赞成功\"\n}",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "../src/user/user.controller.ts",
     "groupTitle": "User",
     "name": "PostUserLike"
-  },
-  {
-    "type": "Post",
-    "url": "/user/login",
-    "title": "登陆",
-    "description": "<p>使用Postman等工具发送只带帐号不带密码的请求有彩蛋.</p>",
-    "group": "User",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>手机号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>密码</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example   ",
-          "content": "{\n \"userId\": 1,\n \"articleId\": 6\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "level",
-            "description": "<p>用户类别 0:普通用户,1:管理员</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>编号</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "nickname",
-            "description": "<p>用户名</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "createTime",
-            "description": "<p>创建时间</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "updateTime",
-            "description": "<p>更新时间</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>手机号</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "realname",
-            "description": "<p>真实姓名</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>邮箱</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "liveCity",
-            "description": "<p>居住城市</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "hometown",
-            "description": "<p>家乡</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "birth",
-            "description": "<p>生日</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "company",
-            "description": "<p>公司</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "univercity",
-            "description": "<p>大学</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "eduacation",
-            "description": "<p>教育程度</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"id\": 1,\n  \"nickname\": \"Eve\",\n  \"createTime\": \"2019-05-01T09:05:15.958Z\",\n  \"updateTime\": \"2019-05-04T16:42:38.000Z\",\n  \"phone\": \"177****4863\",\n  \"level\": \"1\",\n  \"realname\": \"前夕\",\n  \"email\": \"948832626@qq.com\",\n  \"liveCity\": \"上海\",\n  \"hometown\": \"温州\",\n  \"birth\": \"1995-09-17\",\n  \"company\": \"上海易校信息科技有限公司\",\n  \"univercity\": \"浙江水利水电学院\",\n  \"eduacation\": \"本科\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 400": [
-          {
-            "group": "Error 400",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
-          },
-          {
-            "group": "Error 400",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ],
-        "Error 666": [
-          {
-            "group": "Error 666",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
-          },
-          {
-            "group": "Error 666",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example(400)",
-          "content": "{\n  \"tipType\": \"2\",\n  \"message\": \"帐号或密码不正确\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Response-Example(666)",
-          "content": "{\n  \"tipType\": \"4\",\n  \"message\": \"恭喜你获得[四魂之玉碎片I * 1]!\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "../src/user/user.controller.ts",
-    "groupTitle": "User",
-    "name": "PostUserLogin"
-  },
-  {
-    "type": "Post",
-    "url": "/user/save",
-    "title": "注册",
-    "group": "User",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "nickname",
-            "description": "<p>昵称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>手机</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>密码</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "email",
-            "description": "<p>邮箱</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "liveCity",
-            "description": "<p>居住城市</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "hometown",
-            "description": "<p>家乡</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "birth",
-            "description": "<p>生日</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "company",
-            "description": "<p>公司</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "univercity",
-            "description": "<p>大学</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "eduacation",
-            "description": "<p>教育程度</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example",
-          "content": "{\n \"nickname\": \"Eve\",\n \"phone\": \"17712345678\",\n \"password\": \"huangmenji\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"注册成功\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"2\",\n  \"message\": \"手机号已存在\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1:成功 2:警告 3:危险 4:通知</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误码(错误码:0001)\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "../src/user/user.controller.ts",
-    "groupTitle": "User",
-    "name": "PostUserSave"
   }
 ] });

@@ -1,1 +1,2 @@
+先进入/apidoc目录再运行如下命令
 apidoc -i ../src/ -o apidoc/

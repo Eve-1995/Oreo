@@ -28,22 +28,20 @@ export class ArticleController {
    *  ]
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "添加成功"
    * }
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "修改成功"
    * }
    *  
-   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 500) {String} message 提示文本
+   * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
@@ -69,6 +67,7 @@ export class ArticleController {
 
   /**
    * @api {Get} /article/findTableInfo 获取全部文章信息
+   * @apiDescription 用于[管理中心]的表格数据  
    * @apiGroup Article
    *
    * @apiParam {String} [name] 文章名
@@ -104,16 +103,14 @@ export class ArticleController {
    *  "id": "1",
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
    * 
-   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 500) {String} message 提示文本
+   * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
@@ -201,7 +198,7 @@ export class ArticleController {
 
   /**
    * @api {Get} /article/findBasicInfo 查看文章内容
-   * @apiDescription 用于查看文章详情, 所以还会返回三连信息
+   * @apiDescription 查看文章详情时请求的接口
    * @apiGroup Article
    *
    * @apiParam {String} id 类别id
@@ -244,6 +241,7 @@ export class ArticleController {
 
   /**
    * @api {Get} /article/findDetail 获取特定文章信息
+   * @apiDescription 用于编辑文章, 与findBasicInfo有一定的重复, 后期考虑合二为一
    * @apiGroup Article
    *
    * @apiParam {String} 1 类别id

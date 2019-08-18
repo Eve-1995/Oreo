@@ -3,7 +3,8 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestUser } from 'src/others/custom-decorator';
+import { RequestUser } from 'src/others/decorator';
+import { AdminGuard } from 'src/others/auth.guard';
 
 @Controller('user')
 @UseGuards(AuthGuard())
@@ -14,7 +15,6 @@ export class UserController {
 
   /**
    * @api {Get} /user/findTableInfo 获取全部用户信息
-   * @apiDescription 包含个人信息以及点赞总数、收藏总数、评论总数.
    * @apiGroup User
    *
    * @apiUse UserDTO
@@ -25,7 +25,7 @@ export class UserController {
    *   "nickname": "Eve",
    *   "createTime": "2019-05-01T09:05:15.958Z",
    *   "updateTime": "2019-05-04T16:42:38.000Z",
-   *   "phone": "177****4863",
+   *   "phone": "123456789",
    *   "realname": "前夕",
    *   "email": "948832626@qq.com",
    *   "liveCity": "上海",
@@ -40,18 +40,14 @@ export class UserController {
    * }]
    */
   @Get('findTableInfo')
-  async findTableInfo(@Query() query, @RequestUser() user: User): Promise<User[] | TipMessageDTO> {
-    if (user.level !== 1) {
-      return { message: '你这样要被抓起来的!' };
-    } else {
-      const name = query.name;
-      return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
-    }
+  @UseGuards(AdminGuard)
+  async findTableInfo(@Query() query): Promise<User[] | TipMessageDTO> {
+    const name = query.name;
+    return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
   /**
    * @api {Get} /user/findByFilter 根据用户名查找用户
-   * @apiDescription 包含个人信息以及点赞总数、收藏总数、评论总数.
    * @apiGroup User
    * 
    * @apiParam {Number} name 用户名
@@ -68,7 +64,7 @@ export class UserController {
    *   "nickname": "Eve",
    *   "createTime": "2019-05-01T09:05:15.958Z",
    *   "updateTime": "2019-05-04T16:42:38.000Z",
-   *   "phone": "177****4863",
+   *   "phone": "123456789",
    *   "realname": "前夕",
    *   "email": "948832626@qq.com",
    *   "liveCity": "上海",
@@ -111,16 +107,14 @@ export class UserController {
    *  "userId": "1",
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
    * 
-   * @apiError (Error 500) {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiError (Error 500) {String} message 提示文本
+   * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
@@ -128,12 +122,10 @@ export class UserController {
    * }
    */
   @Delete('delete')
-  async delete(@Query() request, @RequestUser() user: User): Promise<TipMessageDTO> {
+  @UseGuards(AdminGuard)
+  async delete(@Query() request): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
-    if (user.level !== 1) {
-      return { message: '你这样要被抓起来的' };
-    }
     await this.service.delete(request.id).then(v => {
       if (v.raw.affectedRows > 0) {
         tipType = TipType.SUCCESS;
@@ -149,15 +141,8 @@ export class UserController {
   }
 
   /**
-   * @api {Get} /user/getUser 获取单个用户信息
-   * @apiDescription 只获取用户实体信息
+   * @api {Get} /user/getUser 获取登录用户信息
    * @apiGroup User
-   *
-   * @apiParam {String} id 用户id
-   * @apiParamExample {json} Request-Example
-   * {
-   *  "id": "1"
-   * }
    * 
    * @apiUse UserDTO
    * @apiUse LCCAmountDTO
@@ -167,7 +152,7 @@ export class UserController {
    *  "nickname": "Eve",
    *  "createTime": "2019-05-01T09:05:15.958Z",
    *  "updateTime": "2019-05-04T16:42:38.000Z",
-   *  "phone": "177****4863",
+   *  "phone": "123456789",
    *  "realname": "前夕",
    *  "email": "948832626@qq.com",
    *  "liveCity": "上海",
@@ -182,9 +167,9 @@ export class UserController {
    * }
    */
   @Get('getUser')
-  async getUser(@Query() query): Promise<any> {
+  async getUser(@RequestUser() user: User): Promise<any> {
     let result = undefined;
-    await this.service.getUser(query.id).then(v => {
+    await this.service.getUserById(user.id).then(v => {
       v ? result = v : result = null;
     })
     if (result) delete result.password;
@@ -199,12 +184,10 @@ export class UserController {
    * @apiParam {Number} articleId 文章id
    * @apiParamExample {json} Request-Example
    * {
-   *  "userId": 1,
    *  "articleId": 6
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
@@ -238,8 +221,7 @@ export class UserController {
    *  "articleId": 6
    * }
    * 
-   * @apiSuccess {String} tipType 弹窗类型 1:成功 2:警告 3:危险 4:通知
-   * @apiSuccess {String} message 提示文本
+   * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
@@ -295,7 +277,7 @@ export class UserController {
   }
 
   /**
-   * @api {GMet} /user/getCollections 获取用户的收藏集合
+   * @api {GMet} /user/getCollections 获取用户的收藏文章列表
    * @apiGroup User
    *
    * @apiParam {String} id 用户id
