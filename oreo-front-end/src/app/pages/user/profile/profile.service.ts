@@ -6,9 +6,8 @@ import { User } from '../../auth/user.dto';
 export class ProfileService {
   constructor(private httpClient: HttpClient) { }
 
-  getUser(id: string): any {
-    const params = { id };
-    return this.httpClient.get(`user/getUser`, { params });
+  getUser(): any {
+    return this.httpClient.get(`user/getUser`);
   }
 
   save(user: User): any {

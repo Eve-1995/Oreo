@@ -25,12 +25,10 @@ export class AppProfileComponent implements OnInit {
   emailBoolean = false;
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('userInfo'));
-    this.service.getUser(user.id).subscribe(v => {
+    this.service.getUser().subscribe(v => {
       this.user = v;
       this.phoneBoolean = !!this.user.phone;
       this.emailBoolean = !!this.user.email;
-      // localStorage.setItem('userInfo', JSON.stringify(this.user));
       this.personalLoading = false;
       this.accountLoading = false;
       this.globalService.watchUserInfo.next(this.user.nickname);
