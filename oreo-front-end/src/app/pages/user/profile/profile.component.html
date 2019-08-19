@@ -60,7 +60,7 @@
           </div>
           <div class="form-control-group">
             <label class="label" for="input-phone">
-              手机号<app-svg width="1em" height="1em" type="question" left="6px" nbTooltip="一旦设定将无法修改!"
+              手机号<app-svg width="1em" height="1em" type="question" left="6px" nbTooltip="暂不支持修改!"
                 nbTooltipPlacement="top" nbTooltipStatus="danger"></app-svg>:
             </label>
             <input nbInput fullWidth [(ngModel)]="user.phone" name="phone" type="text" id="input-phone" [maxlength]="32"
@@ -68,11 +68,9 @@
           </div>
           <div class="form-control-group">
             <label class="label" for="input-email">
-              邮箱<app-svg width="1em" height="1em" type="question" left="6px" nbTooltip="一旦设定将无法修改!"
-                nbTooltipPlacement="top" nbTooltipStatus="danger"></app-svg>:
+              邮箱:
             </label>
-            <input nbInput fullWidth [(ngModel)]="user.email" name="email" type="text" id="input-email" [maxlength]="32"
-              [disabled]="emailBoolean">
+            <input nbInput fullWidth [(ngModel)]="user.email" name="email" type="text" id="input-email" [maxlength]="32">
           </div>
           <button nbButton fullWidth status="success" [disabled]="accountSubmitted"
             [class.btn-pulse]="accountSubmitted">

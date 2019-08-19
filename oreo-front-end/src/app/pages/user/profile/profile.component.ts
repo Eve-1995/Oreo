@@ -22,38 +22,32 @@ export class AppProfileComponent implements OnInit {
   personalSubmitted: boolean = false;
   accountSubmitted: boolean = false;
   phoneBoolean = false;
-  emailBoolean = false;
 
   ngOnInit(): void {
     this.service.getUser().subscribe(v => {
       this.user = v;
       this.phoneBoolean = !!this.user.phone;
-      this.emailBoolean = !!this.user.email;
       this.personalLoading = false;
       this.accountLoading = false;
-      this.globalService.watchUserInfo.next(this.user.nickname);
+      this.globalService.watchUserInfo$.next(this.user.nickname);
     });
   }
 
   personalSave() {
     this.personalSubmitted = true;
     this.personalLoading = true;
-    this.service.save(this.user).subscribe(v => {
+    this.service.updateUser(this.user).subscribe(v => {
       this.ngOnInit();
       this.personalSubmitted = false;
     });
   }
 
   accountSave() {
-    this.dialogService.open(AppConfirmComponent, { context: { content: '手机号与邮箱一旦设定将无法再修改,确定要更新吗?' } }).onClose.subscribe(value => {
-      if (value === 'yes') {
-        this.accountSubmitted = true;
-        this.accountLoading = true;
-        this.service.save(this.user).subscribe(v => {
-          this.ngOnInit();
-          this.accountSubmitted = false;
-        });
-      }
+    this.accountSubmitted = true;
+    this.accountLoading = true;
+    this.service.updateUser(this.user).subscribe(v => {
+      this.ngOnInit();
+      this.accountSubmitted = false;
     });
   }
 }

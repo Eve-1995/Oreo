@@ -63,7 +63,7 @@ export class AppHeaderComponent implements OnInit {
     this.menuService.onItemClick().subscribe((event) => {
       this.onContecxtItemSelection(event.item.title);
     });
-    this.globalService.watchUserInfo.subscribe(v => {
+    this.globalService.watchUserInfo$.subscribe(v => {
       this.userInfo.nickname = v;
     });
 

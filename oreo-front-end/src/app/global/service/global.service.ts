@@ -36,7 +36,7 @@ export class AppGlobalService {
   *reason:资料修改页面与顶部不是同一个组件
   *solution:通过rxjs手动执行变更操作
   */
-  watchUserInfo = new Subject();
+  watchUserInfo$ = new Subject();
   watchMask = new Subject();
 
   userInfo: Auth;

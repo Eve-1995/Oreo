@@ -10,7 +10,7 @@ export class ProfileService {
     return this.httpClient.get(`user/getUser`);
   }
 
-  save(user: User): any {
+  updateUser(user: User): any {
     return this.httpClient.post(`user/update`, user);
   }
 }

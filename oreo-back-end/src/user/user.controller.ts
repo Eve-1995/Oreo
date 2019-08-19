@@ -84,17 +84,18 @@ export class UserController {
     return name !== undefined ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
-  // @Post('update')
-  // async update(@Body() dto: User): Promise<ResponseDTO> {
-  //   let result: ResponseDTO = { code: null, message: null, data: null }
-  //   await this.save(dto).then(v => {
-  //     result = v;
-  //     if (v.code === 200) {
-  //       result.message = '修改成功';
-  //     }
-  //   })
-  //   return result
-  // }
+  @Post('update')
+  async update(@Body() dto: User, @RequestUser() user: User): Promise<any> {
+    let message: string;
+    let tipType: number;
+    delete dto.phone; // 防止用户伪造请求修改手机
+    dto.id = user.id;
+    await this.service.save(dto).then(() => {
+      message = '修改成功';
+      tipType = TipType.SUCCESS;
+    })
+    return { message, tipType };
+  }
 
   /**
    * @api {Delete} /user/delete 删除
