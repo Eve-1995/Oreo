@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CanActivateChild, Router } from '@angular/router';
+import { AppSettingService } from '../service/setting.service';
 
 @Injectable()
 export class AdminGuard implements CanActivateChild {
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private settingService: AppSettingService
+  ) { }
   canActivateChild() {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const userInfo = this.settingService.user;
     if (userInfo && userInfo.level === 1) {
       return true;
     }
@@ -14,10 +18,13 @@ export class AdminGuard implements CanActivateChild {
 }
 
 @Injectable()
-export class UserGuard implements CanActivateChild {
-  constructor(private router: Router) { }
+export class LoginGuard implements CanActivateChild {
+  constructor(
+    private router: Router,
+    private settingService: AppSettingService
+  ) { }
   canActivateChild() {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const userInfo = this.settingService.user;
     if (userInfo) {
       return true;
     }

@@ -30,5 +30,5 @@ export class AuthRoutingModule { }
 export const authRoutedComponents = [
   AppLoginComponent,
   AppRegisterComponent
-]
+];
 

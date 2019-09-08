@@ -2,27 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { tap, catchError, mergeMap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
-import { TipType, AppGlobalService } from '../service/global.service';
+import { TipType } from '../service/global.service';
+import { AppSettingService } from '../service/setting.service';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
   constructor(
     private toastrService: NbToastrService,
-    private globalService: AppGlobalService,
-    private router: Router
+    private router: Router,
+    private settingService: AppSettingService
   ) { }
   server = environment.baseApi;
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.globalService.userInfo) {
-      this.globalService.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    }
     const newReq = req.clone({
       url: this.server + req.url,
-      setHeaders: { Authorization: `bearer ${this.globalService.userInfo ? this.globalService.userInfo.token : null}` }
+      setHeaders: { Authorization: `bearer ${localStorage.getItem('oreoToken')}` }
     });
     return next.handle(newReq).pipe(
       tap(event => {
@@ -36,11 +34,10 @@ export class AppInterceptor implements HttpInterceptor {
         if (err.status === 404) {
           this.toastrService.warning('这波问题很大...', '无法匹配到后端路由');
           return throwError(event);
-          // token 验证失败, 用于token过期
-        } else if (err.status === 401) {
-          this.globalService.userInfo = null;
-          localStorage.removeItem('userInfo');
-          this.globalService.logOut$.next();
+        } else if (err.status === 401) { // token 验证失败, 跳往登录
+          this.settingService.setUser(null);
+          localStorage.removeItem('oreoToken');
+          this.router.navigate(['auth/login']);
         }
         if (err.error) {
           this.handleMessage(err.error.tipType, err.error.message);

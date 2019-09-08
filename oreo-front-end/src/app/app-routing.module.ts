@@ -1,12 +1,11 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AdminGuard, UserGuard } from './global/guard/guard';
-import { AppGlobalService } from './global/service/global.service';
+import { AdminGuard, LoginGuard } from './global/guard/guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'visit', pathMatch: 'full' },
   { path: 'admin', loadChildren: 'app/pages/admin/admin.module#AdminModule', canActivateChild: [AdminGuard] },
-  { path: 'user', loadChildren: 'app/pages/user/user.module#UserModule', canActivateChild: [UserGuard] },
+  { path: 'user', loadChildren: 'app/pages/user/user.module#UserModule', canActivateChild: [LoginGuard] },
   { path: 'auth', loadChildren: 'app/pages/auth/auth.module#AuthModule' },
   { path: 'visit', loadChildren: 'app/pages/visit/visit.module#VisitModule' },
   // { path: 'markdown', loadChildren: 'app/pages/markdown/markdown.module#MarkdownModule' },
@@ -20,9 +19,7 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [
     AdminGuard,
-    UserGuard,
-    AppGlobalService,
-  ],
+    LoginGuard
+  ]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }

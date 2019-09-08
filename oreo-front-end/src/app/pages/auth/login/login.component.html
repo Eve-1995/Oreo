@@ -34,7 +34,7 @@
   </div>
 
   <div class="form-control-group accept-group tip-container">
-    <a class="forgot-password" routerLink="../request-password">忘记密码?</a>
+    <a href="javascript:;" class="forgot-password" (click)="forgetPassword()">忘记密码?</a>
   </div>
 
   <button nbButton fullWidth status="success" [disabled]="submitted || !form.valid" [class.btn-pulse]="submitted">

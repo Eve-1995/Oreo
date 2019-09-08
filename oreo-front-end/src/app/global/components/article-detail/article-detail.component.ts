@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { AppArticleDetailReplyComponent } from './article-detail-reply.component';
 import { AppGlobalService } from '../../service/global.service';
+import { AppSettingService } from '../../service/setting.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -37,7 +38,7 @@ export class AppArticleDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private service: AppArticleDetailService,
     private globalService: AppGlobalService,
-    private router: Router,
+    private settingService: AppSettingService,
     private dialogService: NbDialogService,
   ) { }
 
@@ -53,26 +54,18 @@ export class AppArticleDetailComponent implements OnInit {
 
   // 执行收藏或取消收藏操作
   public collect() {
-    if (!!this.globalService.userInfo) {
-      this.service.collect(this.articleDetail.id).subscribe(() => {
-        // 重新请求文章数据
-        this.getAticleInfo();
-      });
-    } else {
-      this.router.navigate(['/auth/login']);
-    }
+    this.service.collect(this.articleDetail.id).subscribe(() => {
+      // 重新请求文章数据
+      this.getAticleInfo();
+    });
   }
 
   // 执行点赞或取消点赞操作
   public like() {
-    if (!!this.globalService.userInfo) {
-      this.service.like(this.articleDetail.id).subscribe(() => {
-        // 重新请求文章数据
-        this.getAticleInfo();
-      });
-    } else {
-      this.router.navigate(['/auth/login']);
-    }
+    this.service.like(this.articleDetail.id).subscribe(() => {
+      // 重新请求文章数据
+      this.getAticleInfo();
+    });
   }
 
   // 评论输入框的失焦事件
@@ -141,7 +134,7 @@ export class AppArticleDetailComponent implements OnInit {
    * 判断用户是否已点赞、已收藏
    */
   private getActionStatus() {
-    if (!!this.globalService.userInfo) {
+    if (!!this.settingService.user) {
       this.service.actionStatus(this.articleDetail.id).subscribe((v: { hasCollect: boolean, hasLike: boolean }) => {
         this.hasCollection = v.hasCollect ? true : false;
         this.hasLike = v.hasLike ? true : false;

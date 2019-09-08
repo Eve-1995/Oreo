@@ -97,6 +97,10 @@ export class UserController {
     return { message, tipType };
   }
 
+  @Get('getUserInfoByToken')
+  async getUserInfoByToken(@RequestUser() user: User): Promise<any> {
+    return user;
+  }
   /**
    * @api {Delete} /user/delete 删除
    * @apiDescription 该操作将触发级联删除, 如用户的收藏记录等一并删除.

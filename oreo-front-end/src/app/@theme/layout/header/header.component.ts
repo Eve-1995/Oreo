@@ -3,6 +3,7 @@ import { NbSidebarService, NbMenuService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
 import { Router } from '@angular/router';
 import { AppGlobalService } from '../../../global/service/global.service';
+import { AppSettingService } from '../../../global/service/setting.service';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ export class AppHeaderComponent implements OnInit {
     private layoutService: LayoutService,
     private menuService: NbMenuService,
     private globalService: AppGlobalService,
+    private settingService: AppSettingService,
     private router: Router,
   ) { }
   userInfo: any;
@@ -33,7 +35,7 @@ export class AppHeaderComponent implements OnInit {
         break;
       case '登出':
         // this.userMenu = []; // 会报错
-        localStorage.removeItem('userInfo');
+        localStorage.removeItem('oreoToken');
         this.userInfo = null;
         this.router.navigate(['/visit']);
         window.location.reload();
@@ -50,7 +52,7 @@ export class AppHeaderComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.userInfo = this.globalService.userInfo;
+    this.userInfo = this.settingService.user;
     if (this.userInfo) {
       this.userMenu.push({ title: '个人中心' });
       if (this.userInfo.level === 1) this.userMenu.push({ title: '管理中心' });
@@ -68,7 +70,7 @@ export class AppHeaderComponent implements OnInit {
     });
 
     this.globalService.logOut$.subscribe(() => {
-      this.userInfo = this.globalService.userInfo;
+      this.userInfo = this.settingService.user;
     });
   }
 

@@ -8,22 +8,15 @@ export enum TipType {
   INFO
 }
 
-/**
- * 操作类API的返回格式
- */
-export interface OperationDTO {
-  tipType: TipType, // 文本提示类型
-  message: string // 文本提示内容
-}
-
 export interface Auth {
-  token: string,
-  id: number,
-  nickname: string,
-  level: number
+  token: string;
+  nickname: string;
+  level: number;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppGlobalService {
   /**
    *fix:当切换模块时,每次都会触发添加菜单操作.
@@ -39,7 +32,6 @@ export class AppGlobalService {
   watchUserInfo$ = new Subject();
   watchMask = new Subject();
 
-  userInfo: Auth;
   refreshMaskState(state: boolean) {
     this.watchMask.next(state);
   }

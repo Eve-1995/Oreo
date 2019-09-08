@@ -29,7 +29,6 @@ export class AppProfileComponent implements OnInit {
       this.phoneBoolean = !!this.user.phone;
       this.personalLoading = false;
       this.accountLoading = false;
-      this.globalService.watchUserInfo$.next(this.user.nickname);
     });
   }
 
@@ -48,6 +47,7 @@ export class AppProfileComponent implements OnInit {
     this.service.updateUser(this.user).subscribe(v => {
       this.ngOnInit();
       this.accountSubmitted = false;
+      this.globalService.watchUserInfo$.next(this.user.nickname);
     });
   }
 }
