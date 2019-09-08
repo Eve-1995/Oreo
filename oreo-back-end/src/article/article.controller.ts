@@ -1,9 +1,11 @@
 
-import { Get, Controller, Post, Body, Delete, Query, HttpException } from '@nestjs/common';
+import { Get, Controller, Post, Body, Delete, Query, HttpException, UseGuards } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
 import { DeleteResult } from 'typeorm';
+import { AdminGuard } from 'src/others/auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('article')
 export class ArticleController {
   constructor(
@@ -27,7 +29,7 @@ export class ArticleController {
    *    }
    *  ]
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -40,7 +42,7 @@ export class ArticleController {
    *   "tipType": "1",
    *   "message": "修改成功"
    * }
-   *  
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -49,6 +51,7 @@ export class ArticleController {
    * }
    */
   @Post('save')
+  @UseGuards(AuthGuard(), AdminGuard)
   async save(@Body() dto: Article): Promise<TipMessageDTO> {
     const flag = dto.id ? true : false;
     let tipType: number;
@@ -67,7 +70,7 @@ export class ArticleController {
 
   /**
    * @api {Get} /article/findTableInfo 获取全部文章信息
-   * @apiDescription 用于[管理中心]的表格数据  
+   * @apiDescription 用于[管理中心]的表格数据
    * @apiGroup Article
    *
    * @apiParam {String} [name] 文章名
@@ -75,7 +78,7 @@ export class ArticleController {
    * {
    *  "name": "ng"
    * }
-   * 
+   *
    * @apiSuccess {Number} id 类别id
    * @apiUse LCCAmountDTO
    * @apiSuccessExample  {json} Response-Example
@@ -88,6 +91,7 @@ export class ArticleController {
    * }]
    */
   @Get('findTableInfo')
+  @UseGuards(AuthGuard(), AdminGuard)
   async findTableInfo(@Query() query): Promise<Article[]> {
     const name = query.name;
     return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
@@ -102,14 +106,14 @@ export class ArticleController {
    * {
    *  "id": "1",
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -118,8 +122,9 @@ export class ArticleController {
    * }
    */
   @Delete('delete')
+  @UseGuards(AuthGuard(), AdminGuard)
   async delete(@Query() request): Promise<any> {
-    await this.service.delete(request.id)
+    await this.service.delete(request.id);
     let message: string;
     let tipType: number;
     await this.service.delete(request.id).then((v: DeleteResult) => {
@@ -143,8 +148,8 @@ export class ArticleController {
             message: '发生未知错误, 请私信博主错误信息([article, delete])'
           }, 500);
         }
-      })
-    })
+      });
+    });
     return { tipType, message };
   }
 
@@ -157,7 +162,7 @@ export class ArticleController {
    * {
    *  "id": "1"
    * }
-   * 
+   *
    * @apiSuccess {Number} name 类别名
    * @apiSuccess {Object} articles 文章列表
    * @apiSuccess {Object} articles.id 文章id
@@ -192,7 +197,7 @@ export class ArticleController {
           commentAmount: item.comments.length,
         });
       });
-    })
+    });
     return { name, articles };
   }
 
@@ -206,7 +211,7 @@ export class ArticleController {
    * {
    *  "id": "1"
    * }
-   * 
+   *
    * @apiSuccess {Number} id 文章id
    * @apiSuccess {String} name 文章名
    * @apiSuccess {String} content 文章内容
@@ -228,14 +233,14 @@ export class ArticleController {
   async findBasicInfo(@Query() request): Promise<any> {
     const serviceData = await this.service.findDetailById(request.id);
     return {
-      'id': serviceData.id,
-      'name': serviceData.name,
-      'createTime': serviceData.createTime,
-      'updateTime': serviceData.updateTime,
-      'content': serviceData.content,
-      'likeAmount': serviceData.likeUsers.length,
-      'collectAmount': serviceData.users.length,
-      'commentAmount': serviceData.comments.length,
+      id: serviceData.id,
+      name: serviceData.name,
+      createTime: serviceData.createTime,
+      updateTime: serviceData.updateTime,
+      content: serviceData.content,
+      likeAmount: serviceData.likeUsers.length,
+      collectAmount: serviceData.users.length,
+      commentAmount: serviceData.comments.length,
     };
   }
 
@@ -249,8 +254,8 @@ export class ArticleController {
    * {
    *  "id": "1"
    * }
-   * 
-   * @apiSuccess {Number} id 
+   *
+   * @apiSuccess {Number} id
    * @apiSuccess {String} name 文章名
    * @apiSuccess {String} keywords 文章关键词
    * @apiSuccess {String} content 文章内容
@@ -279,6 +284,7 @@ export class ArticleController {
    * }
    */
   @Get('findDetail')
+  @UseGuards(AuthGuard(), AdminGuard)
   async findDetail(@Query() query): Promise<any> {
     return await this.service.findBasicInfo(query.id);
   }

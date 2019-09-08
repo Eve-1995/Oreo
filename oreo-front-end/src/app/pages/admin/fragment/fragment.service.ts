@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 export class Fragment {
   id: number;
   name: string;
-  title: string;
+  describe: string;
 }
 
 @Injectable()

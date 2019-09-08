@@ -34,8 +34,8 @@ export class AppFragmentComponent extends AppAdminComponent implements OnInit, A
         editable: false,
         filter: false,
       },
-      title: {
-        title: '碎片标题',
+      describe: {
+        title: '碎片描述',
         editable: false,
         filter: false,
       },

@@ -14,7 +14,10 @@ import { AuthModule } from 'src/auth/auth.module';
         TypeOrmModule.forFeature([Comment, Fragment]),
         forwardRef(() => AuthModule)
     ],
-    providers: [CommentService, FragmentService],
+    providers: [
+        CommentService,
+        FragmentService
+    ],
     controllers: [CommentController],
 })
 export class CommentModule {

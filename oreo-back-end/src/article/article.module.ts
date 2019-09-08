@@ -5,9 +5,13 @@ import { ArticleService } from './article.service';
 import { ArticleController } from './article.controller';
 import { Classification } from 'src/classification/classification.entity';
 import { User } from 'src/user/user.entity';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Article, Classification, User])],
+    imports: [
+        PassportModule.register({ defaultStrategy: 'jwt' }),
+        TypeOrmModule.forFeature([Article, Classification, User])
+    ],
     providers: [ArticleService],
     controllers: [ArticleController],
 })

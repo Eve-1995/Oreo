@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export interface User {
+export interface UserCoreInfo {
   nickname: string;
   level: number;
 }
@@ -9,10 +9,10 @@ export interface User {
   providedIn: 'root'
 })
 export class AppSettingService {
-  private _user: User;
+  private _user: UserCoreInfo;
 
-  public setUser: (user: User) => void = (user) => this._user = user;
-  get user(): User {
+  public setUser: (user: UserCoreInfo) => void = (user) => this._user = user;
+  get user(): UserCoreInfo {
     return this._user;
   }
 }

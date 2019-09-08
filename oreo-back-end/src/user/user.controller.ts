@@ -84,6 +84,7 @@ export class UserController {
     return name !== undefined ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
+  // 该API暂时不写文档, 后期要大改这个功能点
   @Post('update')
   async update(@Body() dto: User, @RequestUser() user: User): Promise<any> {
     let message: string;
@@ -93,13 +94,27 @@ export class UserController {
     await this.service.save(dto).then(() => {
       message = '修改成功';
       tipType = TipType.SUCCESS;
-    })
+    });
     return { message, tipType };
   }
 
+  /**
+   * @api {Get} /user/getUserInfoByToken 根据token获取用户信息
+   * @apiDescription 该操作仅在项目初始化时会触发.
+   * @apiGroup User
+   * 
+   * @apiSuccessExample  {json} Response-Example
+   * {
+   *   "nickname": "Eve",
+   *   "level": 0
+   * }
+   */
   @Get('getUserInfoByToken')
   async getUserInfoByToken(@RequestUser() user: User): Promise<any> {
-    return user;
+    return {
+      nickname: user.nickname,
+      level: user.level
+    };
   }
   /**
    * @api {Delete} /user/delete 删除

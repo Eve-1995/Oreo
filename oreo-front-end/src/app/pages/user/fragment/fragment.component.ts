@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FragmentService } from './fragment.service';
-import { AppGlobalService } from '../../../global/service/global.service';
 
 @Component({
   templateUrl: './fragment.component.html',
@@ -9,46 +7,18 @@ import { AppGlobalService } from '../../../global/service/global.service';
   providers: [FragmentService],
 })
 export class AppFragmentComponent implements OnInit {
-  public fragments = [{
-    img: '../../../assets/images/fragment.jpg',
-    title: '再次见你时, 发现了隐藏的秘密',
-    subTitle: '四魂之玉 I'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 II'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 III'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 III'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 III'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 III'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 III'
-  }, {
-    img: '../../../assets/images/fragment.jpg',
-    title: '爱要大声说出来',
-    subTitle: '四魂之玉 III'
-  }];
+  public fragments = [];
 
   constructor(
-    private router: Router,
-    private appGlobalService: AppGlobalService,
-    private fragmentService: FragmentService,
+    private fragmentService: FragmentService
   ) { }
 
   ngOnInit(): void {
+    this.fragmentService.findAll().subscribe(v => {
+      this.fragments = v;
+      this.fragments.forEach(fragment => {
+        fragment.img = '../../../assets/images/fragment.jpg';
+      });
+    });
   }
 }

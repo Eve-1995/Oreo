@@ -21,7 +21,7 @@ export class Fragment {
   @Column({
     comment: '标题, 爱要大声说出来'
   })
-  title: string;
+  describe: string;
 
   @ManyToMany(type => User, user => user.fragments)
   users: User[];

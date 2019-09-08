@@ -896,90 +896,6 @@ define({ "api": [
       "examples": [
         {
           "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([fragment, delete])\"\n}",
-          "type": "json"
-        }
-      ],
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "../src/fragment/fragment.controller.ts",
-    "groupTitle": "Classification",
-    "name": "DeleteClassificationDelete"
-  },
-  {
-    "type": "Delete",
-    "url": "/classification/delete",
-    "title": "删除",
-    "group": "Classification",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>文章id</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example",
-          "content": "{\n \"id\": \"1\",\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
-          "type": "json"
-        }
-      ],
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Response-Example",
           "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([classification, delete])\"\n}",
           "type": "json"
         }
@@ -1076,84 +992,6 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "../src/classification/classification.controller.ts",
-    "groupTitle": "Classification",
-    "name": "GetClassificationFinddetail"
-  },
-  {
-    "type": "Get",
-    "url": "/classification/findDetail",
-    "title": "获取特定类别信息",
-    "group": "Classification",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>类别id</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example",
-          "content": "{\n \"id\": \"1\",\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>类别id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>类别名</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "keywords",
-            "description": "<p>关键词</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "createTime",
-            "description": "<p>创建时间</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "updateTime",
-            "description": "<p>更新时间</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"id\": 1,\n  \"createTime\": \"2019-05-01T09:07:24.093Z\",\n  \"updateTime\": \"2019-05-04T15:55:57.000Z\",\n  \"name\": \"C语言\",\n  \"keywords\": \"[\\\"速度快\\\",\\\"原生\\\"]\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "../src/fragment/fragment.controller.ts",
     "groupTitle": "Classification",
     "name": "GetClassificationFinddetail"
   },
@@ -1333,183 +1171,9 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "../src/fragment/fragment.controller.ts",
-    "groupTitle": "Classification",
-    "name": "GetClassificationFindtableinfo"
-  },
-  {
-    "type": "Get",
-    "url": "/classification/findTableInfo",
-    "title": "获取全部类别信息",
-    "group": "Classification",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "name",
-            "description": "<p>类别名</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example",
-          "content": "{\n \"name\": \"ng\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>类别id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "articleAmount",
-            "description": "<p>文章总数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "likeAmount",
-            "description": "<p>点赞总数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "collectAmount",
-            "description": "<p>收藏总数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "commentAmount",
-            "description": "<p>评论总数</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "[{\n  \"id\": 1,\n  \"name\": \"C语言\",\n  \"articleAmount\": 6,\n  \"likeAmount\": 16,\n  \"collectAmount\": 22,\n  \"commentAmount\": 22\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
     "filename": "../src/classification/classification.controller.ts",
     "groupTitle": "Classification",
     "name": "GetClassificationFindtableinfo"
-  },
-  {
-    "type": "Post",
-    "url": "/classification/save",
-    "title": "新增",
-    "group": "Classification",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>文章名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "keywords",
-            "description": "<p>关键词</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example   ",
-          "content": "{\n \"name\": \"Typescript VS Javascript\",\n \"keywords\": \"[\"可维护性\",\"语法糖\"]\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"修改成功\"\n}",
-          "type": "json"
-        }
-      ],
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Response-Example",
-          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([fragment, save])\"\n}",
-          "type": "json"
-        }
-      ],
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "tipType",
-            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>提示文本</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "../src/fragment/fragment.controller.ts",
-    "groupTitle": "Classification",
-    "name": "PostClassificationSave"
   },
   {
     "type": "Post",
@@ -1853,6 +1517,356 @@ define({ "api": [
     "filename": "../src/comment/comment.controller.ts",
     "groupTitle": "Comment",
     "name": "PostCommentSave"
+  },
+  {
+    "type": "Delete",
+    "url": "/fragment/delete",
+    "title": "删除",
+    "group": "Fragment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>碎片id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"删除成功\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([fragment, delete])\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Fragment",
+    "name": "DeleteFragmentDelete"
+  },
+  {
+    "type": "Get",
+    "url": "/fragment/findDetail",
+    "title": "获取特定碎片信息",
+    "group": "Fragment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>类别id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"id\": \"1\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>碎片id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "name",
+            "description": "<p>碎片名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "describe",
+            "description": "<p>碎片描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "usersAmount",
+            "description": "<p>已获取该碎片的用户数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n \"id\": 1,\n \"name\": \"只若初见\",\n \"describe\": \"如果时间定格, 就不会人走茶凉\",\n \"usersAmount\": 0\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Fragment",
+    "name": "GetFragmentFinddetail"
+  },
+  {
+    "type": "Get",
+    "url": "/fragment/findTableInfo",
+    "title": "获取全部类别信息",
+    "group": "Fragment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>类别名</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"name\": \"只若初见\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>碎片id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "name",
+            "description": "<p>碎片名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "describe",
+            "description": "<p>碎片描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "usersAmount",
+            "description": "<p>已获取该碎片的用户数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createTime",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updateTime",
+            "description": "<p>更新时间</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "[{\n  \"id\": 1,\n  \"name\": \"只若初见\",\n  \"describe\": \"如果时间定格, 就不会人走茶凉\",\n  \"usersAmount\": 0\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Fragment",
+    "name": "GetFragmentFindtableinfo"
+  },
+  {
+    "type": "Post",
+    "url": "/fragment/save",
+    "title": "新增",
+    "group": "Fragment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>碎片名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "describe",
+            "description": "<p>碎片描述</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n \"name\": \"只若初见\",\n \"describe\": \"如果时间定格, 就不会人走茶凉\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"添加成功\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"1\",\n  \"message\": \"修改成功\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"tipType\": \"3\",\n  \"message\": \"发生未知错误, 请私信博主错误信息([fragment, save])\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "tipType",
+            "description": "<p>弹窗类型 1: 成功 2: 警告 3: 危险 4: 通知</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>提示文本</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "../src/fragment/fragment.controller.ts",
+    "groupTitle": "Fragment",
+    "name": "PostFragmentSave"
   },
   {
     "type": "Delete",
@@ -2421,6 +2435,26 @@ define({ "api": [
     "filename": "../src/user/user.controller.ts",
     "groupTitle": "User",
     "name": "GetUserGetuser"
+  },
+  {
+    "type": "Get",
+    "url": "/user/getUserInfoByToken",
+    "title": "根据token获取用户信息",
+    "description": "<p>该操作仅在项目初始化时会触发.</p>",
+    "group": "User",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "{\n  \"nickname\": \"Eve\",\n  \"level\": 0\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "../src/user/user.controller.ts",
+    "groupTitle": "User",
+    "name": "GetUserGetuserinfobytoken"
   },
   {
     "type": "GMet",

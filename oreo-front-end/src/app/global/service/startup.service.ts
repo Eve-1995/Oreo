@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppGlobalService } from './global.service';
-import { zip } from 'rxjs';
+import { AppSettingService, UserCoreInfo } from './setting.service';
 
 
 /**
@@ -11,13 +10,14 @@ import { zip } from 'rxjs';
 export class StartupService {
   constructor(
     private httpClient: HttpClient,
-    private globalService: AppGlobalService
+    private settingService: AppSettingService
   ) { }
 
   load(): Promise<boolean> {
     const userInfo$ = this.httpClient.get(`user/getUserInfoByToken`);
     return new Promise((resolve, _reject) => {
-      zip(userInfo$).subscribe(v => {
+      userInfo$.subscribe((v: UserCoreInfo) => {
+        this.settingService.setUser(v);
         resolve(true);
       },
         () => {

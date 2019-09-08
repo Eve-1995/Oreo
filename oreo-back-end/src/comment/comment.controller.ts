@@ -53,7 +53,7 @@ export class CommentController {
     let tipType: number;
     // 彩蛋
     if (dto.content === '人工智能') {
-      await this.fragmentService.saveUser(1, user.id).then(() => {
+      await this.fragmentService.saveUser('爱要大声说出来', user.id).then(() => {
         tipType = TipType.SUCCESS;
         message = '恭喜你发现了彩蛋!快去个人中心看看吧~!';
       });

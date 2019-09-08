@@ -1,13 +1,13 @@
 <div class="fragment-container">
-  <ng-container *ngFor="let item of fragments;let first = first;">
-    <div class="item" [ngClass]="{'active': first}">
+  <ng-container *ngFor="let item of fragments;">
+    <div class="item" [ngClass]="{'active': item.got}">
       <img [src]="item.img">
       <div class="text-container">
         <div class="title">
-          {{item.title}}
+          {{item.name}}
         </div>
         <div class="sub-title">
-          {{item.subTitle}}
+          {{item.describe}}
         </div>
       </div>
     </div>

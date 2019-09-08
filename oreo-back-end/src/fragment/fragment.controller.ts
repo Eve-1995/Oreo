@@ -6,24 +6,25 @@ import { FragmentService } from './fragment.service';
 import { Fragment } from './fragment.entity';
 import { AdminGuard } from 'src/others/auth.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { RequestUser } from 'src/others/decorator';
+import { User } from 'src/user/user.entity';
 
 @Controller('fragment')
-@UseGuards(AuthGuard())
 export class FragmentController {
   constructor(
     private readonly service: FragmentService
   ) { }
 
   /**
-   * @api {Post} /classification/save 新增
-   * @apiGroup Classification
+   * @api {Post} /fragment/save 新增
+   * @apiGroup Fragment
    *
-   * @apiParam {String} name 文章名
-   * @apiParam {String} keywords 关键词   
-   * @apiParamExample {json} Request-Example   
+   * @apiParam {String} name 碎片名称
+   * @apiParam {String} describe 碎片描述
+   * @apiParamExample {json} Request-Example
    * {
-   *  "name": "Typescript VS Javascript",
-   *  "keywords": "["可维护性","语法糖"]"
+   *  "name": "只若初见",
+   *  "describe": "如果时间定格, 就不会人走茶凉"
    * }
    * 
    * @apiUse UniversalSuccessDTO
@@ -38,8 +39,13 @@ export class FragmentController {
    *   "tipType": "1",
    *   "message": "修改成功"
    * }
-   *  
+   * 
    * @apiUse UniversalErrorDTO
+   * @apiErrorExample  {json} Response-Example
+   * {
+   *   "tipType": "2",
+   *   "message": "碎片名称不能重复"
+   * }
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "3",
@@ -47,14 +53,29 @@ export class FragmentController {
    * }
    */
   @Post('save')
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard(), AdminGuard)
   async save(@Body() dto: Fragment): Promise<TipMessageDTO> {
-    const flag = dto.id ? true : false;
+    let action: 'edit' | 'create' = 'create';
+    if (dto.id) {
+      action = 'edit';
+    }
     let tipType: number;
     let message: string;
-    await this.service.save(dto).then(v => {
-      tipType = TipType.SUCCESS;
-      message = flag ? '修改成功' : '添加成功';
+    await this.service.save(dto, action).then(v => {
+      if (v) {
+        tipType = TipType.SUCCESS;
+        switch (action) {
+          case 'edit':
+            message = '修改成功';
+            break;
+          case 'create':
+            message = '添加成功';
+            break;
+        }
+      } else {
+        tipType = TipType.WARING;
+        message = '碎片名称不能重复';
+      }
     }).catch(() => {
       throw new HttpException({
         tipType: TipType.DANGER,
@@ -64,6 +85,7 @@ export class FragmentController {
     return { tipType, message };
   }
 
+  // 出于安全考虑, 该API不对外开放.
   // @Post('saveUser')
   // async saveUser(@Body() dto: { fragmentId: number, userId: number }): Promise<TipMessageDTO> {
   //   let tipType: number;
@@ -78,10 +100,10 @@ export class FragmentController {
   // }
 
   /**
-   * @api {Delete} /classification/delete 删除
-   * @apiGroup Classification
+   * @api {Delete} /fragment/delete 删除
+   * @apiGroup Fragment
    *
-   * @apiParam {String} id 文章id
+   * @apiParam {String} id 碎片id
    * @apiParamExample {json} Request-Example
    * {
    *  "id": "1",
@@ -102,6 +124,7 @@ export class FragmentController {
    * }
    */
   @Delete('delete')
+  @UseGuards(AuthGuard(), AdminGuard)
   async delete(@Query() request): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
@@ -120,37 +143,44 @@ export class FragmentController {
   }
 
   /**
-   * @api {Get} /classification/findTableInfo 获取全部类别信息
-   * @apiGroup Classification
+   * @api {Get} /fragment/findTableInfo 获取全部类别信息
+   * @apiGroup Fragment
    *
    * @apiParam {String} [name] 类别名
    * @apiParamExample {json} Request-Example
    * {
-   *  "name": "ng"
+   *  "name": "只若初见"
    * }
    * 
-   * @apiSuccess {Number} id 类别id
-   * @apiSuccess {Number} articleAmount 文章总数
-   * @apiUse LCCAmountDTO
+   * @apiSuccess {Number} id 碎片id
+   * @apiSuccess {Number} name 碎片名称
+   * @apiSuccess {Number} describe 碎片描述
+   * @apiSuccess {Number} usersAmount 已获取该碎片的用户数量
+   * @apiUse TimeDTO
    * @apiSuccessExample  {json} Response-Example
    * [{
    *   "id": 1,
-   *   "name": "C语言",
-   *   "articleAmount": 6,
-   *   "likeAmount": 16,
-   *   "collectAmount": 22,
-   *   "commentAmount": 22
+   *   "name": "只若初见",
+   *   "describe": "如果时间定格, 就不会人走茶凉",
+   *   "usersAmount": 0
    * }]
    */
   @Get('findTableInfo')
+  @UseGuards(AuthGuard(), AdminGuard)
   async findTableInfo(@Query() query): Promise<Fragment[]> {
     const name = query.name;
     return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
+  @Get('findAll')
+  @UseGuards(AuthGuard())
+  async findAll(@RequestUser() user: User): Promise<Fragment[]> {
+    return this.service.findAll(user.id);
+  }
+
   /**
-   * @api {Get} /classification/findDetail 获取特定类别信息
-   * @apiGroup Classification
+   * @api {Get} /fragment/findDetail 获取特定碎片信息
+   * @apiGroup Fragment
    *
    * @apiParam {String} id 类别id
    * @apiParamExample {json} Request-Example
@@ -158,20 +188,21 @@ export class FragmentController {
    *  "id": "1",
    * }
    * 
-   * @apiSuccess {Number} id 类别id
+   * @apiSuccess {Number} id 碎片id
+   * @apiSuccess {Number} name 碎片名称
+   * @apiSuccess {Number} describe 碎片描述
+   * @apiSuccess {Number} usersAmount 已获取该碎片的用户数量
    * @apiUse TimeDTO
-   * @apiSuccess {String} name 类别名
-   * @apiSuccess {String} keywords 关键词
    * @apiSuccessExample  {json} Response-Example
    * {
-   *   "id": 1,
-   *   "createTime": "2019-05-01T09:07:24.093Z",
-   *   "updateTime": "2019-05-04T15:55:57.000Z",
-   *   "name": "C语言",
-   *   "keywords": "[\"速度快\",\"原生\"]"
-   * }
+   *  "id": 1,
+   *  "name": "只若初见",
+   *  "describe": "如果时间定格, 就不会人走茶凉",
+   *  "usersAmount": 0
+   * ]
    */
   @Get('findDetail')
+  @UseGuards(AuthGuard(), AdminGuard)
   async findDetail(@Query() query): Promise<any> {
     return this.service.findDetail(query.id);
   }
