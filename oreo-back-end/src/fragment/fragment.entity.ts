@@ -13,12 +13,12 @@ export class Fragment {
   updateTime: Date;
 
   @Column({
-    comment: '碎片名称, 四魂之玉I'
+    comment: '碎片名称'
   })
   name: string;
 
   @Column({
-    comment: '标题, 爱要大声说出来'
+    comment: '碎片描述'
   })
   describe: string;
 

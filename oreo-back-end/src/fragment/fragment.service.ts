@@ -67,8 +67,7 @@ export class FragmentService {
 
   async findAll(id: number): Promise<Fragment[]> {
     const result = [];
-    let fragments: Fragment[] = [];
-    fragments = await this.repository
+    const fragments = await this.repository
       .createQueryBuilder('fragment')
       .leftJoinAndSelect('fragment.users', 'users').getMany();
     fragments.forEach(v => {
@@ -81,6 +80,18 @@ export class FragmentService {
         describe: v.describe,
         got
       });
+    });
+    return result;
+  }
+
+  // 查询用户是否已获得该碎片
+  async checkGotAlready(fragementName: string, userId: number): Promise<boolean> {
+    let result = true;
+    await this.repository.findOne({ name: fragementName }, { relations: ['users'] }).then(v => {
+      const index = v.users.findIndex(user => user.id === userId);
+      if (index === -1) {
+        result = false;
+      }
     });
     return result;
   }

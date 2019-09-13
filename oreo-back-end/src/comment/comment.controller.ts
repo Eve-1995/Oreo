@@ -46,8 +46,13 @@ export class CommentController {
   async save(@Body() dto: Comment, @RequestUser() user: User): Promise<TipMessageDTO> {
     let message: string;
     let tipType: number;
-    // 彩蛋
     if (dto.content === '人工智能') {
+      const exist = await this.fragmentService.checkGotAlready('爱要大声说出来', user.id);
+      if (exist) {
+        tipType = TipType.WARING;
+        message = '已获得该彩蛋, 请勿重复!';
+        return { tipType, message };
+      }
       await this.fragmentService.saveUser('爱要大声说出来', user.id).then(() => {
         tipType = TipType.SUCCESS;
         message = '恭喜你发现了彩蛋!快去个人中心看看吧~!';
