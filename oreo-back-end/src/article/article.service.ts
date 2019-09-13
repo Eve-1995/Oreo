@@ -6,24 +6,19 @@ import { Classification } from 'src/classification/classification.entity';
 
 @Injectable()
 export class ArticleService {
-  constructor(
-    @InjectRepository(Article)
-    private readonly articleRepository: Repository<Article>,
-    @InjectRepository(Classification)
-    private readonly classificationRepository: Repository<Classification>) {
-  }
   /**
    * 新增文章
    * @param article 文章的实体
    */
   async save(dto: Article): Promise<any> {
-    let temp = await this.articleRepository.save(dto)
-    let article = await this.articleRepository.findOne(temp.id, { relations: ['classifications'] })
+    const temp = await this.articleRepository.save(dto);
+    const article = await this.articleRepository.findOne(temp.id, { relations: ['classifications'] });
     dto.classifications.forEach(v => {
       article.classifications.push(v);
-    })
+    });
     return await this.articleRepository.save(article);
   }
+
   /**
    * 查找文章的基本信息列表
    */
@@ -42,7 +37,7 @@ export class ArticleService {
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.users', 'users')
       .leftJoinAndSelect('article.likeUsers', 'likeUsers')
-      .leftJoinAndSelect('article.comments', 'comments')
+      .leftJoinAndSelect('article.comments', 'comments');
     articles = await (name ? query.where(`article.name like '%${name}%'`).getMany() : query.getMany());
     articles.forEach(v => {
       result.push({
@@ -51,10 +46,11 @@ export class ArticleService {
         likeAmount: v.likeUsers.length,
         collectAmount: v.users.length,
         commentAmount: v.comments.length
-      })
+      });
     });
     return result;
   }
+
   /**
    * 查找文章的详细信息
    */
@@ -64,6 +60,7 @@ export class ArticleService {
       relations: ['classifications']
     });
   }
+
   /**
    * 根据id删除文章
    * @param id 文章id
@@ -71,6 +68,7 @@ export class ArticleService {
   async delete(id: number): Promise<DeleteResult> {
     return await this.articleRepository.delete(id);
   }
+
   /**
    * 根据文章名查找(模糊查询)
    * @param name 文章名
@@ -102,7 +100,13 @@ export class ArticleService {
     return await this.articleRepository.findOne({
       relations: ['users', 'likeUsers', 'comments'],
       where: { id }
-    })
+    });
   }
 
+  constructor(
+    @InjectRepository(Article)
+    private readonly articleRepository: Repository<Article>,
+    @InjectRepository(Classification)
+    private readonly classificationRepository: Repository<Classification>) {
+  }
 }

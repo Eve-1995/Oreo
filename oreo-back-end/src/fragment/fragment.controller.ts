@@ -11,10 +11,6 @@ import { User } from 'src/user/user.entity';
 
 @Controller('fragment')
 export class FragmentController {
-  constructor(
-    private readonly service: FragmentService
-  ) { }
-
   /**
    * @api {Post} /fragment/save 新增
    * @apiGroup Fragment
@@ -26,7 +22,7 @@ export class FragmentController {
    *  "name": "只若初见",
    *  "describe": "如果时间定格, 就不会人走茶凉"
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -39,7 +35,7 @@ export class FragmentController {
    *   "tipType": "1",
    *   "message": "修改成功"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -108,14 +104,14 @@ export class FragmentController {
    * {
    *  "id": "1",
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -138,7 +134,7 @@ export class FragmentController {
           message: '发生未知错误, 请私信博主错误信息([fragment, delete])'
         }, 500);
       }
-    })
+    });
     return { tipType, message };
   }
 
@@ -151,7 +147,7 @@ export class FragmentController {
    * {
    *  "name": "只若初见"
    * }
-   * 
+   *
    * @apiSuccess {Number} id 碎片id
    * @apiSuccess {Number} name 碎片名称
    * @apiSuccess {Number} describe 碎片描述
@@ -172,6 +168,21 @@ export class FragmentController {
     return name ? this.service.findTableInfo(name) : this.service.findTableInfo();
   }
 
+  /**
+   * @api {Get} /fragment/findAll 获取碎片列表
+   * @description 该操作用于用户查看自己所获得的碎片大全
+   * @apiGroup Fragment
+   *
+   * @apiSuccess {Number} describe 碎片描述
+   * @apiSuccess {Number} got 是否已获得
+   * @apiSuccess {Number} name 碎片名称
+   * @apiSuccessExample  {json} Response-Example
+   * [{
+   *  "describe": 1,
+   *  "got": "如果时间定格, 就不会人走茶凉",
+   *  "name": "只若初见"
+   * }]
+   */
   @Get('findAll')
   @UseGuards(AuthGuard())
   async findAll(@RequestUser() user: User): Promise<Fragment[]> {
@@ -187,7 +198,7 @@ export class FragmentController {
    * {
    *  "id": "1",
    * }
-   * 
+   *
    * @apiSuccess {Number} id 碎片id
    * @apiSuccess {Number} name 碎片名称
    * @apiSuccess {Number} describe 碎片描述
@@ -199,11 +210,15 @@ export class FragmentController {
    *  "name": "只若初见",
    *  "describe": "如果时间定格, 就不会人走茶凉",
    *  "usersAmount": 0
-   * ]
+   * }
    */
   @Get('findDetail')
   @UseGuards(AuthGuard(), AdminGuard)
   async findDetail(@Query() query): Promise<any> {
     return this.service.findDetail(query.id);
   }
+
+  constructor(
+    private readonly service: FragmentService
+  ) { }
 }

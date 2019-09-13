@@ -3,7 +3,6 @@ import { Get, Controller, Post, Body, Delete, Query, HttpException, UseGuards } 
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
 import { TipMessageDTO, TipType } from 'src/others/response.dto';
-import { DeleteResult } from 'typeorm';
 import { AdminGuard } from 'src/others/auth.guard';
 import { AuthGuard } from '@nestjs/passport';
 @Controller('article')
@@ -127,7 +126,7 @@ export class ArticleController {
     await this.service.delete(request.id);
     let message: string;
     let tipType: number;
-    await this.service.delete(request.id).then((v: DeleteResult) => {
+    await this.service.delete(request.id).then(() => {
       // 日了狗了, 无论有没有删除成功返回的受影响行数都是0, 只能曲线救国了
       // if (v.raw.affectedRows > 0) {
       //   tipType = 1;

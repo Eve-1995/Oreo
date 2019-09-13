@@ -6,11 +6,6 @@ import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class FragmentService {
-  constructor(
-    @InjectRepository(Fragment)
-    private readonly repository: Repository<Fragment>
-  ) { }
-
   async save(fragment: Fragment, action: 'edit' | 'create'): Promise<boolean> {
     if (action === 'edit') {
       const findFragment = await this.repository.findOne({ name: fragment.name });
@@ -55,7 +50,7 @@ export class FragmentService {
     let fragments: Fragment[] = [];
     const query = this.repository
       .createQueryBuilder('fragment')
-      .leftJoinAndSelect('fragment.users', 'users')
+      .leftJoinAndSelect('fragment.users', 'users');
     fragments = await (name ? query.where(`fragment.name like '%${name}%'`).orWhere(`fragment.describe like '%${name}%'`).getMany() : query.getMany());
     fragments.forEach(v => {
       result.push({
@@ -89,4 +84,9 @@ export class FragmentService {
     });
     return result;
   }
+
+  constructor(
+    @InjectRepository(Fragment)
+    private readonly repository: Repository<Fragment>
+  ) { }
 }

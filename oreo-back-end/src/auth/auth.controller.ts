@@ -1,16 +1,11 @@
-import { Controller, Body, Post, HttpException } from "@nestjs/common";
-import { UserService } from "src/user/user.service";
-import { AuthService } from "./auth.service";
-import { User } from "src/user/user.entity";
-import { TipType } from "src/others/response.dto";
+import { Controller, Body, Post, HttpException } from '@nestjs/common';
+import { UserService } from 'src/user/user.service';
+import { AuthService } from './auth.service';
+import { User } from 'src/user/user.entity';
+import { TipType } from 'src/others/response.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private service: UserService,
-    private authService: AuthService
-  ) { }
-
   /**
    * @api {Post} /auth/login 登陆
    * @apiGroup Auth
@@ -22,7 +17,7 @@ export class AuthController {
    *  "phone": 123456789,
    *  "password": 123456789
    * }
-   * 
+   *
    * @apiSuccess {String} token 用户凭证
    * @apiSuccess {String} nickname 用户名
    * @apiSuccess {Number} level 用户类别 0:普通用户,1:管理员
@@ -32,14 +27,14 @@ export class AuthController {
    *   "nickname": "Eve",
    *   "level": 1
    * }
-   *  
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
    *   "tipType": "2",
    *   "message": "帐号或密码不正确"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -59,13 +54,13 @@ export class AuthController {
           }, 500);
         }
         result = v;
-      })
+      });
       const token = await this.authService.createToken(result);
       return {
         token,
         nickname: result.nickname,
         level: result.level
-      }
+      };
     } else if (user.phone && !user.password) {
       // 为该帐号发放奖励
       throw new HttpException({
@@ -95,7 +90,7 @@ export class AuthController {
    *  "phone": "123456789",
    *  "password": "huangmenji"
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -107,7 +102,7 @@ export class AuthController {
    *   "tipType": "2",
    *   "message": "手机号已存在"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample {json} Response-Example
    * {
@@ -120,7 +115,7 @@ export class AuthController {
     let tipType: number;
     let message: string;
     await this.service.save(dto).then(() => {
-      tipType = TipType.SUCCESS
+      tipType = TipType.SUCCESS;
       message = '注册成功';
     }).catch(e => {
       if (e.errno === 1062) {
@@ -134,7 +129,12 @@ export class AuthController {
           message: '发生未知错误, 请私信博主错误信息([auth, save])'
         }, 500);
       }
-    })
+    });
     return { tipType, message };
   }
+
+  constructor(
+    private service: UserService,
+    private authService: AuthService
+  ) { }
 }

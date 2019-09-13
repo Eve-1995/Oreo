@@ -8,12 +8,15 @@ import { User } from 'src/user/user.entity';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-    imports: [
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-        TypeOrmModule.forFeature([Article, Classification, User])
-    ],
-    providers: [ArticleService],
-    controllers: [ArticleController],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    TypeOrmModule.forFeature([Article, Classification, User])
+  ],
+  providers: [
+    ArticleService
+  ],
+  controllers: [
+    ArticleController
+  ],
 })
-export class ArticleModule {
-}
+export class ArticleModule { }

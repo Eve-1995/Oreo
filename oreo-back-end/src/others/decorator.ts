@@ -5,6 +5,4 @@ export interface RequestUserDTO {
     level: number;
 }
 
-export const RequestUser = createParamDecorator((data, req): RequestUserDTO => {
-    return req.user;
-});
+export const RequestUser = createParamDecorator((data, req): RequestUserDTO => req.user);

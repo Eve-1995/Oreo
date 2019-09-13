@@ -9,11 +9,6 @@ import { User } from 'src/user/user.entity';
 
 @Controller('comment')
 export class CommentController {
-  constructor(
-    private readonly fragmentService: FragmentService,
-    private readonly service: CommentService,
-  ) { }
-
   /**
    * @api {Post} /comment/save 添加评论
    * @apiGroup Comment
@@ -38,7 +33,7 @@ export class CommentController {
    *    "id": 16
    *  }
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -68,7 +63,6 @@ export class CommentController {
     }
   }
 
-
   /**
    * @api {Get} /comment/getCommentsByArticle 获取文章的评论列表
    * @apiGroup Comment
@@ -78,7 +72,7 @@ export class CommentController {
    * {
    *  "id": "6"
    * }
-   * 
+   *
    * @apiSuccess {Number} id 评论id
    * @apiSuccess {String} content 评论内容
    * @apiSuccess {String} createTime 创建时间
@@ -99,39 +93,39 @@ export class CommentController {
    * @apiSuccess {String} toUser.nickname 用户昵称
    * @apiSuccess {String} toUser.level 用户类别 0:普通用户,1:管理员
    * @apiSuccess {Number} rootCommentId 祖先评论id
-   * 
+   *
    * @apiSuccessExample  {json} Response-Example
-    [{
-      "id": 13,
-      "content": "第一篇文章收藏量有点高啊。。",
-      "createTime": "2019-05-04T16:21:40.187Z",
-      "fromUser":
-      {
-          "id": 16,
-          "nickname": "周家有女",
-          "level": 0
-      },
-      "children": [
-        {
-          "id": 42,
-          "content": "2",
-          "createTime": "2019-07-06T15:20:12.287Z",
-          "fromUser":
-          {
-              "id": 1,
-              "nickname": "Eve",
-              "level": 1
-          },
-          "toUser":
-          {
-              "id": 16,
-              "nickname": "周家有女",
-              "level": 0
-          },
-          "rootCommentId": 13
-        }
-      ]
-    }]
+   * [{
+   *   "id": 13,
+   *   "content": "第一篇文章收藏量有点高啊。。",
+   *   "createTime": "2019-05-04T16:21:40.187Z",
+   *   "fromUser":
+   *   {
+   *       "id": 16,
+   *       "nickname": "周家有女",
+   *       "level": 0
+   *   },
+   *   "children": [
+   *     {
+   *       "id": 42,
+   *       "content": "2",
+   *       "createTime": "2019-07-06T15:20:12.287Z",
+   *       "fromUser":
+   *       {
+   *           "id": 1,
+   *           "nickname": "Eve",
+   *           "level": 1
+   *       },
+   *       "toUser":
+   *       {
+   *           "id": 16,
+   *           "nickname": "周家有女",
+   *           "level": 0
+   *       },
+   *       "rootCommentId": 13
+   *     }
+   *   ]
+   * }]
    */
   @Get('getCommentsByArticle')
   async getCommentsByArticle(@Query() query): Promise<any> {
@@ -153,9 +147,10 @@ export class CommentController {
           level: item1.user.level
         },
         children: []
-      }
+      };
       unRootArr.forEach(item2 => {
         if (item2.rootComment) {
+          // tslint:disable-next-line: triple-equals
           if (item1.id == item2.rootComment.id) {
             const childObj = {
               id: item2.id,
@@ -172,7 +167,7 @@ export class CommentController {
                 level: item2.parentComment.user.level
               },
               rootCommentId: item1.id
-            }
+            };
             obj.children.push(childObj);
           }
         }
@@ -181,4 +176,9 @@ export class CommentController {
     });
     return result;
   }
+
+  constructor(
+    private fragmentService: FragmentService,
+    private service: CommentService,
+  ) { }
 }

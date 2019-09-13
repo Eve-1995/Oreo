@@ -12,7 +12,14 @@ import { AuthModule } from 'src/auth/auth.module';
     TypeOrmModule.forFeature([Fragment]),
     forwardRef(() => AuthModule)
   ],
-  providers: [FragmentService],
-  controllers: [FragmentController]
+  providers: [
+    FragmentService
+  ],
+  controllers: [
+    FragmentController
+  ],
+  exports: [
+    FragmentService
+  ]
 })
 export class FragmentModule { }

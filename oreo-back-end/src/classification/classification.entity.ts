@@ -14,7 +14,7 @@ export class Classification {
 
     @Column()
     name: string;
-        
+
     @ManyToMany(type => Article, article => article.classifications)
     @JoinTable()
     articles: Article[];

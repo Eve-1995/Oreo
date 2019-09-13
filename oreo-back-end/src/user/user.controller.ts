@@ -9,10 +9,6 @@ import { AdminGuard } from 'src/others/auth.guard';
 @Controller('user')
 @UseGuards(AuthGuard())
 export class UserController {
-  constructor(
-    private readonly service: UserService
-  ) { }
-
   /**
    * @api {Get} /user/findTableInfo 获取全部用户信息
    * @apiGroup User
@@ -49,13 +45,13 @@ export class UserController {
   /**
    * @api {Get} /user/findByFilter 根据用户名查找用户
    * @apiGroup User
-   * 
+   *
    * @apiParam {Number} name 用户名
    * @apiParamExample {json} Request-Example
    * {
    *  "name": "E"
    * }
-   * 
+   *
    * @apiUse UserDTO
    * @apiUse LCCAmountDTO
    * @apiSuccessExample  {json} Response-Example
@@ -102,7 +98,7 @@ export class UserController {
    * @api {Get} /user/getUserInfoByToken 根据token获取用户信息
    * @apiDescription 该操作仅在项目初始化时会触发.
    * @apiGroup User
-   * 
+   *
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "nickname": "Eve",
@@ -116,6 +112,7 @@ export class UserController {
       level: user.level
     };
   }
+
   /**
    * @api {Delete} /user/delete 删除
    * @apiDescription 该操作将触发级联删除, 如用户的收藏记录等一并删除.
@@ -126,14 +123,14 @@ export class UserController {
    * {
    *  "userId": "1",
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -156,14 +153,14 @@ export class UserController {
         tipType: TipType.DANGER,
         message: '发生未知错误, 请私信博主错误信息([user, delete])'
       }, 500);
-    })
+    });
     return { tipType, message };
   }
 
   /**
    * @api {Get} /user/getUser 获取登录用户信息
    * @apiGroup User
-   * 
+   *
    * @apiUse UserDTO
    * @apiUse LCCAmountDTO
    * @apiSuccessExample  {json} Response-Example
@@ -188,11 +185,11 @@ export class UserController {
    */
   @Get('getUser')
   async getUser(@RequestUser() user: User): Promise<any> {
-    let result = undefined;
+    let result;
     await this.service.getUserById(user.id).then(v => {
       v ? result = v : result = null;
-    })
-    if (result) delete result.password;
+    });
+    if (result) { delete result.password; }
     return result;
   }
 
@@ -206,7 +203,7 @@ export class UserController {
    * {
    *  "articleId": 6
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -226,8 +223,8 @@ export class UserController {
     await this.service.collect(user.id, dto.articleId).then((v: boolean) => {
       tipType = TipType.SUCCESS;
       message = v ? '收藏成功' : '取消收藏成功';
-    })
-    return { tipType, message }
+    });
+    return { tipType, message };
   }
 
   /**
@@ -240,7 +237,7 @@ export class UserController {
    * {
    *  "articleId": 6
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -260,8 +257,8 @@ export class UserController {
     await this.service.like(user.id, dto.articleId).then((v: boolean) => {
       tipType = TipType.SUCCESS;
       message = v ? '点赞成功' : '取消点赞成功';
-    })
-    return { tipType, message }
+    });
+    return { tipType, message };
   }
 
   /**
@@ -274,7 +271,7 @@ export class UserController {
    * {
    *  "articleId": "6"
    * }
-   * 
+   *
    * @apiSuccess {String} hasCollect 是否已收藏
    * @apiSuccess {String} hasLike 是否已点赞
    * @apiSuccessExample  {json} Response-Example
@@ -288,11 +285,11 @@ export class UserController {
     let hasCollect: boolean;
     let hasLike: boolean;
     await this.service.hasCollect(user.id, query.articleId).then(v => {
-      hasCollect = v ? true : false
-    })
+      hasCollect = v ? true : false;
+    });
     await this.service.hasLike(user.id, query.articleId).then(v => {
-      hasLike = v ? true : false
-    })
+      hasLike = v ? true : false;
+    });
     return { hasCollect, hasLike };
   }
 
@@ -305,7 +302,7 @@ export class UserController {
    * {
    *  "id": "1"
    * }
-   * 
+   *
    * @apiSuccess {Number} id 文章id
    * @apiSuccess {Number} name 文章名
    * @apiUse LCCAmountDTO
@@ -320,10 +317,14 @@ export class UserController {
    */
   @Get('getCollections')
   async getCollections(@RequestUser() user: User): Promise<any> {
-    let result = undefined;
+    let result;
     await this.service.getUserCollections(user.id).then(v => {
       result = v;
-    })
+    });
     return result;
   }
+
+  constructor(
+    private service: UserService
+  ) { }
 }

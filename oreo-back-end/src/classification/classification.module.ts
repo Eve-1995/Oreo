@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Classification } from './classification.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Classification])],
-    providers: [ClassificationService],
-    controllers: [ClassificationController],
+    imports: [
+        TypeOrmModule.forFeature([Classification])
+    ],
+    providers: [
+        ClassificationService
+    ],
+    controllers: [
+        ClassificationController
+    ],
 })
-export class ClassificationModule {
-}
+export class ClassificationModule { }

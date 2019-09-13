@@ -7,18 +7,16 @@ import { DeleteResult } from 'typeorm';
 
 @Controller('classification')
 export class ClassificationController {
-  constructor(private readonly service: ClassificationService) { }
-
   /**
    * @api {Post} /classification/save 新增
    * @apiGroup Classification
    *
    * @apiParam {String} name 文章名
-   * @apiParamExample {json} Request-Example   
+   * @apiParamExample {json} Request-Example
    * {
    *  "name": "Typescript VS Javascript",
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
@@ -31,7 +29,7 @@ export class ClassificationController {
    *   "tipType": "1",
    *   "message": "修改成功"
    * }
-   *  
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -65,14 +63,14 @@ export class ClassificationController {
    * {
    *  "id": "1",
    * }
-   * 
+   *
    * @apiUse UniversalSuccessDTO
    * @apiSuccessExample  {json} Response-Example
    * {
    *   "tipType": "1",
    *   "message": "删除成功"
    * }
-   * 
+   *
    * @apiUse UniversalErrorDTO
    * @apiErrorExample  {json} Response-Example
    * {
@@ -94,7 +92,7 @@ export class ClassificationController {
           message: '发生未知错误, 请私信博主错误信息([classification, delete])'
         }, 500);
       }
-    })
+    });
     return { tipType, message };
   }
 
@@ -107,7 +105,7 @@ export class ClassificationController {
    * {
    *  "name": "ng"
    * }
-   * 
+   *
    * @apiSuccess {Number} id 类别id
    * @apiSuccess {Number} articleAmount 文章总数
    * @apiUse LCCAmountDTO
@@ -136,7 +134,7 @@ export class ClassificationController {
    * {
    *  "id": "1",
    * }
-   * 
+   *
    * @apiSuccess {Number} id 类别id
    * @apiUse TimeDTO
    * @apiSuccess {String} name 类别名
@@ -156,7 +154,7 @@ export class ClassificationController {
   /**
    * @api {Get} /classification/findNames 获取类别名称
    * @apiGroup Classification
-   * 
+   *
    * @apiSuccess {Number} id 类别id
    * @apiUse TimeDTO
    * @apiSuccess {String} name 类别名
@@ -192,4 +190,8 @@ export class ClassificationController {
   async findFirst(): Promise<Classification> {
     return await this.service.findFirst();
   }
+
+  constructor(
+    private service: ClassificationService
+  ) { }
 }
