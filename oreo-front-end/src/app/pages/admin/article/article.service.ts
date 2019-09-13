@@ -19,10 +19,6 @@ export class ArticleClassificationDto {
 
 @Injectable()
 export class ArticleService {
-  constructor(
-    private httpClient: HttpClient
-  ) { }
-
   findTableInfo(name?: string): any {
     if (name) {
       const params = { name };
@@ -53,4 +49,8 @@ export class ArticleService {
     const params = { id };
     return this.httpClient.get(`article/findDetail`, { params });
   }
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 }

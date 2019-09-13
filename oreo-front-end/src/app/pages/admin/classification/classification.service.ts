@@ -19,10 +19,6 @@ export interface EditClassification extends CreateClassification {
 
 @Injectable()
 export class ClassificationService {
-  constructor(
-    private httpClient: HttpClient
-  ) { }
-
   findTableInfo(name?: string): any {
     if (name) {
       const params = { name };
@@ -53,4 +49,8 @@ export class ClassificationService {
   save(obj: CreateClassification): any {
     return this.httpClient.post(`classification/save`, obj);
   }
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 }

@@ -18,13 +18,6 @@ export class AppLoginComponent {
     this.toastrService.show('', '忘了就再注册一个, 懒得做这个功能');
   }
 
-  constructor(
-    private router: Router,
-    private settingService: AppSettingService,
-    private toastrService: NbToastrService,
-    private service: LoginService
-  ) { }
-
   public login(): void {
     this.submitted = true;
     this.service.login(this.user).subscribe((v: Auth) => {
@@ -38,4 +31,11 @@ export class AppLoginComponent {
       this.submitted = false;
     });
   }
+
+  constructor(
+    private router: Router,
+    private settingService: AppSettingService,
+    private toastrService: NbToastrService,
+    private service: LoginService
+  ) { }
 }

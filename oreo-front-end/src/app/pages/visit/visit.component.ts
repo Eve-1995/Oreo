@@ -18,16 +18,6 @@ export class VisitComponent implements OnInit {
   public navTitle = '';
   public menu = MENU_ITEMS;
 
-  constructor(
-    private appGlobalService: AppGlobalService,
-    private nBmenuService: NbMenuService,
-    private visitService: VisitService,
-  ) { }
-
-  ngOnInit(): void {
-    this.navigateToFirstArticle();
-  }
-
   // 当进入visit模块时
   private navigateToFirstArticle(): void {
     if (!this.appGlobalService.haveAddedMenu) {
@@ -57,5 +47,15 @@ export class VisitComponent implements OnInit {
       title: undefined,
       hidden: true,
     }]);
+  }
+
+  constructor(
+    private appGlobalService: AppGlobalService,
+    private nBmenuService: NbMenuService,
+    private visitService: VisitService,
+  ) { }
+
+  ngOnInit(): void {
+    this.navigateToFirstArticle();
   }
 }

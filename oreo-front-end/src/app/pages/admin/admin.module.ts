@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-import { AdminRoutingModule, adminRoutedComponents } from './admin-routing.module';
+import { AdminRoutingModule, adminRouteComponents } from './admin-routing.module';
 import { NbDialogModule } from '@nebular/theme';
 import { ThemeModule } from '../../@theme/theme.module';
 import { httpInterceptorProviders } from '../../global/interceptor';
@@ -21,7 +21,7 @@ const CHILD_COMPONENT = [
     MarkdownlModule // 新建文章时使用的markdown
   ],
   declarations: [
-    ...adminRoutedComponents,
+    ...adminRouteComponents,
     ...CHILD_COMPONENT
   ],
   entryComponents: [

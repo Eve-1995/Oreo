@@ -1,5 +1,4 @@
 <nb-card class="list-card">
-  <!-- <nb-card-header>{{name}}</nb-card-header> -->
   <nb-card-body>
     <nb-list>
       <nb-list-item *ngFor="let item of items" (click)="checkArticle(item.id)">
@@ -20,7 +19,7 @@
         </span>
       </nb-list-item>
       <nb-list-item *ngIf="items.length==0">
-        暂时还没有收藏~
+        你真是懒的一b, 一个收藏也没有.
       </nb-list-item>
     </nb-list>
   </nb-card-body>

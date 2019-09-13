@@ -9,8 +9,6 @@ export class Fragment {
 
 @Injectable()
 export class FragmentService {
-  constructor(private httpClient: HttpClient) { }
-
   save(obj: Fragment): any {
     return this.httpClient.post(`fragment/save`, obj);
   }
@@ -41,4 +39,8 @@ export class FragmentService {
     };
     return this.httpClient.delete(`fragment/delete`, body);
   }
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 }

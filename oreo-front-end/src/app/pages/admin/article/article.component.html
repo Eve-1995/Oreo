@@ -5,14 +5,14 @@
   <nb-card-body [nbSpinner]="loading" nbSpinnerMessage="加载中..." nbSpinnerSize="large">
     <form class="form-inline filter">
       <div class="filter-input">
-          <input
-            #searchInput="ngModel"
-            type="text"
-            nbInput
-            placeholder="搜索文章名称"
-            autocomplete="off"
-            name="filterInfo"
-            [(ngModel)]="filterInfo">
+        <input
+          #searchInput="ngModel"
+          type="text"
+          nbInput
+          placeholder="搜索文章名称"
+          autocomplete="off"
+          name="filterInfo"
+          [(ngModel)]="filterInfo">
       </div>
       <div class="filter-button-group">
         <button nbButton status="success" (click)="create(dialog)">新增</button>

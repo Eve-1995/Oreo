@@ -16,55 +16,6 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 export class AppClassificationComponent extends AppAdminComponent implements OnInit, AfterViewInit {
   public selectedObj = new Classification();
 
-  constructor(
-    private dialogService: NbDialogService,
-    private classificationService: ClassificationService,
-    private toastrService: NbToastrService
-  ) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.tableSettings.columns = {
-      name: {
-        title: '类别名称',
-        filter: false,
-      },
-      articleAmount: {
-        title: '文章总数',
-        editable: false,
-        filter: false,
-      },
-      likeAmount: {
-        title: '点赞总数',
-        editable: false,
-        filter: false,
-      },
-      collectAmount: {
-        title: '收藏总数',
-        editable: false,
-        filter: false,
-      },
-      commentAmount: {
-        title: '评论总数',
-        editable: false,
-        filter: false,
-      },
-    };
-    this.classificationService.findTableInfo().subscribe(value => {
-      this.tableSource.load(value);
-      this.loading = false;
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.searchInput.valueChanges
-      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.fetchTableList();
-      });
-  }
-
   public create() {
     this.dialogService.open(AppCreateOrEditClassificationComponent, { context: { operation: 'create' }, ...this.dialogSettings }).onClose.subscribe((v: CreateClassification) => {
       if (v) {
@@ -112,5 +63,54 @@ export class AppClassificationComponent extends AppAdminComponent implements OnI
       this.tableSource.load(value);
       this.loading = false;
     });
+  }
+
+  constructor(
+    private dialogService: NbDialogService,
+    private classificationService: ClassificationService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
+      name: {
+        title: '类别名称',
+        filter: false,
+      },
+      articleAmount: {
+        title: '文章总数',
+        editable: false,
+        filter: false,
+      },
+      likeAmount: {
+        title: '点赞总数',
+        editable: false,
+        filter: false,
+      },
+      collectAmount: {
+        title: '收藏总数',
+        editable: false,
+        filter: false,
+      },
+      commentAmount: {
+        title: '评论总数',
+        editable: false,
+        filter: false,
+      },
+    };
+    this.classificationService.findTableInfo().subscribe(value => {
+      this.tableSource.load(value);
+      this.loading = false;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.fetchTableList();
+      });
   }
 }

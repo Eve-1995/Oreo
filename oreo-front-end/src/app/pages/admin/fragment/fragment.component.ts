@@ -19,46 +19,6 @@ export class AppFragmentComponent extends AppAdminComponent implements OnInit, A
 
   @ViewChild('searchInput') searchInput: NgModel;
 
-  constructor(
-    public fragmentService: FragmentService,
-    private dialogService: NbDialogService,
-    private toastrService: NbToastrService
-  ) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.tableSettings.columns = {
-      name: {
-        title: '碎片名称',
-        editable: false,
-        filter: false,
-      },
-      describe: {
-        title: '碎片描述',
-        editable: false,
-        filter: false,
-      },
-      usersAmount: {
-        title: '用户获得数',
-        editable: false,
-        filter: false,
-      }
-    };
-    this.fragmentService.findTableInfo().subscribe(value => {
-      this.tableSource.load(value);
-      this.loading = false;
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.searchInput.valueChanges
-      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.fetchTableList();
-      });
-  }
-
   public create(dialog: TemplateRef<any>): void {
     this.dialogService.open(AppCreateOrEditFragmentComponent, { context: { operation: 'create' }, ...this.dialogSettings }).onClose.subscribe((v: Fragment) => {
       if (v) {
@@ -104,5 +64,45 @@ export class AppFragmentComponent extends AppAdminComponent implements OnInit, A
       this.tableSource.load(value);
       this.loading = false;
     });
+  }
+
+  constructor(
+    public fragmentService: FragmentService,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
+      name: {
+        title: '碎片名称',
+        editable: false,
+        filter: false,
+      },
+      describe: {
+        title: '碎片描述',
+        editable: false,
+        filter: false,
+      },
+      usersAmount: {
+        title: '用户获得数',
+        editable: false,
+        filter: false,
+      }
+    };
+    this.fragmentService.findTableInfo().subscribe(value => {
+      this.tableSource.load(value);
+      this.loading = false;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.fetchTableList();
+      });
   }
 }

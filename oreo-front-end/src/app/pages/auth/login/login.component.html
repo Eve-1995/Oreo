@@ -1,17 +1,25 @@
 <h1 id="title" class="title">登陆</h1>
-<form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title">
-
+<form #form="ngForm" aria-labelledby="title" (ngSubmit)="login()">
   <div class="form-control-group">
     <label class="label" for="input-phone">手机:</label>
-    <input nbInput fullWidth [(ngModel)]="user.phone" #phone="ngModel" name="phone" id="input-phone"
-      pattern="1[0-9]{10}" placeholder="请输入11位手机号" autofocus
+    <input
+      #phone="ngModel"
+      nbInput
+      fullWidth
+      autofocus
+      required
+      name="phone"
+      id="input-phone"
+      pattern="1[0-9]{10}"
+      placeholder="请输入11位手机号"
       [status]="phone.dirty ? (phone.invalid  ? 'danger' : 'success') : ''"
-      [attr.aria-invalid]="phone.invalid && phone.touched ? true : null" required>
+      [attr.aria-invalid]="phone.invalid && phone.touched ? true : null"
+      [(ngModel)]="user.phone">
     <ng-container *ngIf="phone.invalid && phone.touched">
-      <p class="error-message" *ngIf="phone.errors?.required">
+      <p *ngIf="phone.errors?.required" class="error-message">
         必填项!
       </p>
-      <p class="error-message" *ngIf="phone.errors?.pattern">
+      <p *ngIf="phone.errors?.pattern" class="error-message">
         手机号必须是11位.
       </p>
     </ng-container>
@@ -19,10 +27,20 @@
 
   <div class="form-control-group">
     <label class="label" for="input-password">密码:</label>
-    <input nbInput fullWidth [(ngModel)]="user.password" #password="ngModel" name="password" type="password"
-      id="input-password" placeholder="请输入6~16位密码"
-      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''" required [minlength]="6"
-      [maxlength]="16" [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+    <input
+      #password="ngModel"
+      nbInput
+      fullWidth
+      required
+      name="password"
+      type="password"
+      id="input-password"
+      placeholder="请输入6~16位密码"
+      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+      [minlength]="6"
+      [maxlength]="16"
+      [attr.aria-invalid]="password.invalid && password.touched ? true : null"
+      [(ngModel)]="user.password">
     <ng-container *ngIf="password.invalid && password.touched ">
       <p class="error-message" *ngIf="password.errors?.required">
         必填项!

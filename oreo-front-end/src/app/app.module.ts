@@ -36,11 +36,12 @@ const APPINIT_PROVIDERS: Provider[] = [
     CoreModule.forRoot(),
     // NgxElectronModule
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [
+    AppComponent
+  ],
   providers: [
     ...APPINIT_PROVIDERS,
     { provide: APP_BASE_HREF, useValue: '/' }
   ],
 })
-export class AppModule {
-}
+export class AppModule { }

@@ -1,12 +1,20 @@
 <h1 id="title" class="title">注册</h1>
-<form (ngSubmit)="register()" #form="ngForm" aria-labelledby="title">
+<form #form="ngForm" aria-labelledby="title" (ngSubmit)="register()">
 
   <div class="form-control-group">
     <label class="label" for="input-nickname" class="required">昵称:</label>
-    <input nbInput fullWidth [(ngModel)]="user.nickname" #nickname="ngModel" name="nickname" id="input-nickname"
-      placeholder="请输入1~8位昵称" [maxlength]="8"
+    <input
+      #nickname="ngModel"
+      nbInput
+      fullWidth
+      name="nickname"
+      id="input-nickname"
+      placeholder="请输入1~8位昵称"
+      required
+      [maxlength]="8"
       [status]="nickname.dirty ? (nickname.invalid  ? 'danger' : 'success') : ''"
-      [attr.aria-invalid]="nickname.invalid && nickname.touched ? true : null" required>
+      [attr.aria-invalid]="nickname.invalid && nickname.touched ? true : null"
+      [(ngModel)]="user.nickname">
     <ng-container *ngIf="nickname.invalid && nickname.touched">
       <p class="error-message" *ngIf="nickname.errors?.required">
         必填项!
@@ -16,14 +24,23 @@
 
   <div class="form-control-group">
     <label class="label" for="input-phone" class="required">手机:</label>
-    <input nbInput fullWidth [(ngModel)]="user.phone" #phone="ngModel" name="phone" id="input-phone"
-      pattern="1[0-9]{10}" placeholder="请输入11位手机号" [status]="phone.dirty ? (phone.invalid  ? 'danger' : 'success') : ''"
-      [attr.aria-invalid]="phone.invalid && phone.touched ? true : null" required>
+    <input
+      #phone="ngModel"
+      nbInput
+      fullWidth
+      name="phone"
+      id="input-phone"
+      pattern="1[0-9]{10}"
+      required
+      placeholder="请输入11位手机号"
+      [status]="phone.dirty ? (phone.invalid  ? 'danger' : 'success') : ''"
+      [attr.aria-invalid]="phone.invalid && phone.touched ? true : null"
+      [(ngModel)]="user.phone">
     <ng-container *ngIf="phone.invalid && phone.touched">
-      <p class="error-message" *ngIf="phone.errors?.required">
+      <p *ngIf="phone.errors?.required" class="error-message">
         必填项!
       </p>
-      <p class="error-message" *ngIf="phone.errors?.pattern">
+      <p *ngIf="phone.errors?.pattern" class="error-message">
         手机号必须是11位.
       </p>
     </ng-container>
@@ -31,15 +48,25 @@
 
   <div class="form-control-group">
     <label class="label" for="input-password" class="required">密码:</label>
-    <input nbInput fullWidth [(ngModel)]="user.password" #password="ngModel" name="password" type="password"
-      id="input-password" placeholder="请输入6~16位密码"
-      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''" required [minlength]="6"
-      [maxlength]="16" [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+    <input
+      #password="ngModel"
+      required
+      nbInput
+      fullWidth
+      name="password"
+      type="password"
+      id="input-password"
+      placeholder="请输入6~16位密码"
+      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+      [minlength]="6"
+      [maxlength]="16"
+      [attr.aria-invalid]="password.invalid && password.touched ? true : null"
+      [(ngModel)]="user.password">
     <ng-container *ngIf="password.invalid && password.touched ">
-      <p class="error-message" *ngIf="password.errors?.required">
+      <p *ngIf="password.errors?.required" class="error-message">
         必填项!
       </p>
-      <p class="error-message" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+      <p *ngIf="password.errors?.minlength || password.errors?.maxlength" class="error-message">
         密码至少需要6位,至多为16位.
       </p>
     </ng-container>
@@ -47,41 +74,90 @@
   <section *ngIf="moreInfo">
     <div class="form-control-group">
       <label class="label" for="input-realname">真实姓名:</label>
-      <input nbInput fullWidth [(ngModel)]="user.realname" name="realname" type="text" id="input-realname"
-        [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="realname"
+        type="text"
+        id="input-realname"
+        [maxlength]="32"
+        [(ngModel)]="user.realname">
     </div>
     <div class="form-control-group">
       <label class="label" for="input-email">邮箱:</label>
-      <input nbInput fullWidth [(ngModel)]="user.email" name="email" type="text" id="input-email" [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="email"
+        type="text"
+        id="input-email" [maxlength]="32">
     </div>
-    <div class="form-control-group">
+    <div 
+        [(ngModel)]="user.email"class="form-control-group">
       <label class="label" for="input-liveCity">现居城市:</label>
-      <input nbInput fullWidth [(ngModel)]="user.liveCity" name="liveCity" type="text" id="input-liveCity"
-        [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="liveCity"
+        type="text"
+        id="input-liveCity"
+        [maxlength]="32"
+        [(ngModel)]="user.liveCity">
     </div>
     <div class="form-control-group">
       <label class="label" for="input-hometown">家乡:</label>
-      <input nbInput fullWidth [(ngModel)]="user.hometown" name="hometown" type="text" id="input-hometown"
-        [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="hometown"
+        type="text"
+        id="input-hometown"
+        [maxlength]="32"
+        [(ngModel)]="user.hometown">
     </div>
     <div class="form-control-group">
       <label class="label" for="input-univercity">毕业院校:</label>
-      <input nbInput fullWidth [(ngModel)]="user.univercity" name="univercity" type="text" id="input-univercity"
-        [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="univercity"
+        type="text"
+        id="input-univercity"
+        [maxlength]="32"
+        [(ngModel)]="user.univercity">
     </div>
     <div class="form-control-group">
       <label class="label" for="input-eduacation">学历:</label>
-      <input nbInput fullWidth [(ngModel)]="user.eduacation" name="eduacation" type="text" id="input-eduacation"
-        [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="eduacation"
+        type="text"
+        id="input-eduacation"
+        [maxlength]="32"
+        [(ngModel)]="user.eduacation">
     </div>
     <div class="form-control-group">
       <label class="label" for="input-company">公司:</label>
-      <input nbInput fullWidth [(ngModel)]="user.company" name="company" type="text" id="input-company"
-        [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="company"
+        type="text"
+        id="input-company"
+        [maxlength]="32"
+        [(ngModel)]="user.company">
     </div>
     <div class="form-control-group">
       <label class="label" for="input-birth">出生日期:</label>
-      <input nbInput fullWidth [(ngModel)]="user.birth" name="birth" type="text" id="input-birth" [maxlength]="32">
+      <input
+        nbInput
+        fullWidth
+        name="birth"
+        type="text"
+        id="input-birth"
+        [maxlength]="32"
+        [(ngModel)]="user.birth">
     </div>
   </section>
   <div class="form-control-group accept-group">
@@ -89,10 +165,22 @@
       阅读并接受
       <a href="javascript:;" (click)="checkContrast()"><strong>《Oreo隐私权保护声明》</strong></a>
     </nb-checkbox>
-    <a class="forgot-password" href="javascript:;" (click)="moreInfo = !moreInfo" *ngIf="!moreInfo">想让作者更了解你?</a>
-    <a class="forgot-password" href="javascript:;" (click)="moreInfo = !moreInfo" *ngIf="moreInfo">了解个毛?没兴趣!</a>
+    <a
+      *ngIf="!moreInfo"
+      class="forgot-password"
+      href="javascript:;"
+      (click)="moreInfo = !moreInfo">想让作者更了解你?</a>
+    <a
+      *ngIf="moreInfo"
+      class="forgot-password"
+      href="javascript:;"
+      (click)="moreInfo = !moreInfo">了解个毛?没兴趣!</a>
   </div>
-  <button nbButton fullWidth status="success" [disabled]="!contrast._value || submitted || !form.valid"
+  <button
+    nbButton
+    fullWidth
+    status="success"
+    [disabled]="!contrast._value || submitted || !form.valid"
     [class.btn-pulse]="submitted">
     注册
   </button>

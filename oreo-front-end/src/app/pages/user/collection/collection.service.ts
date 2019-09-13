@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CollectionService {
-  constructor(
-    private httpClient: HttpClient
-  ) { }
-
   getCollections(): any {
     return this.httpClient.get(`user/getCollections`);
   }
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 }

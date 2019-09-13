@@ -6,7 +6,6 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
 import { AppAdminComponent } from '../basic/admin-basic.component';
 import { Classification } from '../classification/classification.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-article',
@@ -17,55 +16,6 @@ import { Router } from '@angular/router';
 export class AppArticleComponent extends AppAdminComponent implements OnInit, AfterViewInit {
   public selectedObj = new ArticleClassificationDto();
   public classificationGroup: Classification[];
-
-  constructor(
-    private dialogService: NbDialogService,
-    private articleService: ArticleService,
-    private toastrService: NbToastrService,
-    private router: Router
-  ) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.tableSettings.columns = {
-      name: {
-        title: '文章名称',
-        filter: false,
-        width: '30%'
-      },
-      likeAmount: {
-        title: '点赞总数',
-        editable: false,
-        filter: false,
-      },
-      collectAmount: {
-        title: '收藏总数',
-        editable: false,
-        filter: false,
-      },
-      commentAmount: {
-        title: '评论总数',
-        editable: false,
-        filter: false,
-      }
-    };
-    this.articleService.findTableInfo().subscribe(value => {
-      this.tableSource.load(value);
-      this.loading = false;
-    });
-    this.articleService.getClassificationNames().subscribe(value => {
-      this.classificationGroup = value;
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.searchInput.valueChanges
-      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.fetchTableList();
-      });
-  }
 
   public create(dialog: TemplateRef<any>): void {
     // this.selectedObj = new ArticleClassificationDto();
@@ -150,5 +100,53 @@ export class AppArticleComponent extends AppAdminComponent implements OnInit, Af
       this.tableSource.load(value);
       this.loading = false;
     });
+  }
+
+  constructor(
+    private dialogService: NbDialogService,
+    private articleService: ArticleService,
+    private toastrService: NbToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.tableSettings.columns = {
+      name: {
+        title: '文章名称',
+        filter: false,
+        width: '30%'
+      },
+      likeAmount: {
+        title: '点赞总数',
+        editable: false,
+        filter: false,
+      },
+      collectAmount: {
+        title: '收藏总数',
+        editable: false,
+        filter: false,
+      },
+      commentAmount: {
+        title: '评论总数',
+        editable: false,
+        filter: false,
+      }
+    };
+    this.articleService.findTableInfo().subscribe(value => {
+      this.tableSource.load(value);
+      this.loading = false;
+    });
+    this.articleService.getClassificationNames().subscribe(value => {
+      this.classificationGroup = value;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.fetchTableList();
+      });
   }
 }

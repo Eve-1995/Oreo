@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { UserService, User } from './user.service';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { NbToastStatus } from '@nebular/theme/components/toastr/model';
-import { Subscription, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppConfirmComponent } from '../../../global/components/confirm/confirm.component';
 import { AppAdminComponent } from '../basic/admin-basic.component';
@@ -15,6 +13,29 @@ import { AppAdminComponent } from '../basic/admin-basic.component';
 })
 export class AppUserComponent extends AppAdminComponent implements OnInit, AfterViewInit {
   public selectedObj = new User();
+
+  public delete(): void {
+    if (!this.selectedObj.id) {
+      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
+    } else {
+      this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
+        if (value === 'yes') {
+          this.userService.delete(this.selectedObj.id).subscribe(() => {
+            this.selectedObj = new User();
+            this.fetchTableList();
+          });
+        }
+      });
+    }
+  }
+
+  private fetchTableList(): void {
+    this.loading = true;
+    this.userService.findTableInfo(this.filterInfo).subscribe(value => {
+      this.tableSource.load(value);
+      this.loading = false;
+    });
+  }
 
   constructor(
     private userService: UserService,
@@ -79,28 +100,5 @@ export class AppUserComponent extends AppAdminComponent implements OnInit, After
       .subscribe(() => {
         this.fetchTableList();
       });
-  }
-
-  public delete(): void {
-    if (!this.selectedObj.id) {
-      this.toastrService.show('', '请选择记录', { status: NbToastStatus.WARNING });
-    } else {
-      this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
-        if (value === 'yes') {
-          this.userService.delete(this.selectedObj.id).subscribe(() => {
-            this.selectedObj = new User();
-            this.fetchTableList();
-          });
-        }
-      });
-    }
-  }
-
-  private fetchTableList(): void {
-    this.loading = true;
-    this.userService.findTableInfo(this.filterInfo).subscribe(value => {
-      this.tableSource.load(value);
-      this.loading = false;
-    });
   }
 }

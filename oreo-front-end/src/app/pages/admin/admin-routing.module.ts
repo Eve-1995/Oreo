@@ -24,17 +24,21 @@ const routes: Routes = [
       { path: 'user', component: AppUserComponent },
       { path: 'fragment', component: AppFragmentComponent },
       { path: '**', redirectTo: 'classification' },
-    ],
+    ]
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  imports: [
+    RouterModule.forChild(routes)
+  ],
+  exports: [
+    RouterModule
+  ]
 })
 export class AdminRoutingModule { }
 
-export const adminRoutedComponents = [
+export const adminRouteComponents = [
   AdminComponent,
   AppClassificationComponent,
   AppArticleComponent,

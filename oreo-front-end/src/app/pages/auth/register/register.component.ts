@@ -14,12 +14,6 @@ export class AppRegisterComponent {
   public submitted: boolean = false;
   public moreInfo = false;
 
-  constructor(
-    private router: Router,
-    private service: RegistService,
-    private dialogService: NbDialogService
-  ) { }
-
   public register(): void {
     this.submitted = true;
     this.service.save(this.user).subscribe(() => {
@@ -32,4 +26,10 @@ export class AppRegisterComponent {
   public checkContrast() {
     this.dialogService.open(AppContrastComponent);
   }
+
+  constructor(
+    private router: Router,
+    private service: RegistService,
+    private dialogService: NbDialogService
+  ) { }
 }

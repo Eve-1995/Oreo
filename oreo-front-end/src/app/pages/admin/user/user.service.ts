@@ -7,8 +7,6 @@ export class User {
 
 @Injectable()
 export class UserService {
-  constructor(private httpClient: HttpClient) { }
-
   findTableInfo(name?: string): any {
     if (name) {
       const params = { name };
@@ -25,4 +23,8 @@ export class UserService {
     };
     return this.httpClient.delete(`user/delete`, body);
   }
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 }
