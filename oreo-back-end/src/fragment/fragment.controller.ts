@@ -218,6 +218,25 @@ export class FragmentController {
     return this.service.findDetail(query.id);
   }
 
+  // 白送的彩蛋, 内测结束后会修改此彩蛋的获取方式
+  @Get('easyEgg')
+  @UseGuards(AuthGuard())
+  async easyEgg(@RequestUser() user: User): Promise<TipMessageDTO> {
+    let message: string;
+    let tipType: number;
+    const exist = await this.service.checkGotAlready('我正在看着你', user.id);
+    if (exist) {
+      tipType = TipType.WARING;
+      message = '已获得该彩蛋, 请勿重复!';
+      return { tipType, message };
+    }
+    await this.service.saveUser('我正在看着你', user.id).then(() => {
+      tipType = TipType.SUCCESS;
+      message = '恭喜你发现了彩蛋!快去个人中心看看吧~!';
+    });
+    return { tipType, message };
+  }
+
   constructor(
     private readonly service: FragmentService
   ) { }

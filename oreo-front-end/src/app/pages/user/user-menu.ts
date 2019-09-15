@@ -13,7 +13,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   // },
   {
     title: '我的收藏',
-    icon: 'nb-star',
+    icon: 'nb-list',
     link: '/user/collection',
   },
   {

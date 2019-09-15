@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-footer',
-  styleUrls: ['./footer.component.scss'],
-  template: `
-    Powered by <b><a href="javascript:;">Eve</a></b> ©2019 | 如需转载请标明出处 | 前端交流群:925528845
-  `,
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.scss']
 })
 export class AppFooterComponent {
+  public getEasyEgg(): void {
+    this.httpClient.get('fragment/easyEgg').subscribe();
+  }
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 }

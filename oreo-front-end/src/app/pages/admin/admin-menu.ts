@@ -18,7 +18,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: '碎片管理',
-    icon: 'nb-person',
+    icon: 'nb-star',
     link: '/admin/fragment',
   },
 ];

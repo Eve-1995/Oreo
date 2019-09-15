@@ -7,8 +7,8 @@ import { AppSettingService } from '../../../global/service/setting.service';
 
 @Component({
   selector: 'app-header',
-  styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class AppHeaderComponent implements OnInit {
   @Input() title: string;

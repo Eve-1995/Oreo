@@ -8,11 +8,12 @@ import { ContrastService } from './contrast.service';
   providers: [ContrastService],
 })
 export class AppContrastComponent {
+  public value: string;
+
   constructor(
-    public ref: NbDialogRef<AppContrastComponent>,
     private service: ContrastService,
+    public ref: NbDialogRef<AppContrastComponent>
   ) {
     this.value = this.service.getContrast();
   }
-  value;
 }
