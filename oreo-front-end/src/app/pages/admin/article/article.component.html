@@ -47,14 +47,17 @@
           <input required type="text" class="form-control" id="title" name="title" [(ngModel)]="selectedObj.name">
         </div>
         <div class="form-group">
-          <label for="content">文章内容(Markdown)</label>
+          <label for="content">
+            文章内容(Markdown)
+            <a href="javascript:;" (click)="openMarkdown()">开启全屏模式</a>
+          </label>
           <textarea required rows="5" nbInput fullWidth class="form-control" id="content" name="content"
             [(ngModel)]="selectedObj.content"></textarea>
         </div>
         <div class="form-group">
           <label for="classification">文章类别</label>
           <nb-select multiple [(selected)]="selectedObj.classificationIds" id="classification">
-            <nb-option [value]="item.id" *ngFor="let item of classificationGroup">{{item.name}}</nb-option>
+            <nb-option [value]="item.id" *ngFor="let item of classificationGroup">{{ item.name }}</nb-option>
           </nb-select>
         </div>
       </form>

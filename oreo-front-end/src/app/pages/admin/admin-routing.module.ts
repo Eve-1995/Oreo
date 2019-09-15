@@ -5,13 +5,14 @@ import { AppClassificationComponent } from './classification/classification.comp
 import { AppArticleComponent } from './article/article.component';
 import { AppUserComponent } from './user/user.component';
 import { AppFragmentComponent } from './fragment/fragment.component';
-import { MarkdownComponent } from '../../global/components/markdown/markdown.component';
+import { CreateOrEditArticleComponent } from './article/create/create-or-edit-article.component';
 
 const routes: Routes = [
+  // 之所以单独开个路由对象是因为不想依附在 AdminComponent 之下
   {
-    path: 'create',
+    path: 'create-or-edit',
     children: [
-      { path: 'article', component: MarkdownComponent }
+      { path: 'article', component: CreateOrEditArticleComponent }
     ]
   },
   {
@@ -43,5 +44,6 @@ export const adminRouteComponents = [
   AppClassificationComponent,
   AppArticleComponent,
   AppUserComponent,
-  AppFragmentComponent
+  AppFragmentComponent,
+  CreateOrEditArticleComponent
 ];

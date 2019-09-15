@@ -90,7 +90,9 @@
         fullWidth
         name="email"
         type="text"
-        id="input-email" [maxlength]="32">
+        id="input-email"
+        [maxlength]="32"
+        [(ngModel)]="user.email">
     </div>
     <div 
         [(ngModel)]="user.email"class="form-control-group">

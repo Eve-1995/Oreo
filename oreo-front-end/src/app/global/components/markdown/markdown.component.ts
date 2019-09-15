@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EditorConfig } from './editor-md.directive';
 
 @Component({
@@ -11,7 +11,7 @@ export class MarkdownComponent implements OnInit {
     element.remove();
   }
   conf = new EditorConfig();
-  markdown = '### title1';
+  markdown = '';
 
   // 同步属性内容
   syncModel(str): void {

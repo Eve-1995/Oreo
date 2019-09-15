@@ -102,27 +102,11 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [
-      true,
-      "attribute",
-      "ngx",
-      "camelCase"
-    ],
     "component-selector": [
       true,
       "element",
       "app",
       "kebab-case"
-    ],
-    "ban": [
-      true,
-      "eval",
-      "fit",
-      "fdescribe",
-      {
-        "name": "$",
-        "message": "please don't"
-      }
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,

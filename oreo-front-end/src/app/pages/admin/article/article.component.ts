@@ -18,26 +18,26 @@ export class AppArticleComponent extends AppAdminComponent implements OnInit, Af
   public classificationGroup: Classification[];
 
   public create(dialog: TemplateRef<any>): void {
-    // this.selectedObj = new ArticleClassificationDto();
-    // this.dialogService.open(dialog, {
-    //   context: {
-    //     operation: 'create',
-    //   },
-    // }).onClose.subscribe(value => {
-    //   if (value === 'yes') {
-    //     const arr = [];
-    //     this.selectedObj.classificationIds.forEach(item => {
-    //       arr.push({ id: item });
-    //     });
-    //     this.selectedObj.classifications = arr;
-    //     this.articleService.save(this.selectedObj).subscribe(() => {
-    //       this.fetchTableList();
-    //     });
-    //   }
-    // });
-    // this.router.navigate(['/admin/create/article']);
-    window.open('http://localhost:4200/admin/create/article', '_blank');
+    this.selectedObj = new ArticleClassificationDto();
+    this.dialogService.open(dialog, {
+      context: {
+        operation: 'create',
+      },
+    }).onClose.subscribe(value => {
+      if (value === 'yes') {
+        const arr = [];
+        this.selectedObj.classificationIds.forEach(item => {
+          arr.push({ id: item });
+        });
+        this.selectedObj.classifications = arr;
+        this.articleService.save(this.selectedObj).subscribe(() => {
+          this.fetchTableList();
+        });
+      }
+    });
   }
+
+  public openMarkdown: () => void = () => window.open(`${window.location.origin}/admin/create-or-edit/article `, '_blank');
 
   public edit(dialog: TemplateRef<any>): void {
     if (!this.selectedObj.id) {
