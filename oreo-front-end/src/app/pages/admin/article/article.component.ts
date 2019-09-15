@@ -85,7 +85,7 @@ export class AppArticleComponent extends AppAdminComponent implements OnInit, Af
     } else {
       this.dialogService.open(AppConfirmComponent).onClose.subscribe(value => {
         if (value === 'yes') {
-          this.articleService.delete(this.selectedObj.id).subscribe(result => {
+          this.articleService.delete(this.selectedObj.id).subscribe(() => {
             this.selectedObj = new ArticleClassificationDto();
             this.fetchTableList();
           });

@@ -5,6 +5,7 @@ import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { AppArticleDetailReplyComponent } from './article-detail-reply.component';
 import { AppGlobalService } from '../../service/global.service';
 import { AppSettingService } from '../../service/setting.service';
+import { AppConfirmComponent } from '../confirm/confirm.component';
 
 @Component({
   selector: 'app-article-detail',
@@ -19,7 +20,6 @@ export class AppArticleDetailComponent implements OnInit {
   public hasLike = false;
   public comments;
   public commentContent = '';
-  // 必须初始化对象, 因使用了interface来定义DTO, 而模板中也使用到了该对象, 不初始化会导致运行时错误
   public articleDetail = {
     id: undefined,
     name: undefined,
@@ -34,19 +34,19 @@ export class AppArticleDetailComponent implements OnInit {
   private articleId: any;
 
   constructor(
-    public toastrService: NbToastrService,
     private activatedRoute: ActivatedRoute,
     private service: AppArticleDetailService,
     private globalService: AppGlobalService,
     private settingService: AppSettingService,
     private dialogService: NbDialogService,
+    public toastrService: NbToastrService
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.id) {
         this.articleId = queryParams.id;
-        this.getAticleInfo();
+        this.getArticleInfo();
         this.getComments();
       }
     });
@@ -54,18 +54,36 @@ export class AppArticleDetailComponent implements OnInit {
 
   // 执行收藏或取消收藏操作
   public collect() {
-    this.service.collect(this.articleDetail.id).subscribe(() => {
-      // 重新请求文章数据
-      this.getAticleInfo();
-    });
+    if (this.hasCollection) {
+      this.dialogService.open(AppConfirmComponent, { context: { content: '确认要取消收藏吗?' } }).onClose.subscribe((v: string) => {
+        if (v) {
+          this.service.collect(this.articleDetail.id).subscribe(() => {
+            this.getArticleInfo();
+          });
+        }
+      });
+    } else {
+      this.service.collect(this.articleDetail.id).subscribe(() => {
+        this.getArticleInfo();
+      });
+    }
   }
 
   // 执行点赞或取消点赞操作
   public like() {
-    this.service.like(this.articleDetail.id).subscribe(() => {
-      // 重新请求文章数据
-      this.getAticleInfo();
-    });
+    if (this.hasLike) {
+      this.dialogService.open(AppConfirmComponent, { context: { content: '确认要取消点赞吗?' } }).onClose.subscribe((v: string) => {
+        if (v) {
+          this.service.like(this.articleDetail.id).subscribe(() => {
+            this.getArticleInfo();
+          });
+        }
+      });
+    } else {
+      this.service.like(this.articleDetail.id).subscribe(() => {
+        this.getArticleInfo();
+      });
+    }
   }
 
   // 评论输入框的失焦事件
@@ -85,7 +103,7 @@ export class AppArticleDetailComponent implements OnInit {
       this.service.saveComment(this.commentContent, this.articleId).subscribe(() => {
         this.getComments();
         this.commentContent = '';
-        this.getAticleInfo();
+        this.getArticleInfo();
       });
     }
   }
@@ -123,7 +141,7 @@ export class AppArticleDetailComponent implements OnInit {
   /**
    * 获取'文章'的基本信息
    */
-  private getAticleInfo() {
+  private getArticleInfo() {
     this.service.findBasicInfo(this.articleId).subscribe(value => {
       this.articleDetail = value;
       this.getActionStatus();
