@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Article } from 'src/article/article.entity';
-import { Comment } from 'src/comment/comment.entity';
-import { Fragment } from 'src/fragment/fragment.entity';
+import { Comment } from '../comment/comment.entity';
+import { Fragment } from '../fragment/fragment.entity';
+import { Article } from '../article/article.entity';
 
 @Entity()
 export class User {

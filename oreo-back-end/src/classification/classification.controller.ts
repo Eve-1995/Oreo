@@ -2,7 +2,7 @@
 import { Get, Controller, Post, Body, Delete, Query, HttpException } from '@nestjs/common';
 import { ClassificationService } from './classification.service';
 import { Classification } from './classification.entity';
-import { TipMessageDTO, TipType } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from '../others/response.dto';
 import { DeleteResult } from 'typeorm';
 
 @Controller('classification')

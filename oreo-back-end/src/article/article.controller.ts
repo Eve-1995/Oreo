@@ -2,8 +2,8 @@
 import { Get, Controller, Post, Body, Delete, Query, HttpException, UseGuards } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
-import { TipMessageDTO, TipType } from 'src/others/response.dto';
-import { AdminGuard } from 'src/others/auth.guard';
+import { TipMessageDTO, TipType } from '../others/response.dto';
+import { AdminGuard } from '../others/auth.guard';
 import { AuthGuard } from '@nestjs/passport';
 @Controller('article')
 export class ArticleController {

@@ -4,7 +4,7 @@ import { FragmentService } from './fragment.service';
 import { FragmentController } from './fragment.controller';
 import { Fragment } from './fragment.entity';
 import { PassportModule } from '@nestjs/passport';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [

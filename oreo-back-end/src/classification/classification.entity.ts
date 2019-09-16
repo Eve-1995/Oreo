@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
-import { Article } from 'src/article/article.entity';
+import { Article } from '../article/article.entity';
 
 @Entity()
 export class Classification {

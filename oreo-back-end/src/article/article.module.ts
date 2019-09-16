@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Article } from './article.entity';
 import { ArticleService } from './article.service';
 import { ArticleController } from './article.controller';
-import { Classification } from 'src/classification/classification.entity';
-import { User } from 'src/user/user.entity';
+import { Classification } from '../classification/classification.entity';
+import { User } from '../user/user.entity';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({

@@ -1,17 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { User } from './user.entity';
-import { Article } from 'src/article/article.entity';
+import { Article } from '../article/article.entity';
 
 @Injectable()
 export class UserService {
-  constructor(
-    // private articleService: ArticleService,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>
-  ) { }
-
   async save(user: User): Promise<User> {
     return this.userRepository.save(user);
   }
@@ -21,8 +15,8 @@ export class UserService {
    * @param userId 用户id
    * @param articleId 文章id
    */
-  async collect(userId: number, articleId: number): Promise<Boolean> {
-    let user = await this.userRepository.findOne(userId, { relations: ['articles'] })
+  async collect(userId: number, articleId: number): Promise<boolean> {
+    const user = await this.userRepository.findOne(userId, { relations: ['articles'] });
     let flag = false;
     const arr = [];
     // 算出不包含articleId的数组
@@ -32,14 +26,14 @@ export class UserService {
       } else {
         arr.push(v);
       }
-    })
+    });
     if (flag) { // 说明已经存过,当前为取消收藏操作
       user.articles = arr;
       await this.userRepository.save(user);
       return false;
     } else { // 说明尚未存过,当前为执行收藏操作
       const article = new Article();
-      article.id = articleId
+      article.id = articleId;
       user.articles.push(article);
       await this.userRepository.save(user);
       return true;
@@ -50,8 +44,8 @@ export class UserService {
    * 点赞文章
    * @param dto 用户与文章id
    */
-  async like(userId: number, articleId: number): Promise<Boolean> {
-    let user = await this.userRepository.findOne(userId, { relations: ['likeArticles'] })
+  async like(userId: number, articleId: number): Promise<boolean> {
+    const user = await this.userRepository.findOne(userId, { relations: ['likeArticles'] });
     let flag = false;
     const arr = [];
     // 算出不包含articleId的数组
@@ -61,39 +55,41 @@ export class UserService {
       } else {
         arr.push(v);
       }
-    })
+    });
     if (flag) { // 说明已经存过,当前为取消点赞操作
       user.likeArticles = arr;
       await this.userRepository.save(user);
       return false;
     } else { // 说明尚未存过,当前为执行点赞操作
       const article = new Article();
-      article.id = articleId
+      article.id = articleId;
       user.likeArticles.push(article);
       await this.userRepository.save(user);
       return true;
     }
   }
 
-  async hasCollect(userId: number, articleId: number): Promise<Boolean> {
-    let user = await this.userRepository.findOne(userId, { relations: ['articles'] })
+  async hasCollect(userId: number, articleId: number): Promise<boolean> {
+    const user = await this.userRepository.findOne(userId, { relations: ['articles'] });
     let flag = false;
     user.articles.forEach(v => {
+      // tslint:disable-next-line: triple-equals
       if (v.id == articleId) {
         flag = true;
       }
-    })
+    });
     return flag;
   }
 
-  async hasLike(userId: number, articleId: number): Promise<Boolean> {
-    let user = await this.userRepository.findOne(userId, { relations: ['likeArticles'] })
+  async hasLike(userId: number, articleId: number): Promise<boolean> {
+    const user = await this.userRepository.findOne(userId, { relations: ['likeArticles'] });
     let flag = false;
     user.likeArticles.forEach(v => {
+      // tslint:disable-next-line: triple-equals
       if (v.id == articleId) {
         flag = true;
       }
-    })
+    });
     return flag;
   }
   /**
@@ -107,7 +103,7 @@ export class UserService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.likeArticles', 'likeArticles')
       .leftJoinAndSelect('user.articles', 'articles')
-      .leftJoinAndSelect('user.comments', 'comments')
+      .leftJoinAndSelect('user.comments', 'comments');
     users = await (name ? query.where(`user.nickname like '%${name}%'`).getMany() : query.getMany());
     users.forEach(v => {
       result.push({
@@ -127,7 +123,7 @@ export class UserService {
         likeAmount: v.likeArticles.length,
         collectAmount: v.articles.length,
         commentAmount: v.comments.length
-      })
+      });
     });
     return result;
   }
@@ -155,11 +151,12 @@ export class UserService {
   async getCollecNumberByArticleId(id: number): Promise<any> {
     const result = await this.userRepository.find({
       relations: ['articles']
-    })
+    });
     let count = 0;
     result.forEach(item => {
       if (item.articles.length > 0) {
         item.articles.forEach(item2 => {
+          // tslint:disable-next-line: triple-equals
           if (item2.id == id) {
             count++;
           }
@@ -189,9 +186,14 @@ export class UserService {
             likeAmount: article.likeUsers.length,
             collectAmount: article.users.length,
             commentAmount: article.comments.length,
-          })
+          });
         });
-      })
+      });
     return result;
   }
+
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
+  ) { }
 }

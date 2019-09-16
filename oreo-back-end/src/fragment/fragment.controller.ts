@@ -1,13 +1,13 @@
 
 import { Get, Controller, Post, Body, Delete, Query, HttpException, UseGuards } from '@nestjs/common';
-import { TipMessageDTO, TipType } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from '../others/response.dto';
 import { DeleteResult } from 'typeorm';
 import { FragmentService } from './fragment.service';
 import { Fragment } from './fragment.entity';
-import { AdminGuard } from 'src/others/auth.guard';
+import { AdminGuard } from '../others/auth.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestUser } from 'src/others/decorator';
-import { User } from 'src/user/user.entity';
+import { RequestUser } from '../others/decorator';
+import { User } from '../user/user.entity';
 
 @Controller('fragment')
 export class FragmentController {

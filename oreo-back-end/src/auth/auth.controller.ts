@@ -1,8 +1,8 @@
 import { Controller, Body, Post, HttpException } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { User } from 'src/user/user.entity';
-import { TipType } from 'src/others/response.dto';
+import { User } from '../user/user.entity';
+import { TipType } from '../others/response.dto';
 
 @Controller('auth')
 export class AuthController {

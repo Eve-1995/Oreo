@@ -24,8 +24,8 @@ import { AuthModule } from './auth/auth.module';
       password: '123456',
       database: 'myblog',
       entities: ['src/**/**.entity{.ts,.js}'],
-      synchronize: true,
-    }),
-  ],
+      synchronize: true
+    })
+  ]
 })
 export class AppModule { }

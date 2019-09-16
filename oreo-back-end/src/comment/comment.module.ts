@@ -3,9 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentService } from './comment.service';
 import { CommentController } from './comment.controller';
 import { Comment } from './comment.entity';
-import { Fragment } from 'src/fragment/fragment.entity';
+import { Fragment } from '../fragment/fragment.entity';
 import { PassportModule } from '@nestjs/passport';
-import { FragmentModule } from 'src/fragment/fragment.module';
+import { FragmentModule } from '../fragment/fragment.module';
 
 @Module({
     imports: [

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Classification } from 'src/classification/classification.entity';
-import { User } from 'src/user/user.entity';
-import { Comment } from 'src/comment/comment.entity';
+import { Classification } from '../classification/classification.entity';
+import { User } from '../user/user.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity()
 export class Article {

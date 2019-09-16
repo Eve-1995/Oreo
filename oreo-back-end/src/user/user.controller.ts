@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Query, Delete, HttpException, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
-import { TipMessageDTO, TipType } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from '../others/response.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestUser } from 'src/others/decorator';
-import { AdminGuard } from 'src/others/auth.guard';
+import { RequestUser } from '../others/decorator';
+import { AdminGuard } from '../others/auth.guard';
 
 @Controller('user')
 @UseGuards(AuthGuard())

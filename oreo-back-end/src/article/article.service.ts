@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, DeleteResult } from 'typeorm';
 import { Article } from './article.entity';
-import { Classification } from 'src/classification/classification.entity';
+import { Classification } from '../classification/classification.entity';
 
 @Injectable()
 export class ArticleService {

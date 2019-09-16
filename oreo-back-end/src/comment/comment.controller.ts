@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Query, UseGuards } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { TipMessageDTO, TipType } from 'src/others/response.dto';
+import { TipMessageDTO, TipType } from '../others/response.dto';
 import { Comment } from './comment.entity';
-import { FragmentService } from 'src/fragment/fragment.service';
-import { RequestUser } from 'src/others/decorator';
+import { FragmentService } from '../fragment/fragment.service';
+import { RequestUser } from '../others/decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 
 @Controller('comment')
 export class CommentController {

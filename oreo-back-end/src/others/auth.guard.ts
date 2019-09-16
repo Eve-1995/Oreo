@@ -1,6 +1,6 @@
 
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 
 // 判断请求用户是否为管理员
 @Injectable()
