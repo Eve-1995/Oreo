@@ -1,2 +1,0 @@
-先进到当前目录再运行如下命令
-apidoc -i ../src/ -o apidoc/
