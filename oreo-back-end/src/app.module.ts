@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
 import { FragmentModule } from './fragment/fragment.module';
 import { AuthModule } from './auth/auth.module';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: '123456',
       database: 'myblog',
-      entities: ['src/**/**.entity{.ts,.js}'],
+      entities: [join(__dirname, '/**/*.entity.ts')],
       synchronize: true
     })
   ]
