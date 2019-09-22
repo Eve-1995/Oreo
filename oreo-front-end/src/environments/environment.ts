@@ -10,5 +10,5 @@
 
 export const environment = {
   production: false,
-  baseApi: 'http://localhost:3000/' // 测试服务器地址
+  baseApi: 'http://localhost:3000/' // 本地地址
 };

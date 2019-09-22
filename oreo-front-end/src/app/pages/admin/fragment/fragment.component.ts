@@ -19,7 +19,7 @@ export class AppFragmentComponent extends AppAdminComponent implements OnInit, A
 
   @ViewChild('searchInput') searchInput: NgModel;
 
-  public create(dialog: TemplateRef<any>): void {
+  public create(): void {
     this.dialogService.open(AppCreateOrEditFragmentComponent, { context: { operation: 'create' }, ...this.dialogSettings }).onClose.subscribe((v: Fragment) => {
       if (v) {
         this.fragmentService.save(v).subscribe(() => this.fetchTableList());

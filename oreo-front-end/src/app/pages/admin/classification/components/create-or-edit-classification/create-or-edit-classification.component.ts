@@ -12,7 +12,7 @@ export class AppCreateOrEditClassificationComponent {
   @Input() data: Classification = new Classification();
 
   constructor(
-    private ref: NbDialogRef<AppCreateOrEditClassificationComponent>
+    public ref: NbDialogRef<AppCreateOrEditClassificationComponent>
   ) { }
 
   public submit(valid: boolean): void {

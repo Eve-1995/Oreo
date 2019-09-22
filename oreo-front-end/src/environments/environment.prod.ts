@@ -5,5 +5,5 @@
  */
 export const environment = {
   production: true,
-  baseApi: 'http://localhost:3000/' // 线上服务器地址
+  baseApi: 'http://101.132.235.103/api/' // 线上服务器地址
 };

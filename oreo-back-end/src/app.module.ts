@@ -24,7 +24,7 @@ import { join } from 'path';
       username: 'root',
       password: '123456',
       database: 'myblog',
-      entities: [join(__dirname, '/**/*.entity.ts')],
+      entities: [join(__dirname, '/**/*.entity{.ts,.js}')],
       synchronize: true
     })
   ]

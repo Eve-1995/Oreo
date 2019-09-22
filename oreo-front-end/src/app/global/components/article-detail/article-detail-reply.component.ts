@@ -8,7 +8,7 @@ export class AppArticleDetailReplyComponent {
   @Input() fromUser: string;
 
   constructor(
-    private ref: NbDialogRef<AppArticleDetailReplyComponent>
+    public ref: NbDialogRef<AppArticleDetailReplyComponent>
   ) { }
 
   keyUpHandler(event: KeyboardEvent) {
