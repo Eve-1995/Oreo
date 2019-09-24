@@ -14,15 +14,22 @@ export class StartupService {
   ) { }
 
   load(): Promise<boolean> {
-    const userInfo$ = this.httpClient.get(`user/getUserInfoByToken`);
-    return new Promise((resolve, _reject) => {
-      userInfo$.subscribe((v: UserCoreInfo) => {
-        this.settingService.setUser(v);
-        resolve(true);
-      },
-        () => {
+    if (localStorage.getItem('oreoToken')) {
+      const userInfo$ = this.httpClient.get(`user/getUserInfoByToken`);
+      return new Promise((resolve, _reject) => {
+        userInfo$.subscribe((v: UserCoreInfo) => {
+          this.settingService.setUser(v);
           resolve(true);
-        });
-    });
+        },
+          () => {
+            resolve(true);
+          });
+      });
+    } else {
+      localStorage.setItem('unLogin', 'true');
+      return new Promise((resolve, _reject) => {
+        resolve(true);
+      });
+    }
   }
 }

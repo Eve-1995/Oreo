@@ -1,0 +1,45 @@
+<ng-container *ngIf="!start">
+  <div class="before-start-container">
+    <h2>
+      看表情猜明星
+    </h2>
+    <div class="question-unit" style="margin-top: 170px;">
+      <div class="question">
+        👡⭕⭕
+      </div>
+      <div class="actions">
+        <input type="text" [(ngModel)]="demoValue" (keyup.enter)="demoValidate()">
+        <button type="button" (click)="demoValidate()">提交</button>
+      </div>
+    </div>
+    <ul class="rule">
+      <li>1.根据emoji表情猜测对应的艺人</li>
+      <li>2.错误时答案重置, 正确时该题消失(可按回车确认)</li>
+      <li>3.当前界面为测试题, 该题答案请查看console(F12), 一旦输入正确即开始游戏</li>
+    </ul>
+  </div>
+</ng-container>
+<ng-container *ngIf="start">
+  <div class="question-container">
+    <ng-container *ngFor="let item of questions;let index = index;">
+      <div *ngIf="!item.right" class="question-unit">
+        <div class="question">
+          {{ item.value }}
+        </div>
+        <div class="actions">
+          <input type="text" [(ngModel)]="item.userAnswer" (keyup.enter)="validate(index)">
+          <button type="button" (click)="validate(index)">提交</button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="end" [ngClass]="{'active': active}">
+    <ng-container *ngIf="active">
+      <p>🐂🍺~</p>
+    </ng-container>
+    <h2>
+      {{ result }}
+    </h2>
+  </div>
+</ng-container>

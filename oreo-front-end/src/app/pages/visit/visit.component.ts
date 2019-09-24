@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MENU_ITEMS } from './visit-menu';
-import { NbMenuService } from '@nebular/theme';
+import { NbMenuService, NbToastrService } from '@nebular/theme';
 import { VisitService } from './visit.service';
 import { AppGlobalService } from '../../global/service/global.service';
 
@@ -53,9 +53,14 @@ export class VisitComponent implements OnInit {
     private appGlobalService: AppGlobalService,
     private nBmenuService: NbMenuService,
     private visitService: VisitService,
+    private toastrService: NbToastrService
   ) { }
 
   ngOnInit(): void {
     this.navigateToFirstArticle();
+    if (localStorage.getItem('unLogin')) {
+      this.toastrService.primary('', '登录可以解锁更多姿势哦~');
+      localStorage.removeItem('unLogin');
+    }
   }
 }

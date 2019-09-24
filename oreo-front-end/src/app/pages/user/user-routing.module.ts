@@ -7,6 +7,7 @@ import { AppCollectionComponent } from './collection/collection.component';
 import { AppCommentComponent } from './comment/comment.component';
 import { AppArticleDetailComponent } from '../../global/components/article-detail/article-detail.component';
 import { AppFragmentComponent } from './fragment/fragment.component';
+import { AppBossComponent } from './boss/boss.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'comment', component: AppCommentComponent },
       { path: 'article-detail', component: AppArticleDetailComponent },
       { path: 'fragment', component: AppFragmentComponent },
+      { path: 'boss', component: AppBossComponent },
       { path: '**', redirectTo: 'profile' },
     ],
   }
@@ -36,5 +38,7 @@ export const userRoutedComponents = [
   AppProfileComponent,
   AppResetPasswordComponent,
   AppCollectionComponent,
-  AppCommentComponent
+  AppFragmentComponent,
+  AppCommentComponent,
+  AppBossComponent
 ];

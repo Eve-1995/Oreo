@@ -37,7 +37,7 @@ export class AppArticleComponent extends AppAdminComponent implements OnInit, Af
     });
   }
 
-  public openMarkdown: () => void = () => window.open(`${window.location.origin}/admin/create-or-edit/article `, '_blank');
+  public openMarkdown: () => void = () => window.open(`${window.location.origin}/admin/create-or-edit/article`, '_blank');
 
   public edit(dialog: TemplateRef<any>): void {
     if (!this.selectedObj.id) {

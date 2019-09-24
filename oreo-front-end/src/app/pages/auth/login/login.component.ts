@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LoginService } from './login.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from '../../../global/service/global.service';
 import { NbToastrService } from '@nebular/theme';
 import { AppSettingService } from '../../../global/service/setting.service';
@@ -23,17 +23,26 @@ export class AppLoginComponent {
     this.service.login(this.user).subscribe((v: Auth) => {
       this.settingService.setUser(v);
       localStorage.setItem('oreoToken', v.token);
-      if (v.level === 0) {
-        this.router.navigate(['/visit/article']);
-      } else if (v.level === 1) {
-        this.router.navigate(['/admin/classification']);
+      const redirectUrl = this.activatedRoute.snapshot.paramMap.get('redirectUrl');
+      if (redirectUrl) {
+        this.router.navigate([redirectUrl]);
+      } else {
+        if (v.level === 0) {
+          this.router.navigate(['/visit/article']);
+        } else if (v.level === 1) {
+          this.router.navigate(['/admin/classification']);
+        }
       }
       this.submitted = false;
-    });
+      localStorage.removeItem('unLogin');
+    },
+      () => this.submitted = false
+    );
   }
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private settingService: AppSettingService,
     private toastrService: NbToastrService,
     private service: LoginService

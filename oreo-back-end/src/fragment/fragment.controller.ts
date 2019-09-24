@@ -237,6 +237,24 @@ export class FragmentController {
     return { tipType, message };
   }
 
+  @Get('guessStar')
+  @UseGuards(AuthGuard())
+  async guessStar(@RequestUser() user: User): Promise<TipMessageDTO> {
+    let message: string;
+    let tipType: number;
+    const exist = await this.service.checkGotAlready('看表情猜明星', user.id);
+    if (exist) {
+      tipType = TipType.WARING;
+      message = '已获得该彩蛋, 请勿重复!';
+      return { tipType, message };
+    }
+    await this.service.saveUser('看表情猜明星', user.id).then(() => {
+      tipType = TipType.SUCCESS;
+      message = '恭喜你发现了彩蛋!快去个人中心看看吧~!';
+    });
+    return { tipType, message };
+  }
+
   constructor(
     private readonly service: FragmentService
   ) { }

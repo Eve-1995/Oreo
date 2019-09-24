@@ -1,0 +1,7 @@
+<ng-container *ngFor="let item of bossList">
+  <div class="boss-list">
+    <span class="boss-unit" (click)="jump(item.link)">
+      {{ item.name }}
+    </span>
+  </div>
+</ng-container>

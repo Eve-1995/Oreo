@@ -21,6 +21,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'nb-star',
     link: '/user/fragment',
   },
+  {
+    title: '我的副本',
+    icon: 'nb-star',
+    link: '/user/boss',
+  }
   // {
   //   title: '我的评论',
   //   icon: 'nb-bar-chart',
