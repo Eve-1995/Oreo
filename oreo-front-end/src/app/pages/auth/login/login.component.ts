@@ -13,6 +13,7 @@ import { AppSettingService } from '../../../global/service/setting.service';
 export class AppLoginComponent {
   public user: any = {};
   public submitted: boolean = false;
+  public redirectUrl = '';
 
   public forgetPassword(): void {
     this.toastrService.show('', '忘了就再注册一个, 懒得做这个功能');
@@ -23,9 +24,8 @@ export class AppLoginComponent {
     this.service.login(this.user).subscribe((v: Auth) => {
       this.settingService.setUser(v);
       localStorage.setItem('oreoToken', v.token);
-      const redirectUrl = this.activatedRoute.snapshot.paramMap.get('redirectUrl');
-      if (redirectUrl) {
-        this.router.navigate([redirectUrl]);
+      if (this.redirectUrl) {
+        this.router.navigate([this.redirectUrl]);
       } else {
         if (v.level === 0) {
           this.router.navigate(['/visit/article']);
@@ -40,11 +40,21 @@ export class AppLoginComponent {
     );
   }
 
+  public registerHandler(): void {
+    if (this.redirectUrl) {
+      this.router.navigate(['/auth/register', { redirectUrl: this.redirectUrl }]);
+    } else {
+      this.router.navigate(['/auth/register']);
+    }
+  }
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private settingService: AppSettingService,
     private toastrService: NbToastrService,
     private service: LoginService
-  ) { }
+  ) {
+    this.redirectUrl = this.activatedRoute.snapshot.paramMap.get('redirectUrl');
+  }
 }

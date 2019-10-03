@@ -170,7 +170,7 @@ export class FragmentController {
 
   /**
    * @api {Get} /fragment/findAll 获取碎片列表
-   * @description 该操作用于用户查看自己所获得的碎片大全
+   * @apiDescription 该操作用于用户查看自己所获得的碎片大全
    * @apiGroup Fragment
    *
    * @apiSuccess {Number} describe 碎片描述

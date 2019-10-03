@@ -82,7 +82,11 @@ export class AppGuessStarComponent implements OnInit {
 
   get result(): string {
     if (this.questions.every(v => v.right)) {
-      return '恭喜你闯关成功! 即将前往[我的碎片], 可查看获得的彩蛋情况~';
+      if(localStorage.getItem('oreoToken')) {
+        return '恭喜你闯关成功! 即将前往[我的碎片], 可查看获得的彩蛋情况~';
+      } else {
+        return '恭喜你闯关成功! 但因未登录无法获得彩蛋奖励, 请登录后重试(直接刷新即可前往登录).';
+      }
     } else {
       return `猜对所有艺人即可获得彩蛋, 当前进度: ${this.questions.filter(v => v.right).length}/${this.questions.length}`;
     }
