@@ -1,0 +1,57 @@
+<div class="guess-song-container">
+  <div class="header">
+    <div class="logo-container">
+      <div class="icon-net-ease-cloud-music">
+        <div>
+          <app-svg type="net-ease-cloud-music"></app-svg>
+        </div>
+      </div>
+      <div class="title">
+        网易云音乐
+      </div>
+    </div>
+    <div class="direction-container">
+      <div class="smaller-than-container">
+        <div class="smaller-than"></div>
+      </div>
+      <div class="greater-than-container">
+        <div class="greater-than"></div>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="body-left">
+      <app-guess-song-menu-list></app-guess-song-menu-list>
+    </div>
+    <div class="body-right">
+      <app-guess-song-my-favorite-header></app-guess-song-my-favorite-header>
+      <app-guess-song-my-favorite-songs></app-guess-song-my-favorite-songs>
+    </div>
+  </div>
+  <div class="footer">
+    <!-- 257 width -->
+    <div class="play-actions">
+      <div class="previous-container" title="上一首" (click)="previous()">
+        <div class="column"></div>
+        <div class="triangle"></div>
+      </div>
+      <div class="state-container" title="暂停/播放" (click)="pauseOrPlay()">
+        <ng-container *ngIf="playing">
+          <div class="column"></div>
+          <div class="column"></div>
+        </ng-container>
+        <ng-container *ngIf="!playing">
+          <div class="triangle"></div>
+        </ng-container>
+      </div>
+      <div class="next-container" title="下一首" (click)="next()">
+        <div class="column"></div>
+        <div class="triangle"></div>
+      </div>
+    </div>
+    <app-guess-song-progress></app-guess-song-progress>
+    <div class="end">
+
+    </div>
+  </div>
+</div>

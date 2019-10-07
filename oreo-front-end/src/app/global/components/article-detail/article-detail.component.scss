@@ -48,10 +48,6 @@
 
             }
 
-            .king {
-                margin-left: 4px;
-            }
-
             .content-container {
                 flex-grow: 1;
 
@@ -107,13 +103,6 @@
             justify-content: space-around;
             flex-wrap: wrap;
         }
-    }
-}
-
-.actions {
-    app-svg {
-        margin-top: 4px;
-        margin-right: 5px;
     }
 }
 

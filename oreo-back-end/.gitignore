@@ -2,6 +2,7 @@
 /dist
 /tmp
 /out-tsc
+/apidoc
 
 # dependencies
 /node_modules

@@ -18,17 +18,19 @@
   </nb-card-body>
   <nb-actions class="actions" size="large">
     <nb-action class="hover" (click)="like()">
-      <app-svg *ngIf="!hasLike" [type]="'great-hollow'"></app-svg>
-      <app-svg *ngIf="hasLike" [type]="'great-solid'"></app-svg>
+      <app-svg top="4px" right="5px" [type]="hasLike ? 'great-solid' : 'great-hollow'"></app-svg>
       <span class="action">点赞</span>
     </nb-action>
     <nb-action class="hover" (click)="collect()">
-      <app-svg *ngIf="!hasCollection" [type]="'collect-hollow'"></app-svg>
-      <app-svg *ngIf="hasCollection" [type]="'collect-solid'"></app-svg>
+      <app-svg top="4px" right="5px" [type]="hasCollection ? 'collect-solid' : 'collect-hollow'"></app-svg>
       <span class="action">收藏</span>
     </nb-action>
-    <nb-action class="hover" (cbOnSuccess)="this.toastrService.success('', '链接复制成功!');" ngxClipboard [cbContent]="copyContent">
-      <app-svg [type]="'share'"></app-svg>
+    <nb-action
+      ngxClipboard
+      class="hover"
+      (cbOnSuccess)="this.toastrService.success('', '链接复制成功!');" 
+      [cbContent]="copyContent">
+      <app-svg top="4px" right="5px" type="share"></app-svg>
       <span class="action">分享</span>
     </nb-action>
   </nb-actions>
@@ -38,7 +40,7 @@
         <span [ngClass]="{'admin': item.fromUser.level===1}">
           {{ item.fromUser.nickname }}
         </span>
-        <app-svg *ngIf="item.fromUser.level===1" class="king" type="king"></app-svg>
+        <app-svg *ngIf="item.fromUser.level===1" type="king" left="4px"></app-svg>
       </span>
       &nbsp;:&nbsp;
       <div class="content-container">
@@ -56,12 +58,12 @@
             <div class="content-repky-items-nickname-container">
               <span class="content-repky-items-nickname" [ngClass]="{'admin': replyItem.fromUser.level===1}">
                 {{ replyItem.fromUser.nickname }}
-                <app-svg *ngIf="replyItem.fromUser.level===1" class="king" type="king"></app-svg>
+                <app-svg *ngIf="replyItem.fromUser.level===1" type="king" left="4px"></app-svg>
               </span>
               &nbsp;回复&nbsp;
               <span class="content-repky-items-nickname" [ngClass]="{'admin': replyItem.toUser.level===1}">
                 {{ replyItem.toUser.nickname }}
-                <app-svg *ngIf="replyItem.toUser.level===1" class="king" type="king"></app-svg>
+                <app-svg *ngIf="replyItem.toUser.level===1" type="king" left="4px"></app-svg>
               </span>
               :&nbsp;
             </div>
