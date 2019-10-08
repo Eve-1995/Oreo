@@ -88,9 +88,6 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
     private bossService: AppBossService
   ) { }
   check(): void {
-    console.log(this.audio.volume, 'this.audio.volume');
-    console.log(this.audio.paused, 'this.audio.paused');
-    console.log(this.mode, 'this.mode');
   }
 
   // 播放歌曲
@@ -152,7 +149,6 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
 
   /**淡出 0.5s */
   private fadeOut(): void {
-    console.log('fadeOut');
     let volume = 1;
     this.audio.volume = volume;
     const timer = setInterval(() => {
@@ -169,7 +165,6 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
 
   /**淡入 0.5s */
   private fadeIn(): void {
-    console.log('fadeIn');
     this.audio.play();
     let volume = 0;
     this.audio.volume = volume;
@@ -182,7 +177,31 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
     }, 100);
   }
 
+  /**播放下一首歌 */
+  private nextSong(): void {
+    const playingSongIndex = this.songsList.findIndex(v => v.playing);
+    this.songsList.forEach(v => v.playing = false);
+    if (playingSongIndex === this.songsList.length - 1) {
+      this.playAudio(this.songsList[0]);
+    } else {
+      this.playAudio(this.songsList[playingSongIndex + 1]);
+    }
+  }
+
   ngOnInit(): void {
+    // 监听歌曲结束时, 切下一首歌
+    this.audio.onpause = () => {
+      if (this.mode) {
+        const playingSong = this.songsList.find(v => v.playing);
+        if (this.audio.currentTime >= toSeconds(playingSong.endTime) - 1) {
+          this.nextSong();
+        }
+      } else {
+        if (this.audio.currentTime === this.audio.duration) {
+          this.nextSong();
+        }
+      }
+    };
     this.bossService.previousSong$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       const playingSongIndex = this.songsList.findIndex(v => v.playing);
       this.songsList.forEach(v => v.playing = false);
@@ -192,15 +211,7 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
         this.playAudio(this.songsList[playingSongIndex - 1]);
       }
     });
-    this.bossService.nextSong$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      const playingSongIndex = this.songsList.findIndex(v => v.playing);
-      this.songsList.forEach(v => v.playing = false);
-      if (playingSongIndex === this.songsList.length - 1) {
-        this.playAudio(this.songsList[0]);
-      } else {
-        this.playAudio(this.songsList[playingSongIndex + 1]);
-      }
-    });
+    this.bossService.nextSong$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.nextSong());
     this.bossService.pauseOrPlay$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
       this.pauseOrPlay = v;
       if (v) {
