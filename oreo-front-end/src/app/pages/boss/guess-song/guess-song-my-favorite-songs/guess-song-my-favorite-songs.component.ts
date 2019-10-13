@@ -12,14 +12,16 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
-  private pauseOrPlay: boolean; // true: 播放, false: 暂停
   private src: string;
   private audio = new Audio();
-  private currentSongInfoTimer: any;
   private playDelay = 0;
-  private timer;
+  private validCheckTimer: NodeJS.Timer;
   private mode = true; // true: 副歌模式, false: 完整模式
+  private pauseTimer: NodeJS.Timer;
+  private fadeOutTimer: NodeJS.Timer;
+  private fadeInTimer: NodeJS.Timer;
 
+  public pause: boolean; // true: 播放, false: 暂停
   public songsList = [
     {
       title: '巧乐兹 - 爱河 (抖音版) (Cover：蒋雪儿).mp3',
@@ -119,23 +121,23 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
       this.playDelay = 500; // 如果淡出则延迟1秒淡入
     }
     // 加载新歌曲资源
-    clearInterval(this.timer);
+    clearInterval(this.validCheckTimer);
     setTimeout(() => {
       this.audio.currentTime = 0;
       this.audio.src = `../../../../assets/musics/${item.title}`;
       if (this.mode) {
         this.audio.currentTime = startTime;
         // 当播放进度超出合法范围时, 停止播放
-        this.timer = setInterval(() => {
+        this.validCheckTimer = setInterval(() => {
           if (this.audio.currentTime > endTime) {
             this.fadeOut();
-            clearInterval(this.timer);
+            clearInterval(this.validCheckTimer);
           }
         }, 1000);
       }
       this.bossService.pauseOrPlay$.next(true);
       // 通知底部进度条歌曲进度信息
-      this.currentSongInfoTimer = setInterval(() => {
+      setInterval(() => {
         if (this.audio.duration) { // 播放歌曲时, 一开始传递的duration是NaN, 导致进度条总时间重置为0
           this.bossService.progressChange$.next({
             currentTime: this.audio.currentTime,
@@ -149,30 +151,38 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
 
   /**淡出 0.5s */
   private fadeOut(): void {
+    clearTimeout(this.fadeInTimer); // 防止淡入音效影响
     let volume = 1;
     this.audio.volume = volume;
-    const timer = setInterval(() => {
+    this.fadeOutTimer = setInterval(() => {
+      console.log('fadeOut');
+      console.log(this.audio.volume, 'this.audio.volume');
       volume -= 0.2;
       this.audio.volume = volume > 0 ? volume : 0;
       if (volume <= 0) {
-        clearInterval(timer);
+        clearInterval(this.fadeOutTimer);
       }
     }, 100);
-    setTimeout(() => {
+    this.pauseTimer = setTimeout(() => {
       this.audio.pause();
     }, 500);
   }
 
   /**淡入 0.5s */
   private fadeIn(): void {
+    clearTimeout(this.pauseTimer); // 防止暂停
+    clearTimeout(this.fadeOutTimer); // 防止淡出音效影响
+    clearTimeout(this.fadeInTimer); // 尚不清楚为何会内存泄露
     this.audio.play();
     let volume = 0;
     this.audio.volume = volume;
-    const timer = setInterval(() => {
+    this.fadeInTimer = setInterval(() => {
+      console.log('fadeIn');
+      console.log(this.audio.volume, 'this.audio.volume');
       volume += 0.2;
       this.audio.volume = volume > 1 ? 1 : volume;
       if (volume >= 1) {
-        clearInterval(timer);
+        clearInterval(this.fadeInTimer);
       }
     }, 100);
   }
@@ -213,12 +223,8 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
     });
     this.bossService.nextSong$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.nextSong());
     this.bossService.pauseOrPlay$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => {
-      this.pauseOrPlay = v;
-      if (v) {
-        this.fadeIn();
-      } else {
-        this.fadeOut();
-      }
+      this.pause = v;
+      v ? this.fadeIn() : this.fadeOut();
     });
     this.bossService.modeChange$.pipe(takeUntil(this.unsubscribe$)).subscribe(v => this.mode = v);
   }

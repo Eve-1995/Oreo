@@ -15,10 +15,8 @@
             <span>
               <span *ngIf="!item.playing">{{ getIndex(index+1) }}</span>
               <ng-container *ngIf="item.playing">
-                <!-- <app-svg [type]="pauseOrPlay ? 'playing' : 'mute'"></app-svg> -->
                 <app-svg type="playing"></app-svg>
-                <div *ngIf="!pauseOrPlay" class="mute"></div>
-                <!-- <app-svg type="mute"></app-svg> -->
+                <div *ngIf="pause" class="mute"></div>
               </ng-container>
             </span>
           </td>
