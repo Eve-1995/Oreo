@@ -155,8 +155,6 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
     let volume = 1;
     this.audio.volume = volume;
     this.fadeOutTimer = setInterval(() => {
-      console.log('fadeOut');
-      console.log(this.audio.volume, 'this.audio.volume');
       volume -= 0.2;
       this.audio.volume = volume > 0 ? volume : 0;
       if (volume <= 0) {
@@ -177,8 +175,6 @@ export class AppGuessSongMyFavoriteSongsComponent implements OnInit {
     let volume = 0;
     this.audio.volume = volume;
     this.fadeInTimer = setInterval(() => {
-      console.log('fadeIn');
-      console.log(this.audio.volume, 'this.audio.volume');
       volume += 0.2;
       this.audio.volume = volume > 1 ? 1 : volume;
       if (volume >= 1) {
